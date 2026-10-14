@@ -456,6 +456,35 @@ input { font: inherit; }
 
 /* search input rounded */
 .search-input { border-radius: 8px; }
+
+/* chip count badge */
+.chip-count {
+  background: rgba(0,0,0,0.12); color: inherit;
+  font-size: 11px; font-weight: 600;
+  border-radius: 10px; padding: 1px 6px;
+  margin-left: 4px; min-width: 20px; text-align: center;
+}
+.chip.active .chip-count { background: rgba(255,255,255,0.25); }
+
+/* filter status bar */
+.filter-status {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 13px; color: var(--text-muted);
+  margin: -8px 0 12px;
+  min-height: 20px;
+  transition: opacity 0.2s;
+}
+.filter-status .fs-dot {
+  width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0;
+}
+.filter-status .fs-ini { background: var(--c-ini); }
+.filter-status .fs-int { background: var(--c-int); }
+.filter-status .fs-ava { background: var(--c-ava); }
+.filter-status .fs-all { background: var(--accent); }
+
+/* section list fade on filter change */
+.section-grid { animation: fadeIn 0.18s ease; }
+@keyframes fadeIn { from { opacity: 0.4; transform: translateY(4px); } to { opacity: 1; transform: none; } }
 </style>
 </head>
 <body>
@@ -583,6 +612,12 @@ function renderExCard(ex, clickRoute) {
 function renderLevelChips(onChange) {
   const wrap = document.createElement('div');
   wrap.className = 'level-chips';
+  const counts = {
+    '': EX.length,
+    'Iniciante': EX.filter(e => e.nivel === 'Iniciante').length,
+    'Intermediário': EX.filter(e => e.nivel === 'Intermediário').length,
+    'Avançado': EX.filter(e => e.nivel === 'Avançado').length,
+  };
   const opts = [
     ['', 'Todos', 'chip-all'],
     ['Iniciante', 'Iniciante', 'chip-ini'],
@@ -592,7 +627,7 @@ function renderLevelChips(onChange) {
   for (const [val, label, cls] of opts) {
     const btn = document.createElement('button');
     btn.className = `chip ${cls}${levelFilter === val ? ' active' : ''}`;
-    btn.textContent = label;
+    btn.innerHTML = `${label}<span class="chip-count">${counts[val]}</span>`;
     btn.addEventListener('click', () => {
       levelFilter = val;
       lsSet('level', val);
@@ -643,16 +678,36 @@ function renderHome() {
   page.appendChild(sw);
 
   // Level filter
+  const statusBar = document.createElement('div');
+  statusBar.className = 'filter-status';
+
+  function updateStatus() {
+    const n = filteredEx(levelFilter).length;
+    if (!levelFilter) {
+      statusBar.innerHTML = '';
+    } else {
+      const dotClass = {Iniciante:'fs-ini',Intermediário:'fs-int',Avançado:'fs-ava'}[levelFilter] || 'fs-all';
+      statusBar.innerHTML = `<span class="fs-dot ${dotClass}"></span><span>${levelFilter} · <strong>${n}</strong> exercícios</span>`;
+    }
+  }
+
   const chips = renderLevelChips(() => {
+    updateStatus();
+    // Re-render chips to update active state
+    chips.querySelectorAll('.chip').forEach(btn => {
+      const val = btn.dataset.val || '';
+      btn.classList.toggle('active', levelFilter === val);
+    });
     renderSectionGrid(grid);
   });
+  // Store val in dataset so we can toggle active above
+  chips.querySelectorAll('.chip').forEach((btn, i) => {
+    const vals = ['','Iniciante','Intermediário','Avançado'];
+    btn.dataset.val = vals[i];
+  });
   page.appendChild(chips);
-
-  // Subtitle
-  const sub = document.createElement('p');
-  sub.className = 'home-subtitle';
-  sub.textContent = `${filteredEx(levelFilter).length} exercícios · 15 seções`;
-  page.appendChild(sub);
+  page.appendChild(statusBar);
+  updateStatus();
 
   // Section grid
   const grid = document.createElement('div');
