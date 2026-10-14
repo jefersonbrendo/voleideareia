@@ -11,60 +11,56 @@
 <style>
 /* ===== CSS TOKENS ===== */
 :root {
-  --c-navy: #13314A;
-  --c-ocean: #0F6FA8;
-  --c-coral: #F26B3A;
-  --c-areia: #F5E6C8;
   --c-ini: #1E9E5A;
   --c-int: #E89B17;
   --c-ava: #D6402B;
 
   /* Light theme */
-  --bg: #F5EDD8;
-  --bg-card: #FFFDF7;
+  --bg: #FFFFFF;
+  --bg-card: #F8F9FA;
   --bg-nav: #FFFFFF;
-  --bg-chip: #EAE0CA;
-  --bg-overlay: rgba(19,49,74,0.06);
-  --text: #13314A;
-  --text-sec: #4A6273;
-  --text-muted: #7A96A8;
-  --border: rgba(19,49,74,0.12);
-  --shadow: 0 2px 8px rgba(19,49,74,0.10);
-  --shadow-lg: 0 4px 20px rgba(19,49,74,0.15);
+  --bg-chip: #F1F3F5;
+  --bg-overlay: rgba(0,0,0,0.04);
+  --text: #111827;
+  --text-sec: #4B5563;
+  --text-muted: #9CA3AF;
+  --border: #E5E7EB;
+  --shadow: none;
+  --shadow-lg: none;
   --accent: #0F6FA8;
-  --cta: #F26B3A;
+  --cta: #0F6FA8;
 }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
-    --bg: #0D2233;
-    --bg-card: #162D3F;
-    --bg-nav: #0D2233;
-    --bg-chip: #1A3348;
-    --bg-overlay: rgba(0,0,0,0.20);
-    --text: #EAF2F8;
-    --text-sec: #A0BCC9;
-    --text-muted: #5C8399;
-    --border: rgba(255,255,255,0.10);
-    --shadow: 0 2px 8px rgba(0,0,0,0.30);
-    --shadow-lg: 0 4px 20px rgba(0,0,0,0.40);
-    --accent: #3E9FD0;
-    --cta: #FF7A45;
+    --bg: #111827;
+    --bg-card: #1F2937;
+    --bg-nav: #111827;
+    --bg-chip: #374151;
+    --bg-overlay: rgba(255,255,255,0.04);
+    --text: #F9FAFB;
+    --text-sec: #D1D5DB;
+    --text-muted: #6B7280;
+    --border: #374151;
+    --shadow: none;
+    --shadow-lg: none;
+    --accent: #38BDF8;
+    --cta: #38BDF8;
   }
 }
 :root[data-theme="dark"] {
-  --bg: #0D2233;
-  --bg-card: #162D3F;
-  --bg-nav: #0D2233;
-  --bg-chip: #1A3348;
-  --bg-overlay: rgba(0,0,0,0.20);
-  --text: #EAF2F8;
-  --text-sec: #A0BCC9;
-  --text-muted: #5C8399;
-  --border: rgba(255,255,255,0.10);
-  --shadow: 0 2px 8px rgba(0,0,0,0.30);
-  --shadow-lg: 0 4px 20px rgba(0,0,0,0.40);
-  --accent: #3E9FD0;
-  --cta: #FF7A45;
+  --bg: #111827;
+  --bg-card: #1F2937;
+  --bg-nav: #111827;
+  --bg-chip: #374151;
+  --bg-overlay: rgba(255,255,255,0.04);
+  --text: #F9FAFB;
+  --text-sec: #D1D5DB;
+  --text-muted: #6B7280;
+  --border: #374151;
+  --shadow: none;
+  --shadow-lg: none;
+  --accent: #38BDF8;
+  --cta: #38BDF8;
 }
 
 /* ===== RESET / BASE ===== */
@@ -88,28 +84,26 @@ input { font: inherit; }
 /* ===== TOP BAR ===== */
 .top-bar {
   position: sticky; top: 0; z-index: 100;
-  background: var(--bg-card);
+  background: var(--bg-nav);
   border-bottom: 1px solid var(--border);
   padding: 0 max(16px, env(safe-area-inset-left, 0px));
   display: flex; align-items: center; gap: 12px;
   height: 56px;
-  box-shadow: var(--shadow);
 }
 .top-bar .back-btn {
-  width: 36px; height: 36px; border-radius: 50%;
+  width: 32px; height: 32px;
   display: flex; align-items: center; justify-content: center;
-  background: var(--bg-chip); color: var(--text);
-  flex-shrink: 0;
+  color: var(--text); flex-shrink: 0;
 }
-.top-bar .back-btn svg { width: 18px; height: 18px; }
+.top-bar .back-btn svg { width: 20px; height: 20px; }
 .top-bar h1 {
-  flex: 1; font-size: 1rem; font-weight: 700;
+  flex: 1; font-size: 0.95rem; font-weight: 600;
   white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
 }
 .logo-title {
-  font-family: 'Bebas Neue', 'Inter', sans-serif;
-  font-size: 1.4rem; letter-spacing: 0.05em;
-  color: var(--accent); display: flex; align-items: center; gap: 8px;
+  font-family: 'Inter', sans-serif;
+  font-size: 18px; font-weight: 700; letter-spacing: 0.04em;
+  color: var(--text); flex: 1;
 }
 
 /* ===== BOTTOM NAV ===== */
@@ -119,13 +113,12 @@ input { font: inherit; }
   border-top: 1px solid var(--border);
   display: flex;
   padding-bottom: env(safe-area-inset-bottom, 0px);
-  box-shadow: 0 -2px 10px rgba(0,0,0,0.10);
 }
 .nav-item {
   flex: 1; display: flex; flex-direction: column;
   align-items: center; justify-content: center;
   gap: 3px; padding: 8px 4px;
-  color: var(--text-muted); font-size: 0.65rem; font-weight: 500;
+  color: var(--text-muted); font-size: 11px; font-weight: 500;
   transition: color 0.15s;
   min-height: 56px;
 }
@@ -168,73 +161,55 @@ input { font: inherit; }
 .level-chips::-webkit-scrollbar { display: none; }
 .chip {
   flex-shrink: 0; height: 32px; padding: 0 14px;
-  border-radius: 20px; font-size: 0.78rem; font-weight: 600;
-  border: 2px solid transparent;
-  transition: all 0.15s;
-  display: flex; align-items: center; gap: 6px;
-}
-.chip-ini { background: rgba(30,158,90,0.12); color: var(--c-ini); border-color: transparent; }
-.chip-ini.active { background: var(--c-ini); color: #fff; }
-.chip-int { background: rgba(232,155,23,0.12); color: var(--c-int); border-color: transparent; }
-.chip-int.active { background: var(--c-int); color: #fff; }
-.chip-ava { background: rgba(214,64,43,0.12); color: var(--c-ava); border-color: transparent; }
-.chip-ava.active { background: var(--c-ava); color: #fff; }
-.chip-all { background: var(--bg-chip); color: var(--text-sec); }
-.chip-all.active { background: var(--accent); color: #fff; }
-
-/* ===== SECTION GRID ===== */
-.section-grid {
-  display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;
-  margin-top: 8px;
-}
-.section-card {
-  background: var(--bg-card);
-  border-radius: 12px;
-  padding: 14px 10px;
-  box-shadow: var(--shadow);
+  border-radius: 6px; font-size: 13px; font-weight: 500;
   border: 1px solid var(--border);
-  display: flex; flex-direction: column;
-  align-items: center; gap: 6px;
+  background: transparent; color: var(--text-sec);
+  transition: all 0.15s;
+  display: flex; align-items: center;
+}
+.chip-ini.active { background: var(--c-ini); color: #fff; border-color: var(--c-ini); }
+.chip-int.active { background: var(--c-int); color: #fff; border-color: var(--c-int); }
+.chip-ava.active { background: var(--c-ava); color: #fff; border-color: var(--c-ava); }
+.chip-all.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+
+/* ===== SECTION LIST ===== */
+.section-grid { display: flex; flex-direction: column; margin-top: 8px; }
+.section-card {
+  background: transparent;
+  border-bottom: 1px solid var(--border);
+  height: 56px; padding: 0;
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
   cursor: pointer;
-  transition: transform 0.15s, box-shadow 0.15s;
-  text-align: center;
+  transition: background 0.12s;
 }
-.section-card:active { transform: scale(0.97); }
-.section-card .sec-icon { font-size: 1.5rem; line-height: 1; }
-.section-card .sec-nome { font-size: 0.72rem; font-weight: 600; color: var(--text); line-height: 1.2; }
-.section-card .sec-count {
-  font-size: 0.65rem; color: var(--text-muted);
-  background: var(--bg-chip); border-radius: 10px; padding: 2px 8px;
-}
+.section-card:hover { background: var(--bg-chip); }
+.section-card:active { background: var(--bg-chip); }
+.sec-left { display: flex; align-items: center; gap: 12px; }
+.sec-num { font-size: 0.82rem; font-weight: 700; color: var(--accent); width: 32px; flex-shrink: 0; }
+.sec-nome { font-size: 0.9rem; font-weight: 500; color: var(--text); }
+.sec-count { font-size: 13px; color: var(--text-muted); flex-shrink: 0; }
 
 /* ===== EXERCISE LIST ===== */
-.ex-list { display: flex; flex-direction: column; gap: 8px; margin-top: 12px; }
+.ex-list { display: flex; flex-direction: column; margin-top: 8px; }
 .ex-card {
-  background: var(--bg-card);
-  border-radius: 12px;
-  padding: 14px;
-  box-shadow: var(--shadow);
-  border: 1px solid var(--border);
+  background: transparent;
+  border-bottom: 1px solid var(--border);
+  padding: 16px 0;
   cursor: pointer;
-  transition: transform 0.15s;
+  transition: background 0.12s;
 }
-.ex-card:active { transform: scale(0.99); }
+.ex-card:hover { background: var(--bg-chip); padding-left: 8px; padding-right: 8px; margin: 0 -8px; }
+.ex-card:active { background: var(--bg-chip); }
 .ex-card-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; }
-.ex-code { font-size: 0.7rem; font-weight: 700; color: var(--text-muted); font-family: monospace; }
-.ex-nome { font-size: 0.9rem; font-weight: 600; margin: 4px 0 8px; line-height: 1.3; }
-.ex-chips { display: flex; flex-wrap: wrap; gap: 6px; }
-.ex-chip {
-  font-size: 0.68rem; padding: 3px 10px; border-radius: 20px;
-  background: var(--bg-chip); color: var(--text-sec); font-weight: 500;
-}
+.ex-code { font-size: 11px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.03em; }
+.ex-nome { font-size: 15px; font-weight: 600; margin: 4px 0 6px; line-height: 1.3; color: var(--text); }
+.ex-meta { font-size: 13px; color: var(--text-muted); }
 .nivel-badge {
-  padding: 3px 10px; border-radius: 20px;
-  font-size: 0.68rem; font-weight: 700; color: #fff;
-  flex-shrink: 0;
+  font-size: 12px; font-weight: 600; flex-shrink: 0; padding-top: 2px;
 }
-.nivel-Iniciante { background: var(--c-ini); }
-.nivel-Intermediário { background: var(--c-int); }
-.nivel-Avançado { background: var(--c-ava); }
+.nivel-Iniciante { color: var(--c-ini); }
+.nivel-Intermediário { color: var(--c-int); }
+.nivel-Avançado { color: var(--c-ava); }
 
 /* ===== EXERCISE DETAIL ===== */
 .ex-detail { padding: 0; }
@@ -449,27 +424,21 @@ input { font: inherit; }
 
 /* ===== COMO USAR ===== */
 .info-card {
-  background: var(--bg-card); border-radius: 12px;
-  border: 1px solid var(--border); margin-bottom: 10px;
-  overflow: hidden;
+  border-left: 3px solid var(--accent);
+  margin-bottom: 16px; padding-left: 14px;
 }
-.info-card-header {
-  padding: 14px; display: flex; align-items: center; gap: 12px;
-  background: var(--bg-overlay);
-}
-.info-icon { font-size: 1.5rem; }
-.info-card-title { font-size: 0.92rem; font-weight: 700; }
+.info-card-header { padding: 0 0 6px; }
+.info-card-title { font-size: 0.92rem; font-weight: 700; color: var(--text); }
 .info-card-body {
-  padding: 14px; font-size: 0.85rem; line-height: 1.6; color: var(--text-sec);
+  font-size: 0.85rem; line-height: 1.6; color: var(--text-sec);
 }
 
 /* Theme toggle */
 .theme-btn {
   margin-left: auto;
-  background: var(--bg-chip); border-radius: 50%;
-  width: 36px; height: 36px;
+  width: 32px; height: 32px;
   display: flex; align-items: center; justify-content: center;
-  flex-shrink: 0;
+  color: var(--text-muted); flex-shrink: 0;
 }
 .theme-btn svg { width: 18px; height: 18px; }
 
@@ -485,9 +454,8 @@ input { font: inherit; }
 .mt-16 { margin-top: 16px; }
 .visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0,0,0,0); }
 
-@media (min-width: 480px) {
-  .section-grid { grid-template-columns: repeat(4, 1fr); }
-}
+/* search input rounded */
+.search-input { border-radius: 8px; }
 </style>
 </head>
 <body>
@@ -500,10 +468,6 @@ input { font: inherit; }
     <button class="nav-item" data-route="buscar" aria-label="Buscar">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
       Buscar
-    </button>
-    <button class="nav-item" data-route="favoritos" aria-label="Favoritos">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
-      Favoritos
     </button>
     <button class="nav-item" data-route="aulas" aria-label="Aulas">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
@@ -604,19 +568,14 @@ function nivelBadge(nivel) {
 function renderExCard(ex, clickRoute) {
   const div = document.createElement('div');
   div.className = 'ex-card';
+  const meta = [ex.jogadores, ex.tempo].filter(Boolean).join(' · ');
   div.innerHTML = `
     <div class="ex-card-header">
-      <div>
-        <div class="ex-code">${ex.codigo}</div>
-        <div class="ex-nome">${ex.nome}</div>
-      </div>
+      <div class="ex-code">${ex.codigo}</div>
       ${nivelBadge(ex.nivel)}
     </div>
-    <div class="ex-chips">
-      ${ex.jogadores ? `<span class="ex-chip">👥 ${ex.jogadores}</span>` : ''}
-      ${ex.tempo ? `<span class="ex-chip">⏱ ${ex.tempo}</span>` : ''}
-      ${ex.material ? `<span class="ex-chip">🔧 ${ex.material}</span>` : ''}
-    </div>`;
+    <div class="ex-nome">${ex.nome}</div>
+    ${meta ? `<div class="ex-meta">${meta}</div>` : ''}`;
   div.addEventListener('click', () => go(clickRoute || `ex-${ex.numero}`));
   return div;
 }
@@ -653,7 +612,7 @@ function renderHome() {
   // Top bar
   const bar = document.createElement('div');
   bar.className = 'top-bar';
-  bar.innerHTML = `<span class="logo-title">🏐 Código da Areia</span>`;
+  bar.innerHTML = `<span class="logo-title">CÓDIGO DA AREIA</span>`;
   const themeBtn = document.createElement('button');
   themeBtn.className = 'theme-btn'; themeBtn.title = 'Alternar tema';
   themeBtn.innerHTML = themeIcon();
@@ -712,9 +671,11 @@ function renderSectionGrid(grid) {
     const card = document.createElement('div');
     card.className = 'section-card';
     card.innerHTML = `
-      <div class="sec-icon">${sec.icon}</div>
-      <div class="sec-nome">${sec.nome}</div>
-      <div class="sec-count">${exs.length} ex.</div>`;
+      <div class="sec-left">
+        <span class="sec-num">${String(sec.n).padStart(2,'0')}</span>
+        <span class="sec-nome">${sec.nome}</span>
+      </div>
+      <span class="sec-count">${exs.length} ex.</span>`;
     card.addEventListener('click', () => go(`secao-${sec.n}`));
     grid.appendChild(card);
   }
@@ -1101,7 +1062,7 @@ function renderAulas() {
           if (!sec) continue;
           const lnk = document.createElement('div');
           lnk.className = 'model-link';
-          lnk.textContent = `${sec.icon} ${sec.nome}`;
+          lnk.textContent = sec.nome;
           lnk.addEventListener('click', () => go(`secao-${n}`));
           links.appendChild(lnk);
         }
@@ -1207,7 +1168,7 @@ Exercícios de salto e mergulho exigem areia fofa e sem objetos no chão. Em cas
     card.className = 'info-card';
     const ch = document.createElement('div');
     ch.className = 'info-card-header';
-    ch.innerHTML = `<span class="info-icon">${c.icon}</span><span class="info-card-title">${c.title}</span>`;
+    ch.innerHTML = `<span class="info-card-title">${c.title}</span>`;
     const cb = document.createElement('div');
     cb.className = 'info-card-body';
     cb.innerHTML = c.body;
@@ -1230,7 +1191,7 @@ function escHtml(s) {
 }
 
 function updateNav(route) {
-  const map = { home: 'home', buscar: 'buscar', favoritos: 'favoritos', aulas: 'aulas', 'como-usar': 'como-usar' };
+  const map = { home: 'home', buscar: 'buscar', aulas: 'aulas', 'como-usar': 'como-usar' };
   const active = map[route.name] || route.name;
   document.querySelectorAll('.nav-item').forEach(b => {
     b.classList.toggle('active', b.dataset.route === active);
