@@ -3,6 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="theme-color" content="#0E4B75">
 <title>Código da Areia - Vôlei de Praia</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -859,6 +861,117 @@ body { padding-bottom: calc(64px + env(safe-area-inset-bottom, 0px)); }
 }
 .diag-hero figcaption svg { width: 15px; height: 15px; color: var(--ceu); }
 .ex-hero .foto + .diag-hero { margin-top: 10px; }
+
+/* ===== CABEÇALHOS v2 ===== */
+:root { --hdr-h: calc(58px + env(safe-area-inset-top, 0px)); }
+.hdr-brand, .hdr-tab { --hdr-bg: var(--bg-bar); --hdr-ink: #fff; }
+.hdr-detail { --hdr-bg: var(--g1, var(--bg-bar)); --hdr-ink: var(--g-ink, #fff); }
+
+.hdr-bar {
+  position: sticky; top: 0; z-index: 100;
+  height: var(--hdr-h);
+  padding: env(safe-area-inset-top, 0px) max(12px, env(safe-area-inset-right, 0px)) 0 max(12px, env(safe-area-inset-left, 0px));
+  display: flex; align-items: center; gap: 8px;
+  background: var(--hdr-bg); color: var(--hdr-ink);
+  transition: box-shadow 0.2s;
+}
+.hdr-bar.shadow { box-shadow: 0 6px 18px rgba(15,23,42,0.18); }
+.hdr-side { display: flex; align-items: center; gap: 6px; min-width: 84px; }
+.hdr-right { justify-content: flex-end; }
+.hdr-left.hdr-logo { flex: 1; min-width: 0; gap: 10px; padding-left: 4px; }
+.hdr-ctitle {
+  flex: 1; min-width: 0; text-align: center;
+  font-size: 0.95rem; font-weight: 700;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  opacity: 0; transform: translateY(6px);
+  transition: opacity 0.2s, transform 0.2s;
+}
+.hdr-bar.compact .hdr-ctitle { opacity: 1; transform: none; }
+
+.hdr-btn {
+  width: 40px; height: 40px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  color: inherit; background: rgba(255,255,255,0.14);
+  transition: background 0.15s, transform 0.12s;
+}
+.hdr-btn:hover { background: rgba(255,255,255,0.24); }
+.hdr-btn:active { transform: scale(0.92); }
+.hdr-btn svg { width: 20px; height: 20px; }
+.g-prep .hdr-btn { background: rgba(15,23,42,0.09); }
+.g-prep .hdr-btn:hover { background: rgba(15,23,42,0.16); }
+.hdr-btn.active svg { fill: var(--coral); stroke: var(--coral); }
+.g-solo .hdr-btn.active svg { fill: #fff; stroke: #fff; }
+.hdr-back svg { width: 22px; height: 22px; margin-left: -2px; }
+.theme-btn { margin-left: 0; color: inherit; }
+
+.logo-mark {
+  width: 38px; height: 38px; border-radius: 12px; flex-shrink: 0;
+  background: var(--laranja); color: var(--texto);
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: inset 0 -2px 0 rgba(15,23,42,0.15);
+}
+.logo-mark svg { width: 24px; height: 24px; }
+.wordmark { display: flex; flex-direction: column; line-height: 1; min-width: 0; }
+.wordmark b { font-family: 'Bebas Neue', sans-serif; font-weight: 400; font-size: 1.45rem; letter-spacing: 0.05em; white-space: nowrap; }
+.wordmark small { font-size: 11px; font-weight: 500; opacity: 0.75; margin-top: 2px; letter-spacing: 0.02em; }
+
+.hdr-large {
+  position: relative; overflow: hidden;
+  background: var(--hdr-bg); color: var(--hdr-ink);
+  padding: 2px max(16px, env(safe-area-inset-left, 0px)) 22px;
+  border-radius: 0 0 26px 26px;
+  margin-bottom: 4px;
+}
+.hdr-large .quadra-bg { opacity: 0.1; }
+.hdr-brand.hdr-large::after {
+  content: ''; position: absolute; right: -50px; bottom: -70px; width: 200px; height: 200px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(255,159,28,0.5), rgba(255,159,28,0) 70%);
+  pointer-events: none;
+}
+.hdr-large-in { position: relative; z-index: 1; }
+.hdr-big {
+  font-family: 'Bebas Neue', 'Inter', sans-serif; font-weight: 400;
+  font-size: 2.5rem; line-height: 0.95; letter-spacing: 0.01em;
+}
+.hdr-brand .hdr-big { font-size: 2.6rem; max-width: 15ch; margin-top: 14px; }
+.hdr-sub { font-size: 0.86rem; line-height: 1.45; opacity: 0.82; margin: 8px 0 0; max-width: 40ch; }
+.hdr-brand .hdr-sub { margin-bottom: 16px; }
+.hdr-foto { margin: 10px 0 0; border-radius: 16px; }
+.hdr-slot:not(:empty) { margin-top: 14px; }
+.hdr-slot .search-wrap { margin: 0; }
+.hdr-slot .search-input { border: none; height: 48px; border-radius: 14px; box-shadow: 0 4px 14px rgba(0,0,0,0.12); }
+
+/* Abas da tela Aulas dentro do cabeçalho */
+.hdr-slot .tabs {
+  position: static; margin: 0; padding: 4px; border: none; border-radius: 14px;
+  background: rgba(255,255,255,0.14); display: flex;
+}
+.hdr-slot .tab-btn {
+  border: none; margin: 0; border-radius: 10px; padding: 10px 8px;
+  color: rgba(255,255,255,0.8);
+}
+.hdr-slot .tab-btn.active { background: #fff; color: var(--azul); }
+
+/* Seção: faixa dentro do cabeçalho */
+.hdr-detail .secao-band-row { padding-top: 6px; }
+.hdr-detail .progresso { padding: 2px 0 0; }
+.hdr-detail .progresso-txt { color: inherit; opacity: 0.85; font-weight: 500; }
+.hdr-detail .progresso-barra { background: rgba(255,255,255,0.25); height: 5px; margin-top: 8px; }
+.g-prep .progresso-barra { background: rgba(15,23,42,0.12); }
+.hdr-detail .progresso-barra i { background: #fff; }
+.g-prep .progresso-barra i { background: var(--texto); }
+.hdr-detail.hdr-large { padding-bottom: 18px; }
+
+.seg { top: var(--hdr-h); }
+.secao-intro { margin-top: 14px; }
+
+.toast {
+  position: fixed; left: 50%; bottom: calc(130px + env(safe-area-inset-bottom, 0px));
+  transform: translate(-50%, 10px); opacity: 0; z-index: 300;
+  background: var(--texto); color: #fff; padding: 10px 16px; border-radius: 12px;
+  font-size: 0.85rem; font-weight: 600; transition: opacity 0.2s, transform 0.2s;
+}
+.toast.show { opacity: 1; transform: translate(-50%, 0); }
 </style>
 </head>
 <body>
@@ -994,6 +1107,7 @@ const ICON = {
   box: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>',
   target: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>',
   chevR: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>',
+  share: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>',
   chevL: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>',
   heart: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>',
   calendar: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>',
@@ -1145,38 +1259,108 @@ function nivelAjudaEl() {
   return d;
 }
 
-function topBar(title, opts = {}) {
-  const bar = document.createElement('div');
-  bar.className = 'top-bar';
-  if (opts.back) {
-    const b = document.createElement('button');
-    b.className = 'back-btn'; b.setAttribute('aria-label', 'Voltar');
-    b.innerHTML = ICON.chevL;
-    b.addEventListener('click', opts.back);
-    bar.appendChild(b);
-  }
-  if (opts.logo) {
-    bar.insertAdjacentHTML('beforeend', `<span class="logo-title">${title}</span>`);
-  } else {
-    bar.insertAdjacentHTML('beforeend', `<h1>${title}</h1>`);
-  }
-  if (opts.right) bar.appendChild(opts.right);
-  else if (opts.theme) {
-    const t = document.createElement('button');
-    t.className = 'theme-btn'; t.title = 'Alternar tema'; t.setAttribute('aria-label', 'Alternar tema claro/escuro');
-    t.innerHTML = themeIcon();
-    t.addEventListener('click', toggleTheme);
-    bar.appendChild(t);
-  }
-  return bar;
+/* ===== CABEÇALHOS =====
+   3 tipos:
+   - 'brand'  → Início: marca + bloco grande com chamada
+   - 'tab'    → abas principais: título grande que vira título pequeno ao rolar
+   - 'detail' → Seção/Exercício: voltar + ações, na cor do grupo
+*/
+function hdrBtn(icon, label, onClick, cls = '') {
+  const b = document.createElement('button');
+  b.className = 'hdr-btn ' + cls;
+  b.innerHTML = icon;
+  b.setAttribute('aria-label', label); b.title = label;
+  b.addEventListener('click', onClick);
+  return b;
 }
+function themeBtnEl() {
+  return hdrBtn(themeIcon(), 'Alternar tema claro/escuro', toggleTheme, 'theme-btn');
+}
+function shareBtnEl(titulo, texto) {
+  return hdrBtn(ICON.share, 'Compartilhar', async () => {
+    const url = location.href;
+    try {
+      if (navigator.share) { await navigator.share({ title: titulo, text: texto, url }); return; }
+      await navigator.clipboard.writeText(url);
+      toast('Link copiado');
+    } catch (e) { /* compartilhamento cancelado */ }
+  });
+}
+function toast(msg) {
+  const t = document.createElement('div');
+  t.className = 'toast'; t.textContent = msg;
+  document.body.appendChild(t);
+  setTimeout(() => t.classList.add('show'), 10);
+  setTimeout(() => { t.classList.remove('show'); setTimeout(() => t.remove(), 250); }, 1800);
+}
+const LOGO_MARK = `<span class="logo-mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M11.1 7.1a16.55 16.55 0 0 1 10.9 4"/><path d="M12 12a12.6 12.6 0 0 1-8.7 5"/><path d="M16.8 13.6a16.55 16.55 0 0 1-9 7.5"/><path d="M20.7 17a12.8 12.8 0 0 0-8.7-5 13.3 13.3 0 0 1 0-10"/><path d="M6.3 3.8a16.55 16.55 0 0 0 1.9 11.5"/></svg></span>`;
+
+function appHeader(o) {
+  // o: { variant, title, back, actions: [el], large: html, cls, color, watch: () => element }
+  const frag = document.createDocumentFragment();
+  const bar = document.createElement('header');
+  bar.className = `hdr-bar hdr-${o.variant} ${o.cls || ''}`;
+
+  const left = document.createElement('div');
+  left.className = 'hdr-side hdr-left';
+  if (o.variant === 'brand') {
+    left.innerHTML = `${LOGO_MARK}<span class="wordmark"><b>CÓDIGO DA AREIA</b><small>Vôlei de praia</small></span>`;
+    left.classList.add('hdr-logo');
+  } else if (o.back) {
+    left.appendChild(hdrBtn(ICON.chevL, 'Voltar', o.back, 'hdr-back'));
+  }
+  bar.appendChild(left);
+
+  if (o.variant !== 'brand') {
+    bar.insertAdjacentHTML('beforeend', `<div class="hdr-ctitle">${o.title || ''}</div>`);
+  }
+  const right = document.createElement('div');
+  right.className = 'hdr-side hdr-right';
+  (o.actions || []).forEach(a => right.appendChild(a));
+  bar.appendChild(right);
+  frag.appendChild(bar);
+
+  let large = null;
+  if (o.large) {
+    large = document.createElement('div');
+    large.className = `hdr-large hdr-${o.variant} ${o.cls || ''}`;
+    large.innerHTML = QUADRA_SVG + `<div class="hdr-large-in">${o.large}</div>`;
+    frag.appendChild(large);
+  }
+
+  setMetaColor(o.color);
+  // Depois que a tela entra no DOM, liga o comportamento de rolagem
+  requestAnimationFrame(() => {
+    const target = (o.watch && o.watch()) || large;
+    const upd = () => {
+      bar.classList.toggle('shadow', window.scrollY > 2);
+      if (target) bar.classList.toggle('compact', target.getBoundingClientRect().bottom < bar.offsetHeight + 8);
+    };
+    window.onscroll = upd; upd();
+  });
+  return { frag, bar, large };
+}
+function setMetaColor(c) {
+  const m = document.querySelector('meta[name="theme-color"]');
+  if (m) m.setAttribute('content', c || (isDark() ? '#0A3A5C' : '#0E4B75'));
+}
+const GRUPO_HEX = { 'g-prep': '#FF9F1C', 'g-fund': '#0E4B75', 'g-jogo': '#0284C7', 'g-solo': '#FF4A3F' };
 
 /* ===== VIEWS ===== */
 
 /* ---- HOME ---- */
 function renderHome() {
   const frag = document.createDocumentFragment();
-  frag.appendChild(topBar('CÓDIGO DA AREIA - VÔLEI DE PRAIA', { logo: true, theme: true }));
+  const H = appHeader({
+    variant: 'brand',
+    actions: [themeBtnEl()],
+    large: `${fotoSlot('home', 'Foto de capa', 'hdr-foto')}
+      <h2 class="hdr-big">${EX.length} exercícios para treinar na areia</h2>
+      <p class="hdr-sub">Do aquecimento ao jogo, com montagem, passo a passo, erros comuns e variações.</p>
+      <button class="banner-cta" data-go="secao-1">Começar pelo aquecimento ${ICON.chevR}</button>`,
+  });
+  H.large.querySelectorAll('[data-go]').forEach(b => b.addEventListener('click', () => go(b.dataset.go)));
+  frag.appendChild(H.frag);
 
   const page = document.createElement('div');
   page.className = 'page';
@@ -1184,20 +1368,11 @@ function renderHome() {
   const hero = document.createElement('div');
   hero.className = 'hero';
   hero.innerHTML = `
-    ${fotoSlot('home', 'Foto de capa') || `<div class="banner">
-      ${QUADRA_SVG}
-      <div class="banner-txt">
-        <h2 class="banner-title">${EX.length} exercícios para treinar na areia</h2>
-        <p>Do aquecimento ao jogo, com montagem, passo a passo, erros comuns e variações.</p>
-        <button class="banner-cta" data-go="secao-1">Começar pelo aquecimento ${ICON.chevR}</button>
-      </div>
-    </div>`}
     <ol class="passos">
       <li><b>1</b>Escolha o fundamento que quer treinar</li>
       <li><b>2</b>Filtre pelo nível do aluno ou da dupla</li>
       <li><b>3</b>Siga o passo a passo e avance ao bater a meta</li>
     </ol>`;
-  hero.querySelectorAll('[data-go]').forEach(b => b.addEventListener('click', () => go(b.dataset.go)));
   page.appendChild(hero);
 
   // Busca
@@ -1295,23 +1470,25 @@ function renderSecao(n) {
   const frag = document.createDocumentFragment();
   const sec = SECOES.find(s => s.n === n);
   const nome = sec ? sec.nome : `Seção ${n}`;
-  frag.appendChild(topBar(nome, { back: () => (history.length > 1 ? history.back() : go('home')) }));
+  const g = GRUPO_COR[n];
+  frag.appendChild(appHeader({
+    variant: 'detail', cls: g, color: GRUPO_HEX[g], title: nome,
+    back: () => go('home'),
+    actions: [shareBtnEl(nome, `Exercícios de ${nome} no Código da Areia`)],
+    large: `<div class="secao-band-row">
+        <span class="secao-band-ico">${secIcon(n)}</span>
+        <div>
+          <h2 class="secao-band-nome">${nome}</h2>
+          <p class="secao-band-resumo">${resumoNiveis(n)}</p>
+        </div>
+      </div>`,
+  }).frag);
 
   const page = document.createElement('div');
   page.className = 'page';
   page.insertAdjacentHTML('beforeend', `
     <div class="secao-intro">
       ${fotoSlot('secao-' + n, 'Foto da seção ' + nome, 'r-wide')}
-      <div class="secao-band ${GRUPO_COR[n]}">
-        ${QUADRA_SVG}
-        <div class="secao-band-row">
-          <span class="secao-band-ico">${secIcon(n)}</span>
-          <div>
-            <h2 class="secao-band-nome">${nome}</h2>
-            <p class="secao-band-resumo">${resumoNiveis(n)}</p>
-          </div>
-        </div>
-      </div>
       <p class="secao-desc">${SECAO_DESC[n] || ''}</p>
       <p class="dica">Os exercícios estão em ordem de dificuldade. Comece pelo primeiro e avance quando bater a meta indicada.</p>
     </div>`);
@@ -1360,7 +1537,7 @@ function renderEx(num) {
 
   // Favoritar na barra
   const favBtn = document.createElement('button');
-  favBtn.className = 'bar-btn' + (favorites.has(num) ? ' active' : '');
+  favBtn.className = 'hdr-btn' + (favorites.has(num) ? ' active' : '');
   favBtn.innerHTML = ICON.heart;
   const favLabel = () => favBtn.setAttribute('aria-label', favorites.has(num) ? 'Remover dos salvos' : 'Salvar exercício');
   favLabel();
@@ -1368,17 +1545,24 @@ function renderEx(num) {
     if (favorites.has(num)) favorites.delete(num); else favorites.add(num);
     saveFavs(); favBtn.classList.toggle('active'); favLabel(); updateNavBadge();
   });
-  frag.appendChild(topBar(secNome, { back: () => go(`secao-${ex.secao}`), right: favBtn }));
+  const g = GRUPO_COR[ex.secao];
+  let tituloEl = null;
+  frag.appendChild(appHeader({
+    variant: 'detail', cls: g, color: GRUPO_HEX[g], title: ex.nome,
+    back: () => go(`secao-${ex.secao}`),
+    actions: [shareBtnEl(ex.nome, `${ex.nome} (${ex.codigo}) no Código da Areia`), favBtn],
+    large: `<div class="progresso">
+        <div class="progresso-txt"><span>Exercício ${idx + 1} de ${secExs.length} · ${secNome}</span><span>${ex.codigo}</span></div>
+        <div class="progresso-barra"><i style="width:${(idx + 1) / secExs.length * 100}%"></i></div>
+      </div>`,
+    watch: () => tituloEl,
+  }).frag);
 
   const page = document.createElement('div');
   page.className = 'page ex-page';
 
   const material = cleanMaterial(ex.material);
   page.insertAdjacentHTML('beforeend', `
-    <div class="progresso">
-      <div class="progresso-txt"><span>Exercício ${idx + 1} de ${secExs.length} em ${secNome}</span><span>${ex.codigo}</span></div>
-      <div class="progresso-barra"><i style="width:${(idx + 1) / secExs.length * 100}%"></i></div>
-    </div>
     <div class="ex-hero">${fotoSlot('ex-' + num, 'Foto do exercício')}
       <figure class="diag-hero"><img src="/gem/diagrams/${String(num).padStart(3, '0')}.png" alt="Diagrama da quadra: ${escHtml(ex.nome)}"><figcaption>${ICON.map} Montagem na quadra</figcaption></figure>
     </div>
@@ -1442,6 +1626,7 @@ function renderEx(num) {
 
   }
   pintarAba();
+  tituloEl = page.querySelector('.ex-titulo');
   const dImg = page.querySelector('.diag-hero img');
   dImg.onerror = function () { this.closest('.diag-hero').remove(); };
   frag.appendChild(page);
@@ -1466,14 +1651,11 @@ function renderEx(num) {
 let searchTimeout = null;
 function renderBuscar() {
   const frag = document.createDocumentFragment();
-  const bar = document.createElement('div');
-  bar.className = 'top-bar';
-  bar.innerHTML = `<h1>Buscar</h1>`;
-  const themeBtn = document.createElement('button');
-  themeBtn.className = 'theme-btn'; themeBtn.innerHTML = themeIcon();
-  themeBtn.addEventListener('click', toggleTheme);
-  bar.appendChild(themeBtn);
-  frag.appendChild(bar);
+  const H = appHeader({
+    variant: 'tab', title: 'Buscar', actions: [themeBtnEl()],
+    large: `<h2 class="hdr-big">Buscar</h2><p class="hdr-sub">${EX.length} exercícios por nome, objetivo, material ou código</p><div class="hdr-slot"></div>`,
+  });
+  frag.appendChild(H.frag);
 
   const page = document.createElement('div');
   page.className = 'page';
@@ -1483,11 +1665,12 @@ function renderBuscar() {
   sw.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>`;
   const inp = document.createElement('input');
   inp.type = 'text'; inp.className = 'search-input';
-  inp.placeholder = 'Nome, objetivo, material...';
+  inp.placeholder = 'Ex.: saque, manchete, 4 cones...';
+  inp.type = 'search'; inp.setAttribute('aria-label', 'Buscar exercício');
   const saved = lsGet('searchq', '');
   if (saved) inp.value = saved;
   sw.appendChild(inp);
-  page.appendChild(sw);
+  H.large.querySelector('.hdr-slot').appendChild(sw);
 
   // Level chips
   const results = document.createElement('div');
@@ -1556,10 +1739,11 @@ function doSearch(q, container) {
 /* ---- FAVORITOS ---- */
 function renderFavoritos() {
   const frag = document.createDocumentFragment();
-  const bar = document.createElement('div');
-  bar.className = 'top-bar';
-  bar.innerHTML = `<h1>Exercícios salvos</h1>`;
-  frag.appendChild(bar);
+  const nS = favorites.size;
+  frag.appendChild(appHeader({
+    variant: 'tab', title: 'Salvos', actions: [themeBtnEl()],
+    large: `<h2 class="hdr-big">Salvos</h2><p class="hdr-sub">${nS ? `${nS} exercício${nS === 1 ? '' : 's'} guardado${nS === 1 ? '' : 's'} para o seu treino` : 'Guarde aqui os exercícios que você mais usa'}</p>`,
+  }).frag);
 
   const page = document.createElement('div');
   page.className = 'page';
@@ -1619,10 +1803,11 @@ const PLANO_SEMANAL = {
 
 function renderAulas() {
   const frag = document.createDocumentFragment();
-  const bar = document.createElement('div');
-  bar.className = 'top-bar';
-  bar.innerHTML = `<h1>Modelos de Aulas</h1>`;
-  frag.appendChild(bar);
+  const H = appHeader({
+    variant: 'tab', title: 'Aulas', actions: [themeBtnEl()],
+    large: `<h2 class="hdr-big">Aulas</h2><p class="hdr-sub">Monte uma aula de 60 minutos ou siga um plano semanal pronto</p><div class="hdr-slot"></div>`,
+  });
+  frag.appendChild(H.frag);
 
   const page = document.createElement('div');
   page.className = 'page';
@@ -1635,7 +1820,7 @@ function renderAulas() {
   tabs.innerHTML = `
     <button class="tab-btn active" data-t="modelo">Modelo 60min</button>
     <button class="tab-btn" data-t="semanal">Plano Semanal</button>`;
-  page.appendChild(tabs);
+  H.large.querySelector('.hdr-slot').appendChild(tabs);
 
   const body = document.createElement('div');
   body.className = 'tab-content';
@@ -1724,10 +1909,10 @@ function renderAulas() {
 /* ---- COMO USAR ---- */
 function renderComoUsar() {
   const frag = document.createDocumentFragment();
-  const bar = document.createElement('div');
-  bar.className = 'top-bar';
-  bar.innerHTML = `<h1>Como Usar</h1>`;
-  frag.appendChild(bar);
+  frag.appendChild(appHeader({
+    variant: 'tab', title: 'Como usar', actions: [themeBtnEl()],
+    large: `<h2 class="hdr-big">Como usar</h2><p class="hdr-sub">Estrutura da aula, segurança e como ler os códigos</p>`,
+  }).frag);
 
   const page = document.createElement('div');
   page.className = 'page';
