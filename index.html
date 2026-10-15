@@ -503,6 +503,277 @@ input { font: inherit; }
 /* section list fade on filter change */
 .section-grid { animation: fadeIn 0.18s ease; }
 @keyframes fadeIn { from { opacity: 0.4; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+
+/* =====================================================
+   LAYOUT DE APP — v2 (fotos, guia, abas)
+   ===================================================== */
+body { padding-bottom: calc(64px + env(safe-area-inset-bottom, 0px)); }
+.bottom-nav { box-shadow: 0 -4px 16px rgba(15,23,42,0.05); }
+.nav-item { min-height: 60px; font-size: 10.5px; }
+.nav-item.active svg { stroke-width: 2.4; }
+.nav-badge {
+  position: absolute; top: 6px; left: 50%; margin-left: 6px;
+  min-width: 16px; height: 16px; padding: 0 4px; border-radius: 8px;
+  background: var(--cta); color: #fff; font-size: 10px; font-weight: 700;
+  display: flex; align-items: center; justify-content: center;
+}
+.nav-item { position: relative; }
+
+:focus-visible { outline: 2px solid var(--link); outline-offset: 2px; }
+
+/* ---------- Espaço de foto ---------- */
+.foto {
+  position: relative; overflow: hidden;
+  border-radius: 14px;
+  background: var(--bg-card);
+  aspect-ratio: 16 / 9;
+  margin: 0;
+}
+.foto img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.foto-vazia {
+  border: 1.5px dashed var(--border);
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px;
+  color: var(--text-muted);
+}
+.foto-vazia svg { width: 26px; height: 26px; opacity: 0.55; }
+.foto-vazia figcaption { font-size: 11.5px; font-weight: 500; opacity: 0.85; text-align: center; padding: 0 8px; }
+.foto.r-4x3 { aspect-ratio: 4 / 3; }
+.foto.r-1x1 { aspect-ratio: 1 / 1; }
+.foto.r-wide { aspect-ratio: 21 / 9; }
+.foto.mini { border-radius: 10px; }
+.foto.mini svg { width: 20px; height: 20px; }
+.foto.mini figcaption { display: none; }
+
+/* ---------- Home ---------- */
+.hero { margin-top: 16px; }
+.hero-title {
+  font-family: 'Bebas Neue', 'Inter', sans-serif;
+  font-size: 2.1rem; line-height: 1; letter-spacing: 0.01em;
+  color: var(--accent); margin: 16px 0 6px;
+}
+.hero-text { font-size: 0.92rem; line-height: 1.5; color: var(--text-sec); max-width: 46ch; }
+
+.passos {
+  list-style: none; margin: 16px 0 4px;
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px;
+}
+.passos li {
+  padding: 0 4px 0 0; font-size: 12px; line-height: 1.35; color: var(--text-sec);
+}
+.passos b {
+  display: flex; align-items: center; justify-content: center;
+  width: 22px; height: 22px; border-radius: 50%;
+  background: var(--highlight); color: var(--texto);
+  font-size: 12px; margin-bottom: 6px;
+}
+
+.atalhos { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin: 16px 0 4px; }
+.atalho {
+  background: var(--bg-card); border: 1px solid var(--border); border-radius: 14px;
+  padding: 12px 10px; text-align: left; color: var(--text);
+  display: flex; flex-direction: column; gap: 8px; min-height: 84px;
+  transition: transform 0.12s, border-color 0.15s;
+}
+.atalho:active { transform: scale(0.97); }
+.atalho:hover { border-color: var(--link); }
+.atalho .at-ico {
+  width: 32px; height: 32px; border-radius: 10px;
+  display: flex; align-items: center; justify-content: center; color: #fff;
+}
+.atalho .at-ico svg { width: 18px; height: 18px; }
+.atalho span.at-label { font-size: 12.5px; font-weight: 600; line-height: 1.25; }
+.at-azul { background: var(--azul); }
+.at-ceu { background: var(--ceu); }
+.at-coral { background: var(--coral); }
+
+.bloco-titulo {
+  font-size: 1rem; font-weight: 700; color: var(--text);
+  margin: 24px 0 4px;
+}
+.bloco-sub { font-size: 0.82rem; color: var(--text-muted); margin-bottom: 10px; }
+
+.nivel-ajuda {
+  font-size: 0.8rem; color: var(--text-sec); line-height: 1.45;
+  background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px;
+  padding: 8px 12px; margin: -4px 0 4px;
+  display: flex; gap: 8px; align-items: flex-start;
+}
+.nivel-ajuda .fs-dot { width: 8px; height: 8px; border-radius: 50%; margin-top: 5px; flex-shrink: 0; }
+
+.sec-tiles { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+@media (min-width: 520px) { .sec-tiles { grid-template-columns: repeat(3, 1fr); } }
+.sec-tile {
+  background: var(--bg-card); border: 1px solid var(--border); border-radius: 14px;
+  overflow: hidden; text-align: left; color: var(--text);
+  display: flex; flex-direction: column;
+  transition: transform 0.12s, border-color 0.15s;
+}
+.sec-tile:active { transform: scale(0.97); }
+.sec-tile:hover { border-color: var(--link); }
+.sec-tile .foto { border-radius: 0; border-width: 0 0 1.5px 0; }
+.sec-tile-body { padding: 10px 12px 12px; display: flex; flex-direction: column; gap: 6px; }
+.sec-tile-nome { font-size: 0.92rem; font-weight: 700; line-height: 1.2; }
+.sec-tile-count { font-size: 12px; color: var(--text-muted); }
+.sec-tile.vazio { opacity: 0.45; }
+
+.nivel-barra { display: flex; height: 5px; border-radius: 3px; overflow: hidden; background: var(--bg-chip); gap: 2px; }
+.nivel-barra i { display: block; height: 100%; }
+.nb-ini { background: var(--c-ini); }
+.nb-int { background: var(--c-int); }
+.nb-ava { background: var(--c-ava); }
+
+/* ---------- Seção ---------- */
+.secao-intro { margin: 16px 0 8px; }
+.secao-intro .foto { margin-bottom: 14px; }
+.secao-desc { font-size: 0.92rem; line-height: 1.5; color: var(--text); }
+.dica {
+  margin-top: 10px; font-size: 0.8rem; line-height: 1.45; color: var(--text-sec);
+  border-left: 3px solid var(--highlight); padding: 2px 0 2px 10px;
+}
+.grupo-nivel {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 0.82rem; font-weight: 700; color: var(--text);
+  margin: 20px 0 8px;
+}
+.grupo-nivel .fs-dot { width: 10px; height: 10px; border-radius: 50%; }
+.grupo-nivel small { font-weight: 500; color: var(--text-muted); font-size: 0.78rem; }
+
+.ex-list { display: flex; flex-direction: column; gap: 8px; margin-top: 8px; }
+.ex-row {
+  display: flex; gap: 12px; align-items: center;
+  background: var(--bg-card); border: 1px solid var(--border); border-radius: 14px;
+  padding: 8px; padding-right: 12px; cursor: pointer; text-align: left; width: 100%;
+  color: var(--text);
+  transition: transform 0.12s, border-color 0.15s;
+}
+.ex-row:active { transform: scale(0.985); }
+.ex-row:hover { border-color: var(--link); }
+.ex-row .foto { width: 68px; flex-shrink: 0; }
+.ex-row-body { flex: 1; min-width: 0; }
+.ex-row-nome { font-size: 0.9rem; font-weight: 600; line-height: 1.3; }
+.ex-row-meta { display: flex; flex-wrap: wrap; gap: 4px 10px; margin-top: 5px; font-size: 12px; color: var(--text-muted); }
+.ex-row-meta span { display: inline-flex; align-items: center; gap: 4px; }
+.ex-row-meta svg { width: 13px; height: 13px; }
+.ex-row .chev { width: 18px; height: 18px; color: var(--text-muted); flex-shrink: 0; }
+.ex-ordem {
+  font-size: 11px; font-weight: 700; color: var(--accent);
+}
+.ex-row.fav .ex-row-nome::after {
+  content: ''; display: inline-block; width: 7px; height: 7px; border-radius: 50%;
+  background: var(--cta); margin-left: 6px; vertical-align: middle;
+}
+
+.pill {
+  display: inline-flex; align-items: center; height: 22px; padding: 0 9px;
+  border-radius: 11px; font-size: 11.5px; font-weight: 600; color: #fff;
+}
+.pill-ini { background: var(--c-ini); }
+.pill-int { background: var(--c-int); }
+.pill-ava { background: var(--c-ava); }
+
+/* ---------- Exercício ---------- */
+.top-bar .bar-btn {
+  width: 36px; height: 36px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center; color: #fff; flex-shrink: 0;
+}
+.top-bar .bar-btn svg { width: 21px; height: 21px; }
+.top-bar .bar-btn.active svg { fill: var(--coral); stroke: var(--coral); }
+
+.progresso { padding: 12px 0 0; }
+.progresso-txt { font-size: 12px; color: var(--text-muted); display: flex; justify-content: space-between; }
+.progresso-barra { height: 4px; border-radius: 2px; background: var(--bg-chip); margin-top: 6px; overflow: hidden; }
+.progresso-barra i { display: block; height: 100%; background: var(--highlight); border-radius: 2px; }
+
+.ex-hero { margin-top: 12px; }
+.ex-titulo {
+  font-family: 'Bebas Neue', 'Inter', sans-serif;
+  font-size: 1.9rem; line-height: 1.02; letter-spacing: 0.01em;
+  color: var(--text); margin: 14px 0 8px;
+}
+.ex-sub { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.ex-codigo { font-size: 12px; color: var(--text-muted); font-weight: 600; letter-spacing: 0.04em; }
+
+.info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 14px 0 4px; }
+.info-tile {
+  background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px;
+  padding: 10px 12px; display: flex; gap: 10px; align-items: flex-start;
+}
+.info-tile.full { grid-column: 1 / -1; }
+.info-tile svg { width: 18px; height: 18px; color: var(--ceu); flex-shrink: 0; margin-top: 1px; }
+.info-tile small { display: block; font-size: 11px; color: var(--text-muted); font-weight: 500; }
+.info-tile strong { display: block; font-size: 0.84rem; font-weight: 600; line-height: 1.35; margin-top: 1px; }
+
+.seg {
+  display: flex; background: var(--bg-chip); border-radius: 12px; padding: 4px;
+  margin: 18px 0 14px; position: sticky; top: 64px; z-index: 50;
+}
+.seg button {
+  flex: 1; height: 38px; border-radius: 9px;
+  font-size: 0.82rem; font-weight: 600; color: var(--text-sec);
+  transition: background 0.15s, color 0.15s;
+}
+.seg button.active { background: var(--bg-card); color: var(--accent); box-shadow: 0 1px 3px rgba(15,23,42,0.12); }
+
+.bloco { margin-bottom: 18px; }
+.bloco h3 {
+  font-size: 0.92rem; font-weight: 700; color: var(--text);
+  display: flex; align-items: center; gap: 8px; margin-bottom: 8px;
+}
+.bloco h3 svg { width: 18px; height: 18px; color: var(--accent); }
+.bloco p { font-size: 0.88rem; line-height: 1.6; color: var(--text-sec); }
+.caixa {
+  border-radius: 12px; padding: 12px 14px;
+  font-size: 0.88rem; line-height: 1.55;
+}
+.caixa-objetivo { background: rgba(2,132,199,0.08); color: var(--text); border: 1px solid rgba(2,132,199,0.2); }
+.caixa-meta { background: rgba(255,159,28,0.12); color: var(--text); border: 1px solid rgba(255,159,28,0.35); }
+.caixa-erro { background: rgba(255,74,63,0.08); color: var(--text); border: 1px solid rgba(255,74,63,0.25); }
+.caixa-facil { background: rgba(30,158,90,0.08); border: 1px solid rgba(30,158,90,0.25); color: var(--text); }
+.caixa-dificil { background: rgba(229,53,43,0.07); border: 1px solid rgba(229,53,43,0.22); color: var(--text); }
+.caixa strong { display: block; font-size: 12px; margin-bottom: 4px; }
+
+.fotos-passos { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.fotos-passos .foto { aspect-ratio: 3 / 4; border-radius: 12px; }
+.fotos-passos .foto svg { width: 20px; height: 20px; }
+
+.diagrama-box { margin: 0; padding: 0; }
+.diagrama-box img { border-radius: 12px; }
+.diag-fallback { padding: 14px; }
+
+.step-list { gap: 12px; }
+.step-num { width: 26px; height: 26px; font-size: 0.75rem; }
+.step-text { font-size: 0.88rem; line-height: 1.55; color: var(--text); padding-top: 3px; }
+.bullet-item { font-size: 0.88rem; line-height: 1.55; color: var(--text); }
+
+.acao-bar {
+  position: fixed; left: 0; right: 0;
+  bottom: calc(60px + env(safe-area-inset-bottom, 0px));
+  z-index: 150; pointer-events: none;
+}
+.acao-bar-inner {
+  max-width: 600px; margin: 0 auto;
+  padding: 10px max(16px, env(safe-area-inset-left, 0px));
+  display: flex; gap: 8px; pointer-events: auto;
+  background: linear-gradient(to top, var(--bg) 70%, transparent);
+}
+.acao-bar button {
+  height: 46px; border-radius: 12px; font-size: 0.86rem; font-weight: 700;
+  display: flex; align-items: center; justify-content: center; gap: 6px;
+}
+.acao-bar .btn-sec { flex: 0 0 auto; padding: 0 16px; background: var(--bg-card); color: var(--text); border: 1.5px solid var(--border); }
+.acao-bar .btn-pri { flex: 1; background: var(--coral); color: #fff; }
+.acao-bar button:disabled { opacity: 0.35; pointer-events: none; }
+.acao-bar svg { width: 16px; height: 16px; }
+.ex-page { padding-bottom: 80px; }
+
+/* Aulas: linha do tempo */
+.tempo-barra { display: flex; gap: 3px; height: 8px; margin: 4px 0 16px; border-radius: 4px; overflow: hidden; }
+.tempo-barra i { display: block; height: 100%; }
+.model-card .foto { border-radius: 0; border-width: 0 0 1.5px 0; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition: none !important; animation: none !important; }
+}
 </style>
 </head>
 <body>
@@ -519,6 +790,10 @@ input { font: inherit; }
     <button class="nav-item" data-route="aulas" aria-label="Aulas">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
       Aulas
+    </button>
+    <button class="nav-item" data-route="favoritos" aria-label="Salvos">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+      Salvos
     </button>
     <button class="nav-item" data-route="como-usar" aria-label="Como Usar">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
@@ -607,23 +882,106 @@ function themeIcon() {
     : `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>`;
 }
 
-function nivelBadge(nivel) {
-  return `<span class="nivel-badge nivel-${nivel}">${nivel}</span>`;
+/* ===== FOTOS =====
+   Os espaços de foto do app ficam em branco até você cadastrar a imagem aqui.
+   Chave → caminho da imagem (ex.: coloque o arquivo em /fotos/ e aponte para ele).
+   Chaves usadas:
+     'home'                 → capa da tela inicial
+     'secao-1' … 'secao-15' → capa de cada seção
+     'ex-1' … 'ex-240'      → foto principal do exercício (também vira a miniatura da lista)
+     'ex-1-inicio', 'ex-1-execucao', 'ex-1-final' → fotos da execução, passo a passo
+     'aulas'                → capa da tela de aulas
+   Exemplo: 'ex-1': '/fotos/ex-001.jpg',
+*/
+const FOTOS = {
+};
+
+const ICON = {
+  camera: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>',
+  clock: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>',
+  users: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>',
+  box: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>',
+  target: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>',
+  chevR: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>',
+  chevL: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>',
+  heart: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>',
+  calendar: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>',
+  user: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>',
+  list: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="9" y1="6" x2="20" y2="6"/><line x1="9" y1="12" x2="20" y2="12"/><line x1="9" y1="18" x2="20" y2="18"/><circle cx="4.5" cy="6" r="1"/><circle cx="4.5" cy="12" r="1"/><circle cx="4.5" cy="18" r="1"/></svg>',
+  tool: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>',
+  map: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="12" y1="3" x2="12" y2="21"/><line x1="3" y1="12" x2="21" y2="12"/></svg>',
+  image: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>',
+  alert: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>',
+  flag: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/></svg>',
+  layers: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>',
+};
+
+function fotoSlot(key, label, cls = '') {
+  const src = FOTOS[key];
+  if (src) return `<figure class="foto ${cls}"><img src="${src}" alt="${escHtml(label)}" loading="lazy"></figure>`;
+  return `<figure class="foto foto-vazia ${cls}" data-foto="${key}" aria-label="Espaço para foto: ${escHtml(label)}">${ICON.camera}<figcaption>${escHtml(label)}</figcaption></figure>`;
 }
 
-function renderExCard(ex, clickRoute) {
-  const div = document.createElement('div');
-  div.className = 'ex-card';
-  const meta = [ex.jogadores, ex.tempo].filter(Boolean).join(' · ');
-  div.innerHTML = `
-    <div class="ex-card-header">
-      <div class="ex-code">${ex.codigo}</div>
-      ${nivelBadge(ex.nivel)}
+/* Textos de apoio */
+const SECAO_DESC = {
+  1: 'Prepare pés, tornozelos e ombros para a areia antes de qualquer bola mais forte.',
+  2: 'Movimentação na areia: primeiro passo, mudança de direção e chegada equilibrada na bola.',
+  3: 'Do saque por baixo ao saque viagem, com foco em direção e consistência.',
+  4: 'Receber o saque com a manchete e entregar a bola alta e no lugar certo para o levantador.',
+  5: 'Levantar de manchete com controle de altura e distância da rede.',
+  6: 'Levantar de toque com mãos firmes, bola limpa e dentro da regra.',
+  7: 'Aproximação, salto e golpe: ataque forte, largada e bola de segurança.',
+  8: 'Tempo de salto, posição das mãos e leitura do atacante adversário.',
+  9: 'Posicionamento, leitura e reação para defender ataques e largadas.',
+  10: 'Sequência recepção, levantamento e ataque para virar o ponto.',
+  11: 'Chamadas, sinais e conversa com a dupla durante o rali.',
+  12: 'Decisões de jogo: onde sacar, quem bloqueia e como se posicionar.',
+  13: 'Jogos em espaço menor para repetir muito e decidir rápido.',
+  14: 'Força, explosão e resistência específicas para a areia.',
+  15: 'Rotinas para treinar sozinho ou só com a sua dupla, sem professor.',
+};
+const GRUPOS = [
+  { titulo: 'Preparação', sub: 'Comece por aqui em qualquer treino', secoes: [1, 2, 14] },
+  { titulo: 'Fundamentos', sub: 'Escolha um por treino e faça 2 a 3 exercícios em sequência', secoes: [3, 4, 5, 6, 7, 8, 9] },
+  { titulo: 'Jogo e tática', sub: 'Aplique o fundamento do dia em situação de jogo', secoes: [10, 11, 12, 13] },
+  { titulo: 'Por conta própria', sub: 'Sem professor? Use estas rotinas', secoes: [15] },
+];
+const NIVEL_AJUDA = {
+  'Iniciante': 'Primeiros contatos com a bola e com a areia. Movimentos simples, ritmo controlado.',
+  'Intermediário': 'Já domina o básico. Exercícios com mais velocidade, deslocamento e tomada de decisão.',
+  'Avançado': 'Treino de alta intensidade e precisão, próximo da situação real de jogo.',
+};
+
+function cleanMaterial(m) {
+  if (!m) return '';
+  return m.split(/\s+(?=J\d|Quadra\b|Distância|[A-ZÀ-Ý]{3,}|\d+m\b|\d\s\d\b|[◄►⬇⬆▲▼])/)[0].replace(/[\s,.;]+$/, '').trim();
+}
+function shortTempo(t) { return t ? t.split(' (')[0].replace(/minutos?/, 'min') : ''; }
+function shortJog(j) { return j ? j.split(' (')[0] : ''; }
+
+function nivelBadge(nivel) {
+  return `<span class="pill pill-${NIVEL_CLASS[nivel]}">${nivel}</span>`;
+}
+
+function renderExCard(ex, clickRoute, ordem) {
+  const btn = document.createElement('button');
+  btn.className = 'ex-row' + (favorites.has(ex.numero) ? ' fav' : '');
+  const tempo = shortTempo(ex.tempo);
+  const jog = shortJog(ex.jogadores);
+  btn.innerHTML = `
+    ${fotoSlot('ex-' + ex.numero, 'Foto', 'r-1x1 mini')}
+    <div class="ex-row-body">
+      ${ordem ? `<div class="ex-ordem">${ordem}º exercício</div>` : ''}
+      <div class="ex-row-nome">${ex.nome}</div>
+      <div class="ex-row-meta">
+        ${!ordem ? `<span class="nivel-badge nivel-${ex.nivel}">${ex.nivel}</span>` : ''}
+        ${tempo ? `<span>${ICON.clock}${tempo}</span>` : ''}
+        ${jog ? `<span>${ICON.users}${jog}</span>` : ''}
+      </div>
     </div>
-    <div class="ex-nome">${ex.nome}</div>
-    ${meta ? `<div class="ex-meta">${meta}</div>` : ''}`;
-  div.addEventListener('click', () => go(clickRoute || `ex-${ex.numero}`));
-  return div;
+    <span class="chev">${ICON.chevR}</span>`;
+  btn.addEventListener('click', () => go(clickRoute || `ex-${ex.numero}`));
+  return btn;
 }
 
 function renderLevelChips(onChange) {
@@ -644,10 +1002,12 @@ function renderLevelChips(onChange) {
   for (const [val, label, cls] of opts) {
     const btn = document.createElement('button');
     btn.className = `chip ${cls}${levelFilter === val ? ' active' : ''}`;
+    btn.dataset.val = val;
     btn.innerHTML = `${label}<span class="chip-count">${counts[val]}</span>`;
     btn.addEventListener('click', () => {
       levelFilter = val;
       lsSet('level', val);
+      wrap.querySelectorAll('.chip').forEach(b => b.classList.toggle('active', b.dataset.val === levelFilter));
       onChange();
     });
     wrap.appendChild(btn);
@@ -655,101 +1015,143 @@ function renderLevelChips(onChange) {
   return wrap;
 }
 
+function nivelAjudaEl() {
+  const d = document.createElement('div');
+  if (!levelFilter) { d.style.display = 'none'; return d; }
+  d.className = 'nivel-ajuda';
+  d.innerHTML = `<span class="fs-dot fs-${NIVEL_CLASS[levelFilter]}" style="background:var(--c-${NIVEL_CLASS[levelFilter]})"></span><span>${NIVEL_AJUDA[levelFilter]}</span>`;
+  return d;
+}
+
+function topBar(title, opts = {}) {
+  const bar = document.createElement('div');
+  bar.className = 'top-bar';
+  if (opts.back) {
+    const b = document.createElement('button');
+    b.className = 'back-btn'; b.setAttribute('aria-label', 'Voltar');
+    b.innerHTML = ICON.chevL;
+    b.addEventListener('click', opts.back);
+    bar.appendChild(b);
+  }
+  if (opts.logo) {
+    bar.insertAdjacentHTML('beforeend', `<span class="logo-title">${title}</span>`);
+  } else {
+    bar.insertAdjacentHTML('beforeend', `<h1>${title}</h1>`);
+  }
+  if (opts.right) bar.appendChild(opts.right);
+  else if (opts.theme) {
+    const t = document.createElement('button');
+    t.className = 'theme-btn'; t.title = 'Alternar tema'; t.setAttribute('aria-label', 'Alternar tema claro/escuro');
+    t.innerHTML = themeIcon();
+    t.addEventListener('click', toggleTheme);
+    bar.appendChild(t);
+  }
+  return bar;
+}
+
 /* ===== VIEWS ===== */
 
 /* ---- HOME ---- */
 function renderHome() {
   const frag = document.createDocumentFragment();
-
-  // Top bar
-  const bar = document.createElement('div');
-  bar.className = 'top-bar';
-  bar.innerHTML = `<span class="logo-title">CÓDIGO DA AREIA - VÔLEI DE PRAIA</span>`;
-  const themeBtn = document.createElement('button');
-  themeBtn.className = 'theme-btn'; themeBtn.title = 'Alternar tema';
-  themeBtn.innerHTML = themeIcon();
-  themeBtn.addEventListener('click', toggleTheme);
-  bar.appendChild(themeBtn);
-  frag.appendChild(bar);
+  frag.appendChild(topBar('CÓDIGO DA AREIA - VÔLEI DE PRAIA', { logo: true, theme: true }));
 
   const page = document.createElement('div');
   page.className = 'page';
 
-  // Quick search
+  const hero = document.createElement('div');
+  hero.className = 'hero';
+  hero.innerHTML = `
+    ${fotoSlot('home', 'Foto de capa')}
+    <h2 class="hero-title">${EX.length} exercícios para treinar na areia</h2>
+    <p class="hero-text">Do aquecimento ao jogo: cada exercício tem montagem, passo a passo, erros comuns e variações.</p>
+    <ol class="passos">
+      <li><b>1</b>Escolha o fundamento que quer treinar</li>
+      <li><b>2</b>Filtre pelo nível do aluno ou da dupla</li>
+      <li><b>3</b>Siga o passo a passo e avance ao bater a meta</li>
+    </ol>`;
+  page.appendChild(hero);
+
+  // Busca
   const sw = document.createElement('div');
   sw.className = 'search-wrap';
   sw.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>`;
   const inp = document.createElement('input');
-  inp.type = 'text'; inp.className = 'search-input';
-  inp.placeholder = 'Buscar exercício...';
-  inp.addEventListener('keydown', ev => {
-    if (ev.key === 'Enter' && inp.value.trim()) {
-      lsSet('searchq', inp.value.trim());
-      go('buscar');
-    }
-  });
+  inp.type = 'search'; inp.className = 'search-input';
+  inp.placeholder = 'Buscar exercício, material, objetivo...';
+  inp.setAttribute('aria-label', 'Buscar exercício');
   inp.addEventListener('input', () => {
     if (inp.value.trim()) { lsSet('searchq', inp.value.trim()); go('buscar'); }
   });
   sw.appendChild(inp);
   page.appendChild(sw);
 
-  // Level filter
-  const statusBar = document.createElement('div');
-  statusBar.className = 'filter-status';
-
-  function updateStatus() {
-    const n = filteredEx(levelFilter).length;
-    if (!levelFilter) {
-      statusBar.innerHTML = '';
-    } else {
-      const dotClass = {Iniciante:'fs-ini',Intermediário:'fs-int',Avançado:'fs-ava'}[levelFilter] || 'fs-all';
-      statusBar.innerHTML = `<span class="fs-dot ${dotClass}"></span><span>${levelFilter} · <strong>${n}</strong> exercícios</span>`;
-    }
+  // Atalhos
+  const nFav = favorites.size;
+  const at = document.createElement('div');
+  at.className = 'atalhos';
+  const atalhos = [
+    ['aulas', 'at-azul', ICON.calendar, 'Montar aula de 60 min'],
+    ['secao-15', 'at-ceu', ICON.user, 'Treinar sozinho ou em dupla'],
+    ['favoritos', 'at-coral', ICON.heart, nFav ? `Meus salvos (${nFav})` : 'Meus salvos'],
+  ];
+  for (const [route, cor, ico, label] of atalhos) {
+    const b = document.createElement('button');
+    b.className = 'atalho';
+    b.innerHTML = `<span class="at-ico ${cor}">${ico}</span><span class="at-label">${label}</span>`;
+    b.addEventListener('click', () => go(route));
+    at.appendChild(b);
   }
+  page.appendChild(at);
 
+  // Nível
+  page.insertAdjacentHTML('beforeend', `<h2 class="bloco-titulo">Qual é o nível?</h2>`);
+  let ajuda = nivelAjudaEl();
+  const gruposWrap = document.createElement('div');
   const chips = renderLevelChips(() => {
-    updateStatus();
-    // Re-render chips to update active state
-    chips.querySelectorAll('.chip').forEach(btn => {
-      const val = btn.dataset.val || '';
-      btn.classList.toggle('active', levelFilter === val);
-    });
-    renderSectionGrid(grid);
-  });
-  // Store val in dataset so we can toggle active above
-  chips.querySelectorAll('.chip').forEach((btn, i) => {
-    const vals = ['','Iniciante','Intermediário','Avançado'];
-    btn.dataset.val = vals[i];
+    const novo = nivelAjudaEl(); ajuda.replaceWith(novo); ajuda = novo;
+    renderGrupos(gruposWrap);
   });
   page.appendChild(chips);
-  page.appendChild(statusBar);
-  updateStatus();
+  page.appendChild(ajuda);
 
-  // Section grid
-  const grid = document.createElement('div');
-  grid.className = 'section-grid';
-  renderSectionGrid(grid);
-  page.appendChild(grid);
+  renderGrupos(gruposWrap);
+  page.appendChild(gruposWrap);
 
   frag.appendChild(page);
   return frag;
 }
 
-function renderSectionGrid(grid) {
-  grid.innerHTML = '';
-  for (const sec of SECOES) {
-    const exs = exInSecao(sec.n);
-    const card = document.createElement('div');
-    card.className = 'section-card';
-    card.innerHTML = `
-      <div class="sec-left">
-        <span class="sec-num">${String(sec.n).padStart(2,'0')}</span>
-        <span class="sec-nome">${sec.nome}</span>
-      </div>
-      <span class="sec-count">${exs.length} ex.</span>`;
-    card.addEventListener('click', () => go(`secao-${sec.n}`));
-    grid.appendChild(card);
+function nivelBarra(secN) {
+  const all = EX.filter(e => e.secao === secN);
+  const c = n => all.filter(e => e.nivel === n).length;
+  const t = all.length || 1;
+  return `<div class="nivel-barra" title="Iniciante ${c('Iniciante')} · Intermediário ${c('Intermediário')} · Avançado ${c('Avançado')}">
+    <i class="nb-ini" style="width:${c('Iniciante')/t*100}%"></i><i class="nb-int" style="width:${c('Intermediário')/t*100}%"></i><i class="nb-ava" style="width:${c('Avançado')/t*100}%"></i></div>`;
+}
+
+function renderGrupos(wrap) {
+  wrap.innerHTML = '';
+  for (const g of GRUPOS) {
+    wrap.insertAdjacentHTML('beforeend', `<h2 class="bloco-titulo">${g.titulo}</h2><p class="bloco-sub">${g.sub}</p>`);
+    const tiles = document.createElement('div');
+    tiles.className = 'sec-tiles';
+    for (const n of g.secoes) {
+      const sec = SECOES.find(s => s.n === n);
+      const qtd = exInSecao(n).length;
+      const t = document.createElement('button');
+      t.className = 'sec-tile' + (qtd ? '' : ' vazio');
+      t.innerHTML = `
+        ${fotoSlot('secao-' + n, sec.nome)}
+        <div class="sec-tile-body">
+          <span class="sec-tile-nome">${sec.nome}</span>
+          <span class="sec-tile-count">${qtd} exercício${qtd === 1 ? '' : 's'}${levelFilter ? ' · ' + levelFilter.toLowerCase() : ''}</span>
+          ${nivelBarra(n)}
+        </div>`;
+      t.addEventListener('click', () => go(`secao-${n}`));
+      tiles.appendChild(t);
+    }
+    wrap.appendChild(tiles);
   }
 }
 
@@ -758,24 +1160,18 @@ function renderSecao(n) {
   const frag = document.createDocumentFragment();
   const sec = SECOES.find(s => s.n === n);
   const nome = sec ? sec.nome : `Seção ${n}`;
-
-  // Top bar
-  const bar = document.createElement('div');
-  bar.className = 'top-bar';
-  bar.innerHTML = `
-    <button class="back-btn" aria-label="Voltar">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
-    </button>
-    <h1>${nome}</h1>`;
-  bar.querySelector('.back-btn').addEventListener('click', () => history.back());
-  frag.appendChild(bar);
+  frag.appendChild(topBar(nome, { back: () => (history.length > 1 ? history.back() : go('home')) }));
 
   const page = document.createElement('div');
   page.className = 'page';
+  page.insertAdjacentHTML('beforeend', `
+    <div class="secao-intro">
+      ${fotoSlot('secao-' + n, 'Foto da seção ' + nome, 'r-wide')}
+      <p class="secao-desc">${SECAO_DESC[n] || ''}</p>
+      <p class="dica">Os exercícios estão em ordem de dificuldade. Comece pelo primeiro e avance quando bater a meta indicada.</p>
+    </div>`);
 
-  // Level filter
   const exList = document.createElement('div');
-  exList.className = 'ex-list';
   const chips = renderLevelChips(() => renderExList(exList, n));
   page.appendChild(chips);
   renderExList(exList, n);
@@ -787,174 +1183,142 @@ function renderSecao(n) {
 
 function renderExList(container, secaoN) {
   container.innerHTML = '';
+  const todos = EX.filter(ex => ex.secao === secaoN);
   const exs = exInSecao(secaoN);
   if (exs.length === 0) {
-    container.innerHTML = '<div class="search-empty">Nenhum exercício neste nível para esta seção.</div>';
+    container.innerHTML = '<div class="search-empty">Nenhum exercício deste nível nesta seção. Escolha "Todos" para ver a lista completa.</div>';
     return;
   }
-  for (const ex of exs) container.appendChild(renderExCard(ex));
+  for (const nivel of ['Iniciante', 'Intermediário', 'Avançado']) {
+    const lista = exs.filter(e => e.nivel === nivel);
+    if (!lista.length) continue;
+    container.insertAdjacentHTML('beforeend',
+      `<div class="grupo-nivel"><span class="fs-dot" style="background:var(--c-${NIVEL_CLASS[nivel]})"></span>${nivel} <small>${lista.length}</small></div>`);
+    const l = document.createElement('div');
+    l.className = 'ex-list';
+    for (const ex of lista) l.appendChild(renderExCard(ex, null, todos.indexOf(ex) + 1));
+    container.appendChild(l);
+  }
 }
 
 /* ---- EXERCÍCIO ---- */
+let exTab = 'fazer';
 function renderEx(num) {
+  exTab = 'fazer';
   const ex = EX.find(e => e.numero === num);
   if (!ex) { go('home'); return document.createDocumentFragment(); }
 
   const frag = document.createDocumentFragment();
   const secExs = EX.filter(e => e.secao === ex.secao);
   const idx = secExs.findIndex(e => e.numero === num);
-  const isFav = favorites.has(num);
-
-  // Top bar
-  const bar = document.createElement('div');
-  bar.className = 'top-bar';
   const secNome = secaoName(ex.secao);
-  bar.innerHTML = `
-    <button class="back-btn" aria-label="Voltar">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
-    </button>
-    <h1>${secNome}</h1>`;
-  bar.querySelector('.back-btn').addEventListener('click', () => {
-    const prev = history.length > 1 ? null : `secao-${ex.secao}`;
-    if (prev) go(prev); else history.back();
-  });
-  frag.appendChild(bar);
 
-  const detail = document.createElement('div');
-  detail.className = 'ex-detail';
-
-  // Header
-  const header = document.createElement('div');
-  header.className = 'detail-header';
+  // Favoritar na barra
   const favBtn = document.createElement('button');
-  favBtn.className = `fav-btn${isFav ? ' active' : ''}`;
-  favBtn.setAttribute('aria-label', isFav ? 'Remover dos favoritos' : 'Favoritar');
-  favBtn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>`;
+  favBtn.className = 'bar-btn' + (favorites.has(num) ? ' active' : '');
+  favBtn.innerHTML = ICON.heart;
+  const favLabel = () => favBtn.setAttribute('aria-label', favorites.has(num) ? 'Remover dos salvos' : 'Salvar exercício');
+  favLabel();
   favBtn.addEventListener('click', () => {
     if (favorites.has(num)) favorites.delete(num); else favorites.add(num);
-    saveFavs();
-    favBtn.classList.toggle('active');
-    favBtn.setAttribute('aria-label', favorites.has(num) ? 'Remover dos favoritos' : 'Favoritar');
+    saveFavs(); favBtn.classList.toggle('active'); favLabel(); updateNavBadge();
   });
-  header.innerHTML = `
-    <div class="code-big">${ex.codigo}</div>
-    <div class="nome-big">${ex.nome}</div>
-    <div class="chips-row">
-      ${nivelBadge(ex.nivel)}
-      ${ex.jogadores ? `<span class="ex-chip">👥 ${ex.jogadores}</span>` : ''}
-      ${ex.tempo ? `<span class="ex-chip">⏱ ${ex.tempo}</span>` : ''}
-      ${ex.material ? `<span class="ex-chip">🔧 ${ex.material}</span>` : ''}
-    </div>`;
-  header.querySelector('.chips-row').appendChild(favBtn);
-  detail.appendChild(header);
+  frag.appendChild(topBar(secNome, { back: () => go(`secao-${ex.secao}`), right: favBtn }));
 
-  // Diagram: real image from PDF, fallback to text description
-  {
-    const diag = document.createElement('div');
-    diag.className = 'diagrama-box';
-    const imgKey = String(ex.numero).padStart(3,'0');
-    const img = document.createElement('img');
-    img.src = `/gem/diagrams/${imgKey}.png`;
-    img.alt = `Diagrama ${ex.nome}`;
-    img.loading = 'lazy';
-    img.onerror = function() {
-      this.replaceWith(Object.assign(document.createElement('p'), {
-        textContent: ex.descricaoDiagrama || '',
-        className: 'diag-fallback'
-      }));
-    };
-    diag.style.padding = '0';
-    diag.appendChild(img);
-    detail.appendChild(diag);
+  const page = document.createElement('div');
+  page.className = 'page ex-page';
+
+  const material = cleanMaterial(ex.material);
+  page.insertAdjacentHTML('beforeend', `
+    <div class="progresso">
+      <div class="progresso-txt"><span>Exercício ${idx + 1} de ${secExs.length} em ${secNome}</span><span>${ex.codigo}</span></div>
+      <div class="progresso-barra"><i style="width:${(idx + 1) / secExs.length * 100}%"></i></div>
+    </div>
+    <div class="ex-hero">${fotoSlot('ex-' + num, 'Foto do exercício')}</div>
+    <h2 class="ex-titulo">${ex.nome}</h2>
+    <div class="ex-sub">${nivelBadge(ex.nivel)}</div>
+    <div class="info-grid">
+      ${ex.tempo ? `<div class="info-tile">${ICON.clock}<div><small>Tempo</small><strong>${escHtml(shortTempo(ex.tempo))}</strong></div></div>` : ''}
+      ${ex.jogadores ? `<div class="info-tile">${ICON.users}<div><small>Jogadores</small><strong>${escHtml(shortJog(ex.jogadores))}</strong></div></div>` : ''}
+      ${material ? `<div class="info-tile full">${ICON.box}<div><small>Material</small><strong>${escHtml(material)}</strong></div></div>` : ''}
+    </div>`);
+
+  // Abas
+  const seg = document.createElement('div');
+  seg.className = 'seg';
+  seg.setAttribute('role', 'tablist');
+  const abas = [['fazer', 'Como fazer'], ['corrigir', 'Corrigir'], ['variar', 'Variações']];
+  for (const [k, l] of abas) {
+    const b = document.createElement('button');
+    b.textContent = l; b.dataset.k = k; b.setAttribute('role', 'tab');
+    b.addEventListener('click', () => { exTab = k; pintarAba(); });
+    seg.appendChild(b);
   }
+  page.appendChild(seg);
+  const conteudo = document.createElement('div');
+  page.appendChild(conteudo);
 
-  // Collapsible sections
-  const sections = [
-    { key: 'objetivo', label: '🎯 Objetivo', content: ex.objetivo, open: true },
-    { key: 'comoMontar', label: '🔧 Como Montar', content: ex.comoMontar, open: false },
-    { key: 'passoAPasso', label: '📋 Passo a Passo', list: ex.passoAPasso, numbered: true, open: true },
-    { key: 'pontosAtencao', label: '⚠️ Pontos de Atenção', list: ex.pontosAtencao, open: false },
-    { key: 'erroComum', label: '❌ Erro Comum', content: ex.erroComum, open: false },
-    { key: 'variacaoFacil', label: '✅ Variação Fácil', content: ex.variacaoFacil, open: false },
-    { key: 'variacaoDificil', label: '🔥 Variação Difícil', content: ex.variacaoDificil, open: false },
-    { key: 'paraTurma', label: '👥 Para Turma', content: ex.paraTurma, open: false },
-    { key: 'meta', label: '🏆 Meta', content: ex.meta, open: false },
-  ];
+  const bloco = (icone, titulo, inner) => inner ? `<section class="bloco"><h3>${icone}${titulo}</h3>${inner}</section>` : '';
+  const p = t => t && t.trim() ? `<p>${escHtml(t)}</p>` : '';
+  const caixa = (cls, t, rotulo) => t && t.trim() ? `<div class="caixa ${cls}">${rotulo ? `<strong>${rotulo}</strong>` : ''}${escHtml(t)}</div>` : '';
+  const passos = (ex.passoAPasso || []).length
+    ? `<ul class="step-list">${ex.passoAPasso.map((s, i) => `<li class="step-item"><span class="step-num">${i + 1}</span><span class="step-text">${escHtml(s)}</span></li>`).join('')}</ul>` : '';
+  const bullets = (ex.pontosAtencao || []).length
+    ? `<ul class="bullet-list">${ex.pontosAtencao.map(s => `<li class="bullet-item"><span class="bullet-dot"></span><span>${escHtml(s)}</span></li>`).join('')}</ul>` : '';
+  const imgKey = String(num).padStart(3, '0');
 
-  for (const sec of sections) {
-    const hasContent = (sec.content && sec.content.trim()) || (sec.list && sec.list.length > 0);
-    if (!hasContent) continue;
-
-    const grp = document.createElement('div');
-    grp.className = 'section-group';
-
-    const toggle = document.createElement('button');
-    toggle.className = `section-toggle${sec.open ? ' open' : ''}`;
-    toggle.innerHTML = `
-      <span>${sec.label}</span>
-      <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>`;
-
-    const body = document.createElement('div');
-    body.className = `section-body${sec.open ? ' open' : ''}`;
-
-    if (sec.list && sec.list.length > 0) {
-      if (sec.numbered) {
-        const ul = document.createElement('ul');
-        ul.className = 'step-list';
-        sec.list.forEach((s, i) => {
-          const li = document.createElement('li');
-          li.className = 'step-item';
-          li.innerHTML = `<span class="step-num">${i+1}</span><span class="step-text">${escHtml(s)}</span>`;
-          ul.appendChild(li);
-        });
-        body.appendChild(ul);
-      } else {
-        const ul = document.createElement('ul');
-        ul.className = 'bullet-list';
-        for (const s of sec.list) {
-          const li = document.createElement('li');
-          li.className = 'bullet-item';
-          li.innerHTML = `<span class="bullet-dot"></span><span>${escHtml(s)}</span>`;
-          ul.appendChild(li);
-        }
-        body.appendChild(ul);
-      }
-    } else if (sec.content) {
-      body.textContent = sec.content;
-    }
-
-    toggle.addEventListener('click', () => {
-      toggle.classList.toggle('open');
-      body.classList.toggle('open');
+  function pintarAba() {
+    seg.querySelectorAll('button').forEach(b => {
+      b.classList.toggle('active', b.dataset.k === exTab);
+      b.setAttribute('aria-selected', b.dataset.k === exTab);
     });
-
-    grp.appendChild(toggle);
-    grp.appendChild(body);
-    detail.appendChild(grp);
+    let h = '';
+    if (exTab === 'fazer') {
+      h += bloco(ICON.target, 'Objetivo', caixa('caixa-objetivo', ex.objetivo));
+      h += bloco(ICON.map, 'Diagrama da quadra', `<div class="diagrama-box"><img src="/gem/diagrams/${imgKey}.png" alt="Diagrama: ${escHtml(ex.nome)}" loading="lazy"></div>`);
+      h += bloco(ICON.tool, 'Como montar', p(ex.comoMontar));
+      h += bloco(ICON.list, 'Passo a passo', passos);
+      h += bloco(ICON.image, 'Fotos da execução', `<div class="fotos-passos">
+          ${fotoSlot(`ex-${num}-inicio`, 'Posição inicial')}
+          ${fotoSlot(`ex-${num}-execucao`, 'Execução')}
+          ${fotoSlot(`ex-${num}-final`, 'Finalização')}
+        </div>`);
+      h += bloco(ICON.flag, 'Meta para avançar', caixa('caixa-meta', ex.meta));
+    } else if (exTab === 'corrigir') {
+      h += bloco(ICON.alert, 'Pontos de atenção', bullets);
+      h += bloco(ICON.alert, 'Erro mais comum', caixa('caixa-erro', ex.erroComum));
+      if (!h) h = '<div class="search-empty">Sem observações de correção para este exercício.</div>';
+    } else {
+      h += bloco(ICON.layers, 'Ajustar a dificuldade',
+        caixa('caixa-facil', ex.variacaoFacil, 'Mais fácil') + (ex.variacaoFacil && ex.variacaoDificil ? '<div style="height:8px"></div>' : '') +
+        caixa('caixa-dificil', ex.variacaoDificil, 'Mais difícil'));
+      h += bloco(ICON.users, 'Para turma', p(ex.paraTurma));
+      if (!h) h = '<div class="search-empty">Sem variações cadastradas para este exercício.</div>';
+    }
+    conteudo.innerHTML = h;
+    const img = conteudo.querySelector('.diagrama-box img');
+    if (img) img.onerror = function () {
+      const box = this.parentElement;
+      if (ex.descricaoDiagrama) { box.innerHTML = `<p class="diag-fallback">${escHtml(ex.descricaoDiagrama)}</p>`; box.classList.add('caixa'); }
+      else box.closest('.bloco').remove();
+    };
   }
+  pintarAba();
+  frag.appendChild(page);
 
-  // Prev/Next
-  const prevNext = document.createElement('div');
-  prevNext.className = 'prev-next';
+  // Barra de ação fixa
   const prevEx = idx > 0 ? secExs[idx - 1] : null;
   const nextEx = idx < secExs.length - 1 ? secExs[idx + 1] : null;
-  const prevBtn = document.createElement('button');
-  prevBtn.disabled = !prevEx;
-  prevBtn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><polyline points="15 18 9 12 15 6"/></svg> Anterior`;
-  if (prevEx) prevBtn.addEventListener('click', () => go(`ex-${prevEx.numero}`));
-  const nextBtn = document.createElement('button');
-  nextBtn.disabled = !nextEx;
-  nextBtn.innerHTML = `Próximo <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><polyline points="9 18 15 12 9 6"/></svg>`;
-  if (nextEx) nextBtn.addEventListener('click', () => go(`ex-${nextEx.numero}`));
-  prevNext.appendChild(prevBtn);
-  prevNext.appendChild(nextBtn);
-  detail.appendChild(prevNext);
-
-  const spacer = document.createElement('div');
-  spacer.style.height = '24px';
-  detail.appendChild(spacer);
-
-  frag.appendChild(detail);
+  const acao = document.createElement('div');
+  acao.className = 'acao-bar';
+  acao.innerHTML = `<div class="acao-bar-inner">
+      <button class="btn-sec" ${prevEx ? '' : 'disabled'} aria-label="Exercício anterior">${ICON.chevL}</button>
+      <button class="btn-pri">${nextEx ? 'Próximo exercício' : 'Voltar para ' + secNome} ${ICON.chevR}</button>
+    </div>`;
+  const [bPrev, bNext] = acao.querySelectorAll('button');
+  if (prevEx) bPrev.addEventListener('click', () => go(`ex-${prevEx.numero}`));
+  bNext.addEventListener('click', () => go(nextEx ? `ex-${nextEx.numero}` : `secao-${ex.secao}`));
+  frag.appendChild(acao);
   return frag;
 }
 
@@ -1040,7 +1404,7 @@ function renderFavoritos() {
   const frag = document.createDocumentFragment();
   const bar = document.createElement('div');
   bar.className = 'top-bar';
-  bar.innerHTML = `<h1>Favoritos</h1>`;
+  bar.innerHTML = `<h1>Exercícios salvos</h1>`;
   frag.appendChild(bar);
 
   const page = document.createElement('div');
@@ -1052,9 +1416,9 @@ function renderFavoritos() {
     const clearRow = document.createElement('div');
     clearRow.className = 'fav-clear';
     const clearBtn = document.createElement('button');
-    clearBtn.textContent = '🗑️ Limpar tudo';
+    clearBtn.textContent = 'Limpar todos';
     clearBtn.addEventListener('click', () => {
-      if (confirm('Remover todos os favoritos?')) {
+      if (confirm('Remover todos os exercícios salvos?')) {
         favorites.clear(); saveFavs(); renderPage();
       }
     });
@@ -1066,7 +1430,7 @@ function renderFavoritos() {
     for (const ex of favs) list.appendChild(renderExCard(ex));
     page.appendChild(list);
   } else {
-    page.innerHTML = `<div class="empty-state mt-16"><div class="empty-icon">❤️</div>Nenhum favorito ainda.<br>Toque no ❤️ em qualquer exercício.</div>`;
+    page.innerHTML = `<div class="empty-state mt-16"><div class="empty-icon">❤️</div>Nenhum exercício salvo ainda.<br>Abra um exercício e toque no coração no topo da tela para guardar aqui.</div>`;
   }
 
   frag.appendChild(page);
@@ -1126,12 +1490,17 @@ function renderAulas() {
   function renderTabContent() {
     body.innerHTML = '';
     if (activeTab === 'modelo') {
+      const cores = ['var(--azul)', 'var(--ceu)', 'var(--laranja)', 'var(--coral)'];
+      body.insertAdjacentHTML('beforeend', `${fotoSlot('aulas', 'Foto de uma aula')}
+        <p class="bloco-sub" style="margin:14px 0 6px">Uma aula de 60 minutos dividida em 4 blocos. Toque numa seção para escolher os exercícios.</p>
+        <div class="tempo-barra">${MODELO_60.map((b, i) => `<i style="flex:${parseInt(b.time)};background:${cores[i]}"></i>`).join('')}</div>`);
       for (const bloco of MODELO_60) {
         const card = document.createElement('div');
         card.className = 'model-card';
         const header = document.createElement('div');
         header.className = 'model-header';
-        header.innerHTML = `<span class="model-time">${bloco.time}</span><span class="model-title">${bloco.title}</span>`;
+        const cor = ['var(--azul)', 'var(--ceu)', 'var(--laranja)', 'var(--coral)'][MODELO_60.indexOf(bloco)];
+        header.innerHTML = `<span class="model-time" style="background:${cor}${cor.includes('laranja') ? ';color:var(--texto)' : ''}">${bloco.time}</span><span class="model-title">${bloco.title}</span>`;
         card.appendChild(header);
         const links = document.createElement('div');
         links.className = 'model-links';
@@ -1268,9 +1637,18 @@ function escHtml(s) {
     .replace(/"/g, '&quot;');
 }
 
+function updateNavBadge() {
+  const item = document.querySelector('.nav-item[data-route="favoritos"]');
+  if (!item) return;
+  let b = item.querySelector('.nav-badge');
+  if (!favorites.size) { if (b) b.remove(); return; }
+  if (!b) { b = document.createElement('span'); b.className = 'nav-badge'; item.appendChild(b); }
+  b.textContent = favorites.size;
+}
 function updateNav(route) {
-  const map = { home: 'home', buscar: 'buscar', aulas: 'aulas', 'como-usar': 'como-usar' };
+  const map = { home: 'home', secao: 'home', ex: 'home', buscar: 'buscar', aulas: 'aulas', favoritos: 'favoritos', 'como-usar': 'como-usar' };
   const active = map[route.name] || route.name;
+  updateNavBadge();
   document.querySelectorAll('.nav-item').forEach(b => {
     b.classList.toggle('active', b.dataset.route === active);
   });
