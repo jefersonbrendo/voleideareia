@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<meta name="theme-color" content="#13314A">
+<meta name="theme-color" content="#0E4B75">
 <title>Código da Areia - Vôlei de Praia</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -11,56 +11,71 @@
 <style>
 /* ===== CSS TOKENS ===== */
 :root {
+  /* Paleta da marca */
+  --azul: #0E4B75;      /* marca */
+  --laranja: #FF9F1C;   /* destaque */
+  --coral: #FF4A3F;     /* ações principais */
+  --ceu: #0284C7;       /* secundária */
+  --areia: #F7F4EE;     /* fundo */
+  --borda: #E2DBC9;
+  --texto: #0F172A;
+
+  /* Níveis */
   --c-ini: #1E9E5A;
-  --c-int: #E89B17;
-  --c-ava: #D6402B;
+  --c-int: #E08A00;
+  --c-ava: #E5352B;
 
   /* Light theme */
-  --bg: #FFFFFF;
-  --bg-card: #F8F9FA;
+  --bg: var(--areia);
+  --bg-card: #FFFFFF;
   --bg-nav: #FFFFFF;
-  --bg-chip: #F1F3F5;
-  --bg-overlay: rgba(0,0,0,0.04);
-  --text: #111827;
-  --text-sec: #4B5563;
-  --text-muted: #9CA3AF;
-  --border: #E5E7EB;
-  --shadow: none;
-  --shadow-lg: none;
-  --accent: #0F6FA8;
-  --cta: #0F6FA8;
+  --bg-bar: var(--azul);
+  --bg-chip: #EFEAE0;
+  --bg-overlay: rgba(14,75,117,0.05);
+  --text: var(--texto);
+  --text-sec: #475569;
+  --text-muted: #8A94A6;
+  --border: var(--borda);
+  --shadow: 0 1px 2px rgba(15,23,42,0.05);
+  --shadow-lg: 0 6px 20px rgba(15,23,42,0.08);
+  --accent: var(--azul);
+  --cta: var(--coral);
+  --link: var(--ceu);
+  --highlight: var(--laranja);
 }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
-    --bg: #111827;
-    --bg-card: #1F2937;
-    --bg-nav: #111827;
-    --bg-chip: #374151;
-    --bg-overlay: rgba(255,255,255,0.04);
-    --text: #F9FAFB;
-    --text-sec: #D1D5DB;
-    --text-muted: #6B7280;
-    --border: #374151;
-    --shadow: none;
-    --shadow-lg: none;
-    --accent: #38BDF8;
-    --cta: #38BDF8;
+    --bg: #0B1B28;
+    --bg-card: #12283A;
+    --bg-nav: #0B1B28;
+    --bg-bar: #0A3A5C;
+    --bg-chip: #1B3549;
+    --bg-overlay: rgba(255,255,255,0.05);
+    --text: #F7F4EE;
+    --text-sec: #C9D3DD;
+    --text-muted: #7D90A3;
+    --border: #22405A;
+    --accent: #38A8E8;
+    --cta: var(--coral);
+    --link: #7CC4F0;
+    --highlight: var(--laranja);
   }
 }
 :root[data-theme="dark"] {
-  --bg: #111827;
-  --bg-card: #1F2937;
-  --bg-nav: #111827;
-  --bg-chip: #374151;
-  --bg-overlay: rgba(255,255,255,0.04);
-  --text: #F9FAFB;
-  --text-sec: #D1D5DB;
-  --text-muted: #6B7280;
-  --border: #374151;
-  --shadow: none;
-  --shadow-lg: none;
-  --accent: #38BDF8;
-  --cta: #38BDF8;
+  --bg: #0B1B28;
+  --bg-card: #12283A;
+  --bg-nav: #0B1B28;
+  --bg-bar: #0A3A5C;
+  --bg-chip: #1B3549;
+  --bg-overlay: rgba(255,255,255,0.05);
+  --text: #F7F4EE;
+  --text-sec: #C9D3DD;
+  --text-muted: #7D90A3;
+  --border: #22405A;
+  --accent: #38A8E8;
+  --cta: var(--coral);
+  --link: #7CC4F0;
+  --highlight: var(--laranja);
 }
 
 /* ===== RESET / BASE ===== */
@@ -84,8 +99,8 @@ input { font: inherit; }
 /* ===== TOP BAR ===== */
 .top-bar {
   position: sticky; top: 0; z-index: 100;
-  background: var(--bg-nav);
-  border-bottom: 1px solid var(--border);
+  background: var(--bg-bar); color: #fff;
+  border-bottom: none;
   padding: 0 max(16px, env(safe-area-inset-left, 0px));
   display: flex; align-items: center; gap: 12px;
   height: 56px;
@@ -93,7 +108,7 @@ input { font: inherit; }
 .top-bar .back-btn {
   width: 32px; height: 32px;
   display: flex; align-items: center; justify-content: center;
-  color: var(--text); flex-shrink: 0;
+  color: #fff; flex-shrink: 0;
 }
 .top-bar .back-btn svg { width: 20px; height: 20px; }
 .top-bar h1 {
@@ -103,7 +118,7 @@ input { font: inherit; }
 .logo-title {
   font-family: 'Inter', sans-serif;
   font-size: 18px; font-weight: 700; letter-spacing: 0.04em;
-  color: var(--text); flex: 1;
+  color: #fff; flex: 1;
 }
 @media (max-width: 420px) {
   .logo-title { font-size: 15px; letter-spacing: 0.02em; }
@@ -125,7 +140,7 @@ input { font: inherit; }
   transition: color 0.15s;
   min-height: 56px;
 }
-.nav-item.active { color: var(--accent); }
+.nav-item.active { color: var(--cta); }
 .nav-item svg { width: 22px; height: 22px; }
 
 /* ===== PAGE CONTAINER ===== */
@@ -152,7 +167,7 @@ input { font: inherit; }
   font-size: 0.9rem;
   transition: border-color 0.15s;
 }
-.search-input:focus { outline: none; border-color: var(--accent); }
+.search-input:focus { outline: none; border-color: var(--link); box-shadow: 0 0 0 3px rgba(2,132,199,0.15); }
 .search-input::placeholder { color: var(--text-muted); }
 
 /* ===== LEVEL CHIPS ===== */
@@ -243,7 +258,7 @@ input { font: inherit; }
   display: flex; align-items: center; justify-content: center;
   transition: background 0.15s;
 }
-.ex-detail .fav-btn.active { background: rgba(242,107,58,0.15); }
+.ex-detail .fav-btn.active { background: rgba(255,74,63,0.14); }
 .ex-detail .fav-btn svg { width: 22px; height: 22px; }
 .ex-detail .fav-btn.active svg { fill: var(--cta); stroke: var(--cta); }
 
@@ -304,7 +319,7 @@ input { font: inherit; }
 .bullet-item { display: flex; gap: 10px; align-items: flex-start; }
 .bullet-dot {
   flex-shrink: 0; width: 8px; height: 8px; border-radius: 50%;
-  background: var(--cta); margin-top: 7px;
+  background: var(--highlight); margin-top: 7px;
 }
 
 /* Prev/Next nav */
@@ -344,7 +359,7 @@ input { font: inherit; }
 .fav-clear button {
   font-size: 0.78rem; color: var(--c-ava); font-weight: 600;
   padding: 6px 12px; border-radius: 8px;
-  background: rgba(214,64,43,0.08);
+  background: rgba(255,74,63,0.10);
 }
 
 /* ===== AULAS ===== */
@@ -399,7 +414,7 @@ input { font: inherit; }
 .model-link {
   background: var(--bg-chip); border-radius: 8px;
   padding: 6px 12px; font-size: 0.78rem; font-weight: 500;
-  color: var(--accent); cursor: pointer;
+  color: var(--link); cursor: pointer;
   transition: background 0.15s;
 }
 .model-link:hover { background: var(--bg-overlay); }
@@ -427,7 +442,7 @@ input { font: inherit; }
 
 /* ===== COMO USAR ===== */
 .info-card {
-  border-left: 3px solid var(--accent);
+  border-left: 3px solid var(--highlight);
   margin-bottom: 16px; padding-left: 14px;
 }
 .info-card-header { padding: 0 0 6px; }
@@ -441,7 +456,7 @@ input { font: inherit; }
   margin-left: auto;
   width: 32px; height: 32px;
   display: flex; align-items: center; justify-content: center;
-  color: var(--text-muted); flex-shrink: 0;
+  color: rgba(255,255,255,0.8); flex-shrink: 0;
 }
 .theme-btn svg { width: 18px; height: 18px; }
 
