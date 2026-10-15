@@ -1060,7 +1060,158 @@ body { padding-bottom: calc(64px + env(safe-area-inset-bottom, 0px)); }
   flex-shrink: 0;
 }
 
-  </style>
+  
+/* ===== CUSTOM PROFESSIONAL SEARCH PAGE ===== */
+.search-header-panel {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 16px;
+  margin: 14px 0 16px;
+  box-shadow: var(--shadow);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.search-bar-modern {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+.search-bar-modern svg.search-ico {
+  position: absolute;
+  left: 14px;
+  width: 20px;
+  height: 20px;
+  color: var(--laranja);
+  pointer-events: none;
+}
+.search-input-modern {
+  width: 100%;
+  height: 48px;
+  padding: 0 40px 0 44px;
+  border-radius: 14px;
+  border: 1.5px solid var(--border);
+  background: var(--bg);
+  color: var(--text);
+  font-size: 0.95rem;
+  transition: all 0.2s ease;
+  outline: none;
+}
+.search-input-modern:focus {
+  border-color: var(--laranja);
+  box-shadow: 0 0 0 3px rgba(255, 159, 28, 0.2);
+}
+.search-clear-btn {
+  position: absolute;
+  right: 12px;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--bg-chip);
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  cursor: pointer;
+  border: none;
+}
+.search-clear-btn:hover {
+  background: var(--border);
+  color: var(--text);
+}
+.quick-tags-scroll {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  overflow-x: auto;
+  padding-bottom: 2px;
+  scrollbar-width: none;
+}
+.quick-tags-scroll::-webkit-scrollbar {
+  display: none;
+}
+.quick-tag-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: 99px;
+  background: var(--bg-chip);
+  border: 1px solid var(--border);
+  color: var(--text-sec);
+  font-size: 0.8rem;
+  font-weight: 600;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+.quick-tag-chip:hover {
+  border-color: var(--link);
+  color: var(--text);
+}
+.quick-tag-chip.active {
+  background: var(--azul);
+  border-color: var(--azul);
+  color: #ffffff;
+  box-shadow: 0 2px 8px rgba(14, 75, 117, 0.25);
+}
+.search-meta-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 6px 0 10px;
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+.search-empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 40px 20px;
+  background: var(--bg-card);
+  border: 1.5px dashed var(--border);
+  border-radius: 16px;
+  margin-top: 16px;
+  gap: 12px;
+}
+.search-empty-icon {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: var(--bg-chip);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 26px;
+}
+.search-empty-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text);
+}
+.search-empty-sub {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  max-width: 32ch;
+}
+.search-reset-btn {
+  margin-top: 4px;
+  padding: 8px 16px;
+  border-radius: 10px;
+  background: var(--azul);
+  color: #fff;
+  font-weight: 600;
+  font-size: 0.82rem;
+  cursor: pointer;
+}
+
+</style>
 </head>
 <body>
   <div id="app">
@@ -1352,6 +1503,7 @@ function nivelAjudaEl() {
 }
 
 
+
 function createHeader(type, payload) {
   if (!payload) payload = {};
   var header = document.createElement('header');
@@ -1373,18 +1525,6 @@ function createHeader(type, payload) {
   if (type === 'home') {
     header.innerHTML = '<div class="hdr-brand-box"><div class="hdr-brand-logo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20M2 12h20"/><path d="M4.5 4.5c4 4 11 4 15 0M4.5 19.5c4-4 11-4 15 0"/></svg></div><div class="hdr-brand-text"><span class="hdr-brand-title">CÓDIGO DA AREIA</span><span class="hdr-brand-sub">GUIA OFICIAL DE VÔLEI DE PRAIA</span></div></div>';
 
-    var searchBtn = makeBtn(ICON.search, 'Buscar exercícios', function() { go('buscar'); });
-    actionsGroup.appendChild(searchBtn);
-
-    var favBtn = makeBtn(ICON.heart, 'Exercícios salvos', function() { go('favoritos'); });
-    if (favorites.size > 0) {
-      var b = document.createElement('span');
-      b.className = 'hdr-fav-count';
-      b.textContent = favorites.size;
-      favBtn.appendChild(b);
-    }
-    actionsGroup.appendChild(favBtn);
-
     var themeBtn = makeBtn(themeIcon(), 'Alternar tema', function() {
       toggleTheme();
       themeBtn.innerHTML = themeIcon();
@@ -1400,9 +1540,6 @@ function createHeader(type, payload) {
     ctxBox.className = 'hdr-ctx-box';
     ctxBox.innerHTML = '<span class="hdr-ctx-title">' + (payload.title || 'Módulo de Treino') + '</span><span class="hdr-ctx-sub"><span class="hdr-pill-badge" style="background:#FF9F1C; color:#000;">MÓDULO ' + (payload.num || '01') + '</span>' + (payload.count ? '<span>• ' + payload.count + ' Exercícios</span>' : '') + '</span>';
     header.appendChild(ctxBox);
-
-    var searchBtnSec = makeBtn(ICON.search, 'Buscar', function() { go('buscar'); });
-    actionsGroup.appendChild(searchBtnSec);
 
     var themeBtnSec = makeBtn(themeIcon(), 'Alternar tema', function() {
       toggleTheme();
@@ -1431,33 +1568,13 @@ function createHeader(type, payload) {
       favBtnEx.classList.toggle('active-fav', nowFav);
     }, isFav ? 'active-fav' : '');
     actionsGroup.appendChild(favBtnEx);
-
-    var shareBtn = makeBtn('<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>', 'Compartilhar treino', function() {
-      if (navigator.share) {
-        navigator.share({ title: ex ? ex.nome : 'Treino', text: 'Treino de Vôlei de Praia: ' + (ex ? ex.nome : '') + ' (' + (ex ? ex.codigo : '') + ')', url: location.href });
-      } else {
-        navigator.clipboard.writeText(location.href);
-        alert('Link do treino copiado!');
-      }
-    });
-    actionsGroup.appendChild(shareBtn);
     header.appendChild(actionsGroup);
 
   } else if (type === 'buscar') {
-    var backBtnB = makeBtn(ICON.chevL, 'Voltar', function() { if (history.length > 1) history.back(); else go('home'); });
-    header.appendChild(backBtnB);
-
-    var searchWrap = document.createElement('div');
-    searchWrap.className = 'hdr-search-wrap';
-    searchWrap.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:18px; height:18px; color:#FF9F1C;"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><input type="text" id="hdr-search-input" placeholder="Buscar 240 treinos, fundamentos, táticas..." value="' + (payload.initialQuery || '') + '" autofocus>';
-    header.appendChild(searchWrap);
-
-    var inputEl = searchWrap.querySelector('input');
-    if (inputEl) {
-      inputEl.addEventListener('input', function(e) {
-        if (payload.onInput) payload.onInput(e.target.value);
-      });
-    }
+    var ctxBoxB = document.createElement('div');
+    ctxBoxB.className = 'hdr-ctx-box';
+    ctxBoxB.innerHTML = '<span class="hdr-ctx-title">Buscar Exercícios</span><span class="hdr-ctx-sub"><span class="hdr-pill-badge" style="background:#FF9F1C; color:#000;">CATÁLOGO</span><span>• 240 Treinos Práticos</span></span>';
+    header.appendChild(ctxBoxB);
 
     var themeBtnB = makeBtn(themeIcon(), 'Alternar tema', function() {
       toggleTheme();
@@ -1490,9 +1607,6 @@ function createHeader(type, payload) {
     ctxBoxA.className = 'hdr-ctx-box';
     ctxBoxA.innerHTML = '<span class="hdr-ctx-title">Modelos de Treino</span><span class="hdr-ctx-sub"><span class="hdr-pill-badge" style="background:#0284C7; color:#fff;">CRONOGRAMAS</span><span>• Estruturas de Aula</span></span>';
     header.appendChild(ctxBoxA);
-
-    var printBtn = makeBtn('<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>', 'Imprimir modelo de treino', function() { window.print(); });
-    actionsGroup.appendChild(printBtn);
 
     var themeBtnA = makeBtn(themeIcon(), 'Alternar tema', function() {
       toggleTheme();
@@ -1536,6 +1650,7 @@ function createHeader(type, payload) {
 
   return header;
 }
+
 
 
 /* ===== VIEWS ===== */
@@ -1832,49 +1947,103 @@ function renderEx(num) {
 
 /* ---- BUSCAR ---- */
 let searchTimeout = null;
+
 function renderBuscar() {
   const frag = document.createDocumentFragment();
-  const bar = document.createElement('div');
-  bar.className = 'top-bar';
-  bar.innerHTML = `<h1>Buscar</h1>`;
-  const themeBtn = document.createElement('button');
-  themeBtn.className = 'theme-btn'; themeBtn.innerHTML = themeIcon();
-  themeBtn.addEventListener('click', toggleTheme);
-  bar.appendChild(themeBtn);
-  frag.appendChild(bar);
+  frag.appendChild(createHeader('buscar'));
 
   const page = document.createElement('div');
   page.className = 'page';
 
-  const sw = document.createElement('div');
-  sw.className = 'search-wrap';
-  sw.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>`;
-  const inp = document.createElement('input');
-  inp.type = 'text'; inp.className = 'search-input';
-  inp.placeholder = 'Nome, objetivo, material...';
-  const saved = lsGet('searchq', '');
-  if (saved) inp.value = saved;
-  sw.appendChild(inp);
-  page.appendChild(sw);
+  // Search card panel
+  const panel = document.createElement('div');
+  panel.className = 'search-header-panel';
+
+  const barModern = document.createElement('div');
+  barModern.className = 'search-bar-modern';
+  barModern.innerHTML = `
+    <svg class="search-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+      <circle cx="11" cy="11" r="8"/>
+      <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+    </svg>
+    <input type="text" class="search-input-modern" placeholder="Buscar por nome, fundamento, material, código..." value="${escHtml(lsGet('searchq', ''))}">
+    <button class="search-clear-btn" style="display:${lsGet('searchq', '') ? 'flex' : 'none'};" title="Limpar">✕</button>
+  `;
+  panel.appendChild(barModern);
+
+  const inp = barModern.querySelector('input');
+  const clearBtn = barModern.querySelector('.search-clear-btn');
+
+  // Quick category tags
+  const tagsWrap = document.createElement('div');
+  tagsWrap.className = 'quick-tags-scroll';
+  const quickTags = [
+    { label: 'Todos', query: '' },
+    { label: '🏐 Saque', query: 'saque' },
+    { label: '🤲 Manchete', query: 'manchete' },
+    { label: '✋ Toque', query: 'toque' },
+    { label: '💥 Ataque', query: 'ataque' },
+    { label: '🛡️ Bloqueio & Defesa', query: 'bloqueio' },
+    { label: '💨 Vento', query: 'vento' },
+    { label: '👥 Treino em Dupla', query: 'dupla' }
+  ];
+
+  function renderTags(activeQ) {
+    tagsWrap.innerHTML = '';
+    quickTags.forEach(tag => {
+      const btn = document.createElement('button');
+      btn.className = 'quick-tag-chip' + ((tag.query === '' && !activeQ) || (tag.query && activeQ.toLowerCase().includes(tag.query)) ? ' active' : '');
+      btn.textContent = tag.label;
+      btn.addEventListener('click', () => {
+        inp.value = tag.query;
+        clearBtn.style.display = tag.query ? 'flex' : 'none';
+        lsSet('searchq', tag.query);
+        renderTags(tag.query);
+        doSearch(tag.query, results);
+      });
+      tagsWrap.appendChild(btn);
+    });
+  }
+  renderTags(inp.value);
+  panel.appendChild(tagsWrap);
+  page.appendChild(panel);
+
+  // Meta bar showing count
+  const metaBar = document.createElement('div');
+  metaBar.className = 'search-meta-bar';
+  metaBar.innerHTML = '<span id="search-count-label">240 exercícios disponíveis</span><span>Filtro por nível:</span>';
+  page.appendChild(metaBar);
 
   // Level chips
   const results = document.createElement('div');
   results.className = 'search-results';
+
   const chips = renderLevelChips(() => doSearch(inp.value, results));
   page.appendChild(chips);
   page.appendChild(results);
 
+  // Input event listener
   inp.addEventListener('input', () => {
-    lsSet('searchq', inp.value);
+    const val = inp.value;
+    clearBtn.style.display = val ? 'flex' : 'none';
+    lsSet('searchq', val);
+    renderTags(val);
     clearTimeout(searchTimeout);
-    searchTimeout = setTimeout(() => doSearch(inp.value, results), 200);
+    searchTimeout = setTimeout(() => doSearch(val, results), 150);
   });
 
-  // Mostra a lista completa já ao abrir; a busca só refina
-  doSearch(saved, results);
+  // Clear button listener
+  clearBtn.addEventListener('click', () => {
+    inp.value = '';
+    clearBtn.style.display = 'none';
+    lsSet('searchq', '');
+    renderTags('');
+    doSearch('', results);
+    inp.focus();
+  });
 
+  doSearch(inp.value, results);
   frag.appendChild(page);
-
   setTimeout(() => inp.focus(), 100);
   return frag;
 }
@@ -1887,27 +2056,45 @@ function doSearch(q, container) {
         e.nome.toLowerCase().includes(t) ||
         e.objetivo.toLowerCase().includes(t) ||
         e.material.toLowerCase().includes(t) ||
-        e.codigo.toLowerCase().includes(t))
+        (e.codigo && e.codigo.toLowerCase().includes(t)))
     : EX;
-  // Atualiza os números dos filtros para refletir o resultado da busca
+
+  // Atualiza números dos chips
   (container.parentElement || document).querySelectorAll('.level-chips .chip').forEach(btn => {
     const v = btn.dataset.val;
     const n = v ? matches.filter(e => e.nivel === v).length : matches.length;
-    btn.querySelector('.chip-count').textContent = n;
+    const countEl = btn.querySelector('.chip-count');
+    if (countEl) countEl.textContent = n;
     btn.disabled = !!v && n === 0 && levelFilter !== v;
   });
+
   let results = levelFilter ? matches.filter(e => e.nivel === levelFilter) : matches;
 
+  // Update counter label
+  const countLabel = document.getElementById('search-count-label');
+  if (countLabel) {
+    countLabel.textContent = results.length + ' exercício' + (results.length === 1 ? '' : 's') + ' encontrado' + (results.length === 1 ? '' : 's');
+  }
+
   if (!results.length) {
-    container.innerHTML = `<div class="search-empty"><div class="empty-icon">😕</div>Nenhum resultado para "${escHtml(q)}"</div>`;
+    container.innerHTML = `
+      <div class="search-empty-state">
+        <div class="search-empty-icon">🏐</div>
+        <div class="search-empty-title">Nenhum treino encontrado</div>
+        <div class="search-empty-sub">Não encontramos exercícios para "${escHtml(q)}". Tente outras palavras ou limpe a busca.</div>
+        <button class="search-reset-btn" onclick="const inp=document.querySelector('.search-input-modern'); if(inp){inp.value=''; inp.dispatchEvent(new Event('input'));}">Limpar Busca</button>
+      </div>
+    `;
     return;
   }
+
   const list = document.createElement('div');
   list.className = 'ex-list';
   let shown = 0;
   const lote = 40;
   const more = document.createElement('button');
   more.className = 'mais-btn';
+
   function mostrarMais() {
     for (const ex of results.slice(shown, shown + lote)) list.appendChild(renderExCard(ex));
     shown = Math.min(shown + lote, results.length);
@@ -1915,11 +2102,13 @@ function doSearch(q, container) {
     more.textContent = `Mostrar mais ${Math.min(rest, lote)} de ${rest} restantes`;
     more.style.display = rest > 0 ? '' : 'none';
   }
+
   more.addEventListener('click', mostrarMais);
   container.appendChild(list);
   container.appendChild(more);
   mostrarMais();
 }
+
 
 /* ---- FAVORITOS ---- */
 function renderFavoritos() {
