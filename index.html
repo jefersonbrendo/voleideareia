@@ -1504,6 +1504,53 @@ function nivelAjudaEl() {
 
 
 
+
+function toggleFavorite(num) {
+  if (favorites.has(num)) {
+    favorites.delete(num);
+  } else {
+    favorites.add(num);
+  }
+  saveFavs();
+  updateNavBadge();
+}
+
+function topBar(title, opts) {
+  if (!opts) opts = {};
+  if (opts.logo) return createHeader('home');
+  var header = document.createElement('header');
+  header.className = 'top-bar';
+
+  if (opts.back) {
+    var b = document.createElement('button');
+    b.className = 'hdr-btn';
+    b.setAttribute('aria-label', 'Voltar');
+    b.innerHTML = ICON.chevL;
+    b.addEventListener('click', opts.back);
+    header.appendChild(b);
+  }
+
+  var ctxBox = document.createElement('div');
+  ctxBox.className = 'hdr-ctx-box';
+  ctxBox.innerHTML = '<span class="hdr-ctx-title">' + (title || 'Código da Areia') + '</span>';
+  header.appendChild(ctxBox);
+
+  var actions = document.createElement('div');
+  actions.className = 'hdr-actions-group';
+  if (opts.right) {
+    actions.appendChild(opts.right);
+  } else {
+    var t = document.createElement('button');
+    t.className = 'hdr-btn';
+    t.setAttribute('aria-label', 'Alternar tema');
+    t.innerHTML = themeIcon();
+    t.addEventListener('click', function() { toggleTheme(); t.innerHTML = themeIcon(); });
+    actions.appendChild(t);
+  }
+  header.appendChild(actions);
+  return header;
+}
+
 function createHeader(type, payload) {
   if (!payload) payload = {};
   var header = document.createElement('header');
@@ -1851,7 +1898,7 @@ function renderEx(num) {
     if (favorites.has(num)) favorites.delete(num); else favorites.add(num);
     saveFavs(); favBtn.classList.toggle('active'); favLabel(); updateNavBadge();
   });
-  frag.appendChild(topBar(secNome, { back: () => go(`secao-${ex.secao}`), right: favBtn }));
+  frag.appendChild(createHeader('ex', { ex: ex }));
 
   const page = document.createElement('div');
   page.className = 'page ex-page';
