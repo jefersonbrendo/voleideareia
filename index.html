@@ -780,6 +780,85 @@ body { padding-bottom: calc(64px + env(safe-area-inset-bottom, 0px)); }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { transition: none !important; animation: none !important; }
 }
+
+/* ===== SEM FOTOS: banner, ícones e diagramas ===== */
+.g-prep { --g1: #FF9F1C; --g2: #F07B0F; --g-ink: #0F172A; }
+.g-fund { --g1: #0E4B75; --g2: #0A3757; --g-ink: #FFFFFF; }
+.g-jogo { --g1: #0284C7; --g2: #036AA0; --g-ink: #FFFFFF; }
+.g-solo { --g1: #FF4A3F; --g2: #E2332A; --g-ink: #FFFFFF; }
+
+.quadra-bg {
+  position: absolute; inset: 0; width: 100%; height: 100%;
+  fill: none; stroke: currentColor; stroke-width: 2; opacity: 0.16; pointer-events: none;
+}
+.quadra-bg circle { fill: currentColor; }
+
+.banner {
+  position: relative; overflow: hidden; border-radius: 18px;
+  background: linear-gradient(140deg, #0E4B75 0%, #0A3757 60%, #08304D 100%);
+  color: #fff; padding: 22px 20px 20px;
+}
+.banner .quadra-bg { opacity: 0.12; }
+.banner::after {
+  content: ''; position: absolute; right: -40px; bottom: -60px; width: 180px; height: 180px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(255,159,28,0.55), rgba(255,159,28,0) 70%);
+  pointer-events: none;
+}
+.banner-txt { position: relative; z-index: 1; }
+.banner-title {
+  font-family: 'Bebas Neue', 'Inter', sans-serif;
+  font-size: 2.35rem; line-height: 0.95; letter-spacing: 0.01em; max-width: 12ch;
+}
+.banner p { font-size: 0.86rem; line-height: 1.45; opacity: 0.85; margin: 10px 0 16px; max-width: 34ch; }
+.banner-cta {
+  display: inline-flex; align-items: center; gap: 6px;
+  height: 42px; padding: 0 16px; border-radius: 12px;
+  background: var(--coral); color: #fff; font-weight: 700; font-size: 0.86rem;
+}
+.banner-cta svg { width: 16px; height: 16px; }
+.banner-cta:active { transform: scale(0.97); }
+
+.sec-tile-top {
+  position: relative; overflow: hidden; height: 88px;
+  background: linear-gradient(150deg, var(--g1), var(--g2));
+  color: var(--g-ink);
+  display: flex; align-items: flex-end; justify-content: space-between; padding: 10px 12px;
+}
+.sec-tile-top .sec-ico { width: 34px; height: 34px; position: relative; }
+.sec-abrev { position: relative; font-family: 'Bebas Neue', sans-serif; font-size: 1.05rem; letter-spacing: 0.06em; opacity: 0.7; }
+.sec-tile { border-color: transparent; box-shadow: 0 1px 2px rgba(15,23,42,0.06), 0 4px 14px rgba(15,23,42,0.05); }
+
+.secao-band {
+  position: relative; overflow: hidden; border-radius: 18px; margin-bottom: 14px;
+  background: linear-gradient(150deg, var(--g1), var(--g2)); color: var(--g-ink);
+  padding: 18px 16px;
+}
+.secao-band-row { position: relative; display: flex; align-items: center; gap: 14px; }
+.secao-band-ico {
+  width: 56px; height: 56px; border-radius: 16px; flex-shrink: 0;
+  background: rgba(255,255,255,0.16); display: flex; align-items: center; justify-content: center;
+}
+.g-prep .secao-band-ico { background: rgba(15,23,42,0.08); }
+.secao-band-ico svg { width: 32px; height: 32px; }
+.secao-band-nome { font-family: 'Bebas Neue', sans-serif; font-size: 1.9rem; line-height: 1; letter-spacing: 0.01em; }
+.secao-band-resumo { font-size: 0.8rem; opacity: 0.85; margin-top: 4px; }
+
+.thumb-diag { background: #F2D27A; border: none; }
+.thumb-diag img { object-position: 45% 50%; }
+.thumb-diag.sem-img { background: var(--bg-chip); }
+
+.diag-hero {
+  margin: 0; border-radius: 16px; overflow: hidden;
+  background: #F6DB8A; border: 1px solid var(--border);
+}
+.diag-hero img { display: block; width: 100%; height: auto; }
+.diag-hero figcaption {
+  display: flex; align-items: center; gap: 6px;
+  padding: 8px 12px; font-size: 12px; font-weight: 600;
+  background: var(--bg-card); color: var(--text-sec);
+}
+.diag-hero figcaption svg { width: 15px; height: 15px; color: var(--ceu); }
+.ex-hero .foto + .diag-hero { margin-top: 10px; }
 </style>
 </head>
 <body>
@@ -922,11 +1001,40 @@ const ICON = {
   layers: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>',
 };
 
+// Mostra a foto só se ela estiver cadastrada em FOTOS; senão não ocupa espaço
 function fotoSlot(key, label, cls = '') {
   const src = FOTOS[key];
-  if (src) return `<figure class="foto ${cls}"><img src="${src}" alt="${escHtml(label)}" loading="lazy"></figure>`;
-  return `<figure class="foto foto-vazia ${cls}" data-foto="${key}" aria-label="Espaço para foto: ${escHtml(label)}">${ICON.camera}<figcaption>${escHtml(label)}</figcaption></figure>`;
+  return src ? `<figure class="foto ${cls}"><img src="${src}" alt="${escHtml(label)}" loading="lazy"></figure>` : '';
 }
+function diagramaThumb(num) {
+  const k = String(num).padStart(3, '0');
+  return `<figure class="foto r-1x1 mini thumb-diag"><img src="/gem/thumbs/${k}.webp" alt="" loading="lazy" onerror="this.parentElement.classList.add('sem-img');this.remove()"></figure>`;
+}
+
+/* Ícones de cada fundamento (desenho em linha) */
+const SEC_ICON = {
+  1: '<path d="M12 22c4 0 7-2.7 7-7 0-3.5-2.3-5.6-3.6-7.6-.4 2-1.4 3.2-2.6 3.6.4-3.4-1.2-6.5-4-8 .3 3.2-1.3 5.2-2.8 7C4.8 11.6 5 13 5 15c0 4.3 3 7 7 7z"/><path d="M12 22c-1.7 0-3-1.3-3-3.2 0-1.8 1.4-2.8 2.2-4 .3 1 .9 1.6 1.6 1.8.8-1.2 2.2-.2 2.2 2.2 0 1.9-1.3 3.2-3 3.2z"/>',
+  2: '<path d="M5 18c-1.7 0-2.5-1.6-2-3.6l1-4C4.5 8.6 6 8 7 8.5s1.3 1.7 1 3.2l-1 4.3c-.3 1.3-1 2-2 2z"/><path d="M15 12c-1 0-1.7-.7-2-2l-1-4.3c-.3-1.5 0-2.7 1-3.2s2.5.1 3 1.9l1 4c.5 2-.3 3.6-2 3.6z"/><path d="M18 21h4m-2-2 2 2-2 2"/>',
+  3: '<circle cx="12" cy="12" r="10"/><path d="M11.1 7.1a16.55 16.55 0 0 1 10.9 4"/><path d="M12 12a12.6 12.6 0 0 1-8.7 5"/><path d="M16.8 13.6a16.55 16.55 0 0 1-9 7.5"/><path d="M20.7 17a12.8 12.8 0 0 0-8.7-5 13.3 13.3 0 0 1 0-10"/><path d="M6.3 3.8a16.55 16.55 0 0 0 1.9 11.5"/>',
+  4: '<path d="M4 14l8 6 8-6"/><path d="M4 9l8 6 8-6"/><circle cx="12" cy="4" r="2"/>',
+  5: '<path d="M3 17h18"/><path d="M6 17l3-4h6l3 4"/><circle cx="12" cy="6" r="3"/><path d="M12 9v2"/>',
+  6: '<circle cx="12" cy="5" r="3"/><path d="M6 21v-5c0-1 .5-2 1.5-2.5L10 12"/><path d="M18 21v-5c0-1-.5-2-1.5-2.5L14 12"/><path d="M9 11l3-2 3 2"/>',
+  7: '<path d="M13 2 4 14h7l-1 8 9-12h-7l1-8z"/>',
+  8: '<path d="M2 20h20"/><path d="M12 20V4"/><path d="M7 4v6a2 2 0 0 0 2 2"/><path d="M17 4v6a2 2 0 0 1-2 2"/><path d="M5 6h4M15 6h4"/>',
+  9: '<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/>',
+  10: '<path d="M21 12a9 9 0 0 1-15 6.7L3 16"/><path d="M3 21v-5h5"/><path d="M3 12a9 9 0 0 1 15-6.7L21 8"/><path d="M21 3v5h-5"/>',
+  11: '<path d="M3 11v2a1 1 0 0 0 1 1h3l6 5V5L7 10H4a1 1 0 0 0-1 1z"/><path d="M17 8.5a5 5 0 0 1 0 7"/><path d="M19.5 6a8.5 8.5 0 0 1 0 12"/>',
+  12: '<rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8l3 3m0-3-3 3"/><circle cx="15.5" cy="15.5" r="2"/><path d="M11 14c1-3 2-4 4-5"/>',
+  13: '<rect x="2" y="5" width="20" height="14" rx="1.5"/><path d="M12 5v14"/><path d="M2 12h20"/>',
+  14: '<path d="M6.5 6.5v11M17.5 6.5v11"/><path d="M3 9v6M21 9v6"/><path d="M6.5 12h11"/>',
+  15: '<circle cx="9" cy="7" r="3.5"/><path d="M2.5 21v-1.5A5.5 5.5 0 0 1 8 14h2a5.5 5.5 0 0 1 5.5 5.5V21"/><circle cx="18" cy="9" r="2.5"/><path d="M17 14.2a4.5 4.5 0 0 1 4.5 4.5V21"/>',
+};
+function secIcon(n, cls = '') {
+  return `<svg class="${cls}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${SEC_ICON[n] || ''}</svg>`;
+}
+const GRUPO_COR = { 1: 'g-prep', 2: 'g-prep', 14: 'g-prep', 3: 'g-fund', 4: 'g-fund', 5: 'g-fund', 6: 'g-fund', 7: 'g-fund', 8: 'g-fund', 9: 'g-fund', 10: 'g-jogo', 11: 'g-jogo', 12: 'g-jogo', 13: 'g-jogo', 15: 'g-solo' };
+// Linhas de quadra usadas como textura nos blocos coloridos
+const QUADRA_SVG = `<svg class="quadra-bg" viewBox="0 0 320 160" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><rect x="20" y="20" width="280" height="120" rx="2"/><line x1="160" y1="10" x2="160" y2="150"/><circle cx="160" cy="10" r="3"/><circle cx="160" cy="150" r="3"/></svg>`;
 
 /* Textos de apoio */
 const SECAO_DESC = {
@@ -975,7 +1083,7 @@ function renderExCard(ex, clickRoute, ordem) {
   const tempo = shortTempo(ex.tempo);
   const jog = shortJog(ex.jogadores);
   btn.innerHTML = `
-    ${fotoSlot('ex-' + ex.numero, 'Foto', 'r-1x1 mini')}
+    ${fotoSlot('ex-' + ex.numero, 'Foto', 'r-1x1 mini') || diagramaThumb(ex.numero)}
     <div class="ex-row-body">
       ${ordem ? `<div class="ex-ordem">${ordem}º exercício</div>` : ''}
       <div class="ex-row-nome">${ex.nome}</div>
@@ -1070,14 +1178,20 @@ function renderHome() {
   const hero = document.createElement('div');
   hero.className = 'hero';
   hero.innerHTML = `
-    ${fotoSlot('home', 'Foto de capa')}
-    <h2 class="hero-title">${EX.length} exercícios para treinar na areia</h2>
-    <p class="hero-text">Do aquecimento ao jogo: cada exercício tem montagem, passo a passo, erros comuns e variações.</p>
+    ${fotoSlot('home', 'Foto de capa') || `<div class="banner">
+      ${QUADRA_SVG}
+      <div class="banner-txt">
+        <h2 class="banner-title">${EX.length} exercícios para treinar na areia</h2>
+        <p>Do aquecimento ao jogo, com montagem, passo a passo, erros comuns e variações.</p>
+        <button class="banner-cta" data-go="secao-1">Começar pelo aquecimento ${ICON.chevR}</button>
+      </div>
+    </div>`}
     <ol class="passos">
       <li><b>1</b>Escolha o fundamento que quer treinar</li>
       <li><b>2</b>Filtre pelo nível do aluno ou da dupla</li>
       <li><b>3</b>Siga o passo a passo e avance ao bater a meta</li>
     </ol>`;
+  hero.querySelectorAll('[data-go]').forEach(b => b.addEventListener('click', () => go(b.dataset.go)));
   page.appendChild(hero);
 
   // Busca
@@ -1148,9 +1262,9 @@ function renderGrupos(wrap) {
       const sec = SECOES.find(s => s.n === n);
       const qtd = exInSecao(n).length;
       const t = document.createElement('button');
-      t.className = 'sec-tile' + (qtd ? '' : ' vazio');
+      t.className = 'sec-tile ' + GRUPO_COR[n] + (qtd ? '' : ' vazio');
       t.innerHTML = `
-        ${fotoSlot('secao-' + n, sec.nome)}
+        ${fotoSlot('secao-' + n, sec.nome) || `<div class="sec-tile-top">${QUADRA_SVG}${secIcon(n, 'sec-ico')}<span class="sec-abrev">${sec.abrev}</span></div>`}
         <div class="sec-tile-body">
           <span class="sec-tile-nome">${sec.nome}</span>
           <span class="sec-tile-count">${qtd} exercício${qtd === 1 ? '' : 's'}${levelFilter ? ' · ' + levelFilter.toLowerCase() : ''}</span>
@@ -1164,6 +1278,13 @@ function renderGrupos(wrap) {
 }
 
 /* ---- SEÇÃO ---- */
+function resumoNiveis(n) {
+  const all = EX.filter(e => e.secao === n);
+  const c = v => all.filter(e => e.nivel === v).length;
+  const partes = [['Iniciante', 'iniciante'], ['Intermediário', 'intermediário'], ['Avançado', 'avançado']]
+    .filter(([v]) => c(v)).map(([v, l]) => `${c(v)} ${l}`);
+  return `${all.length} exercícios: ${partes.join(', ')}`;
+}
 function renderSecao(n) {
   const frag = document.createDocumentFragment();
   const sec = SECOES.find(s => s.n === n);
@@ -1175,6 +1296,16 @@ function renderSecao(n) {
   page.insertAdjacentHTML('beforeend', `
     <div class="secao-intro">
       ${fotoSlot('secao-' + n, 'Foto da seção ' + nome, 'r-wide')}
+      <div class="secao-band ${GRUPO_COR[n]}">
+        ${QUADRA_SVG}
+        <div class="secao-band-row">
+          <span class="secao-band-ico">${secIcon(n)}</span>
+          <div>
+            <h2 class="secao-band-nome">${nome}</h2>
+            <p class="secao-band-resumo">${resumoNiveis(n)}</p>
+          </div>
+        </div>
+      </div>
       <p class="secao-desc">${SECAO_DESC[n] || ''}</p>
       <p class="dica">Os exercícios estão em ordem de dificuldade. Comece pelo primeiro e avance quando bater a meta indicada.</p>
     </div>`);
@@ -1242,7 +1373,9 @@ function renderEx(num) {
       <div class="progresso-txt"><span>Exercício ${idx + 1} de ${secExs.length} em ${secNome}</span><span>${ex.codigo}</span></div>
       <div class="progresso-barra"><i style="width:${(idx + 1) / secExs.length * 100}%"></i></div>
     </div>
-    <div class="ex-hero">${fotoSlot('ex-' + num, 'Foto do exercício')}</div>
+    <div class="ex-hero">${fotoSlot('ex-' + num, 'Foto do exercício')}
+      <figure class="diag-hero"><img src="/gem/diagrams/${String(num).padStart(3, '0')}.png" alt="Diagrama da quadra: ${escHtml(ex.nome)}"><figcaption>${ICON.map} Montagem na quadra</figcaption></figure>
+    </div>
     <h2 class="ex-titulo">${ex.nome}</h2>
     <div class="ex-sub">${nivelBadge(ex.nivel)}</div>
     <div class="info-grid">
@@ -1283,14 +1416,10 @@ function renderEx(num) {
     let h = '';
     if (exTab === 'fazer') {
       h += bloco(ICON.target, 'Objetivo', caixa('caixa-objetivo', ex.objetivo));
-      h += bloco(ICON.map, 'Diagrama da quadra', `<div class="diagrama-box"><img src="/gem/diagrams/${imgKey}.png" alt="Diagrama: ${escHtml(ex.nome)}" loading="lazy"></div>`);
       h += bloco(ICON.tool, 'Como montar', p(ex.comoMontar));
       h += bloco(ICON.list, 'Passo a passo', passos);
-      h += bloco(ICON.image, 'Fotos da execução', `<div class="fotos-passos">
-          ${fotoSlot(`ex-${num}-inicio`, 'Posição inicial')}
-          ${fotoSlot(`ex-${num}-execucao`, 'Execução')}
-          ${fotoSlot(`ex-${num}-final`, 'Finalização')}
-        </div>`);
+      const fotosExec = fotoSlot(`ex-${num}-inicio`, 'Posição inicial') + fotoSlot(`ex-${num}-execucao`, 'Execução') + fotoSlot(`ex-${num}-final`, 'Finalização');
+      if (fotosExec) h += bloco(ICON.image, 'Fotos da execução', `<div class="fotos-passos">${fotosExec}</div>`);
       h += bloco(ICON.flag, 'Meta para avançar', caixa('caixa-meta', ex.meta));
     } else if (exTab === 'corrigir') {
       h += bloco(ICON.alert, 'Pontos de atenção', bullets);
@@ -1304,14 +1433,11 @@ function renderEx(num) {
       if (!h) h = '<div class="search-empty">Sem variações cadastradas para este exercício.</div>';
     }
     conteudo.innerHTML = h;
-    const img = conteudo.querySelector('.diagrama-box img');
-    if (img) img.onerror = function () {
-      const box = this.parentElement;
-      if (ex.descricaoDiagrama) { box.innerHTML = `<p class="diag-fallback">${escHtml(ex.descricaoDiagrama)}</p>`; box.classList.add('caixa'); }
-      else box.closest('.bloco').remove();
-    };
+
   }
   pintarAba();
+  const dImg = page.querySelector('.diag-hero img');
+  dImg.onerror = function () { this.closest('.diag-hero').remove(); };
   frag.appendChild(page);
 
   // Barra de ação fixa
@@ -1514,7 +1640,7 @@ function renderAulas() {
     if (activeTab === 'modelo') {
       const cores = ['var(--azul)', 'var(--ceu)', 'var(--laranja)', 'var(--coral)'];
       body.insertAdjacentHTML('beforeend', `${fotoSlot('aulas', 'Foto de uma aula')}
-        <p class="bloco-sub" style="margin:14px 0 6px">Uma aula de 60 minutos dividida em 4 blocos. Toque numa seção para escolher os exercícios.</p>
+        <p class="bloco-sub" style="margin:0 0 6px">Uma aula de 60 minutos dividida em 4 blocos. Toque numa seção para escolher os exercícios.</p>
         <div class="tempo-barra">${MODELO_60.map((b, i) => `<i style="flex:${parseInt(b.time)};background:${cores[i]}"></i>`).join('')}</div>`);
       for (const bloco of MODELO_60) {
         const card = document.createElement('div');
