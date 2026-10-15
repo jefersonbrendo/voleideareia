@@ -189,6 +189,7 @@ input { font: inherit; }
 .chip-int.active { background: var(--c-int); color: #fff; border-color: var(--c-int); }
 .chip-ava.active { background: var(--c-ava); color: #fff; border-color: var(--c-ava); }
 .chip-all.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+.chip:disabled { opacity: 0.4; cursor: default; }
 
 /* ===== SECTION LIST ===== */
 .section-grid { display: flex; flex-direction: column; margin-top: 8px; }
@@ -984,14 +985,15 @@ function renderExCard(ex, clickRoute, ordem) {
   return btn;
 }
 
-function renderLevelChips(onChange) {
+// pool = exercícios que a tela realmente mostra, para os números baterem com a lista
+function renderLevelChips(onChange, pool = EX) {
   const wrap = document.createElement('div');
   wrap.className = 'level-chips';
   const counts = {
-    '': EX.length,
-    'Iniciante': EX.filter(e => e.nivel === 'Iniciante').length,
-    'Intermediário': EX.filter(e => e.nivel === 'Intermediário').length,
-    'Avançado': EX.filter(e => e.nivel === 'Avançado').length,
+    '': pool.length,
+    'Iniciante': pool.filter(e => e.nivel === 'Iniciante').length,
+    'Intermediário': pool.filter(e => e.nivel === 'Intermediário').length,
+    'Avançado': pool.filter(e => e.nivel === 'Avançado').length,
   };
   const opts = [
     ['', 'Todos', 'chip-all'],
@@ -1004,6 +1006,7 @@ function renderLevelChips(onChange) {
     btn.className = `chip ${cls}${levelFilter === val ? ' active' : ''}`;
     btn.dataset.val = val;
     btn.innerHTML = `${label}<span class="chip-count">${counts[val]}</span>`;
+    if (val && !counts[val]) { btn.disabled = true; btn.title = 'Nenhum exercício deste nível aqui'; }
     btn.addEventListener('click', () => {
       levelFilter = val;
       lsSet('level', val);
@@ -1172,7 +1175,7 @@ function renderSecao(n) {
     </div>`);
 
   const exList = document.createElement('div');
-  const chips = renderLevelChips(() => renderExList(exList, n));
+  const chips = renderLevelChips(() => renderExList(exList, n), EX.filter(e => e.secao === n));
   page.appendChild(chips);
   renderExList(exList, n);
   page.appendChild(exList);
@@ -1374,14 +1377,21 @@ function renderBuscar() {
 function doSearch(q, container) {
   container.innerHTML = '';
   const t = q.trim().toLowerCase();
-  let pool = levelFilter ? EX.filter(e => e.nivel === levelFilter) : EX;
-  let results = t
-    ? pool.filter(e =>
+  const matches = t
+    ? EX.filter(e =>
         e.nome.toLowerCase().includes(t) ||
         e.objetivo.toLowerCase().includes(t) ||
         e.material.toLowerCase().includes(t) ||
         e.codigo.toLowerCase().includes(t))
-    : pool;
+    : EX;
+  // Atualiza os números dos filtros para refletir o resultado da busca
+  document.querySelectorAll('.level-chips .chip').forEach(btn => {
+    const v = btn.dataset.val;
+    const n = v ? matches.filter(e => e.nivel === v).length : matches.length;
+    btn.querySelector('.chip-count').textContent = n;
+    btn.disabled = !!v && n === 0 && levelFilter !== v;
+  });
+  let results = levelFilter ? matches.filter(e => e.nivel === levelFilter) : matches;
 
   if (!results.length) {
     container.innerHTML = `<div class="search-empty"><div class="empty-icon">😕</div>Nenhum resultado para "${escHtml(q)}"</div>`;
