@@ -2032,13 +2032,13 @@ function renderBuscar() {
   tagsWrap.className = 'quick-tags-scroll';
   const quickTags = [
     { label: 'Todos', query: '' },
-    { label: '🏐 Saque', query: 'saque' },
-    { label: '🤲 Manchete', query: 'manchete' },
-    { label: '✋ Toque', query: 'toque' },
-    { label: '💥 Ataque', query: 'ataque' },
-    { label: '🛡️ Bloqueio & Defesa', query: 'bloqueio' },
-    { label: '💨 Vento', query: 'vento' },
-    { label: '👥 Treino em Dupla', query: 'dupla' }
+    { label: 'Saque', query: 'saque' },
+    { label: 'Manchete', query: 'manchete' },
+    { label: 'Toque', query: 'toque' },
+    { label: 'Ataque', query: 'ataque' },
+    { label: 'Bloqueio & Defesa', query: 'bloqueio' },
+    { label: 'Vento', query: 'vento' },
+    { label: 'Treino em Dupla', query: 'dupla' }
   ];
 
   function renderTags(activeQ) {
@@ -2132,7 +2132,7 @@ function doSearch(q, container) {
   if (!results.length) {
     container.innerHTML = `
       <div class="search-empty-state">
-        <div class="search-empty-icon">🏐</div>
+        <div class="search-empty-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:28px; height:28px; color:var(--text-muted);"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
         <div class="search-empty-title">Nenhum treino encontrado</div>
         <div class="search-empty-sub">Não encontramos exercícios para "${escHtml(q)}". Tente outras palavras ou limpe a busca.</div>
         <button class="search-reset-btn" onclick="const inp=document.querySelector('.search-input-modern'); if(inp){inp.value=''; inp.dispatchEvent(new Event('input'));}">Limpar Busca</button>
