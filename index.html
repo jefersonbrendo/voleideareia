@@ -1211,6 +1211,13 @@ body { padding-bottom: calc(64px + env(safe-area-inset-bottom, 0px)); }
   cursor: pointer;
 }
 
+
+/* Hide exercise counts on home tab */
+.page-home .sec-tile-count,
+.page-home .chip-count {
+  display: none !important;
+}
+
 </style>
 </head>
 <body>
@@ -1708,7 +1715,7 @@ function renderHome() {
   frag.appendChild(createHeader('home'));
 
   const page = document.createElement('div');
-  page.className = 'page';
+  page.className = 'page page-home';
 
   const hero = document.createElement('div');
   hero.className = 'hero';
@@ -1716,7 +1723,7 @@ function renderHome() {
     ${fotoSlot('home', 'Foto de capa') || `<div class="banner">
       ${QUADRA_SVG}
       <div class="banner-txt">
-        <h2 class="banner-title">${EX.length} exercícios para treinar na areia</h2>
+        <h2 class="banner-title">Exercícios para treinar na areia</h2>
         <p>Do aquecimento ao jogo, com montagem, passo a passo, erros comuns e variações.</p>
         <button class="banner-cta" data-go="secao-1">Começar pelo aquecimento ${ICON.chevR}</button>
       </div>
@@ -1750,7 +1757,7 @@ function renderHome() {
   const atalhos = [
     ['aulas', 'at-azul', ICON.calendar, 'Montar aula de 60 min'],
     ['secao-15', 'at-ceu', ICON.user, 'Treinar sozinho ou em dupla'],
-    ['favoritos', 'at-coral', ICON.heart, nFav ? `Meus salvos (${nFav})` : 'Meus salvos'],
+    ['favoritos', 'at-coral', ICON.heart, 'Meus salvos'],
   ];
   for (const [route, cor, ico, label] of atalhos) {
     const b = document.createElement('button');
@@ -1768,7 +1775,7 @@ function renderHome() {
   const chips = renderLevelChips(() => {
     const novo = nivelAjudaEl(); ajuda.replaceWith(novo); ajuda = novo;
     renderGrupos(gruposWrap);
-  });
+  }, EX, false);
   page.appendChild(chips);
   page.appendChild(ajuda);
 
@@ -1802,7 +1809,6 @@ function renderGrupos(wrap) {
         ${fotoSlot('secao-' + n, sec.nome) || `<div class="sec-tile-top">${QUADRA_SVG}${secIcon(n, 'sec-ico')}<span class="sec-abrev">${sec.abrev}</span></div>`}
         <div class="sec-tile-body">
           <span class="sec-tile-nome">${sec.nome}</span>
-          <span class="sec-tile-count">${qtd} exercício${qtd === 1 ? '' : 's'}${levelFilter ? ' · ' + levelFilter.toLowerCase() : ''}</span>
           ${nivelBarra(n)}
         </div>`;
       t.addEventListener('click', () => go(`secao-${n}`));
