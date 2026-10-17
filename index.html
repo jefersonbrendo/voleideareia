@@ -10,6 +10,16 @@
   <meta property="og:description" content="Código da Areia - Vôlei de Praia" />
   <meta property="og:type" content="website" />
   <meta name="twitter:card" content="summary_large_image" />
+  
+  <link rel="manifest" href="/manifest.json" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="apple-mobile-web-app-title" content="Código da Areia" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+  <link rel="icon" type="image/svg+xml" href="/icon.svg" />
+  <link rel="icon" type="image/png" sizes="192x192" href="/pwa-192x192.png" />
+
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Bebas+Neue&display=swap" rel="stylesheet" />
@@ -1218,6 +1228,156 @@ body { padding-bottom: calc(64px + env(safe-area-inset-bottom, 0px)); }
   display: none !important;
 }
 
+
+/* ===== PWA INSTALL BANNER & PROMPTS ===== */
+.pwa-install-banner {
+  background: linear-gradient(135deg, #0E4B75 0%, #062842 100%);
+  border: 1.5px solid rgba(255, 159, 28, 0.4);
+  border-radius: 14px;
+  padding: 12px 14px;
+  margin: 12px 0 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  box-shadow: 0 4px 14px rgba(14, 75, 117, 0.25);
+  animation: slideDown 0.3s ease;
+}
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.pwa-banner-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+.pwa-banner-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #FF9F1C 0%, #FF4A3F 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  flex-shrink: 0;
+  box-shadow: 0 2px 6px rgba(255, 159, 28, 0.3);
+}
+.pwa-banner-icon svg {
+  width: 20px;
+  height: 20px;
+}
+.pwa-banner-texts {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+.pwa-banner-title {
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: #fff;
+  line-height: 1.2;
+}
+.pwa-banner-sub {
+  font-size: 0.74rem;
+  color: #CBD5E1;
+  margin-top: 2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.pwa-install-btn {
+  background: var(--coral, #FF4A3F);
+  color: #fff;
+  border: none;
+  font-size: 0.78rem;
+  font-weight: 700;
+  padding: 8px 14px;
+  border-radius: 10px;
+  cursor: pointer;
+  white-space: nowrap;
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  box-shadow: 0 2px 8px rgba(255, 74, 63, 0.35);
+  transition: transform 0.15s;
+}
+.pwa-install-btn:active {
+  transform: scale(0.96);
+}
+.pwa-ios-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.65);
+  z-index: 1000;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding: 16px;
+  backdrop-filter: blur(4px);
+}
+.pwa-ios-modal {
+  background: var(--bg-card, #fff);
+  color: var(--text, #0F172A);
+  border-radius: 18px;
+  width: 100%;
+  max-width: 440px;
+  padding: 22px 20px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  margin-bottom: max(20px, env(safe-area-inset-bottom, 20px));
+  position: relative;
+}
+.pwa-ios-modal h3 {
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.pwa-ios-steps {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin: 14px 0 18px;
+  font-size: 0.9rem;
+  color: var(--text-sec, #475569);
+}
+.pwa-ios-steps li {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  line-height: 1.4;
+}
+.pwa-ios-steps li b {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--azul, #0E4B75);
+  color: #fff;
+  font-size: 0.75rem;
+  flex-shrink: 0;
+}
+.pwa-ios-close-btn {
+  width: 100%;
+  background: var(--bg-chip, #EFEAE0);
+  color: var(--text, #0F172A);
+  border: none;
+  border-radius: 10px;
+  padding: 12px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
 </style>
 </head>
 <body>
@@ -1735,6 +1895,7 @@ function renderHome() {
     </ol>`;
   hero.querySelectorAll('[data-go]').forEach(b => b.addEventListener('click', () => go(b.dataset.go)));
   page.appendChild(hero);
+  setTimeout(renderPwaBanner, 50);
 
   // Busca
   const sw = document.createElement('div');
@@ -2439,6 +2600,110 @@ document.querySelector('.bottom-nav').addEventListener('click', ev => {
 });
 render();
 
-  </script>
+  
+
+/* ===== PWA SERVICE WORKER & INSTALL LOGIC ===== */
+let deferredPwaPrompt = null;
+let isAppStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
+
+// Register Service Worker
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/sw.js')
+      .then((reg) => console.log('PWA ServiceWorker ativo com escopo:', reg.scope))
+      .catch((err) => console.log('ServiceWorker falhou:', err));
+  });
+}
+
+// Capture install prompt
+window.addEventListener('beforeinstallprompt', (e) => {
+  e.preventDefault();
+  deferredPwaPrompt = e;
+  renderPwaBanner();
+});
+
+window.addEventListener('appinstalled', () => {
+  deferredPwaPrompt = null;
+  isAppStandalone = true;
+  const banner = document.querySelector('.pwa-install-banner');
+  if (banner) banner.remove();
+  console.log('App instalado com sucesso!');
+});
+
+function triggerPwaInstall() {
+  if (deferredPwaPrompt) {
+    deferredPwaPrompt.prompt();
+    deferredPwaPrompt.userChoice.then((choice) => {
+      if (choice.outcome === 'accepted') {
+        deferredPwaPrompt = null;
+        const banner = document.querySelector('.pwa-install-banner');
+        if (banner) banner.remove();
+      }
+    });
+  } else {
+    // Check if iOS
+    const isIOS = /iphone|ipad|ipod/.test(navigator.userAgent.toLowerCase());
+    if (isIOS) {
+      showIosInstallGuide();
+    } else {
+      alert('Para instalar o app:\n1. Toque nos 3 pontinhos do Chrome (canto superior direito)\n2. Toque em "Instalar aplicativo" ou "Adicionar à tela inicial"');
+    }
+  }
+}
+
+function showIosInstallGuide() {
+  const modal = document.createElement('div');
+  modal.className = 'pwa-ios-modal-overlay';
+  modal.id = 'pwa-ios-guide-modal';
+  modal.innerHTML = `
+    <div class="pwa-ios-modal">
+      <h3>Instalar no iPhone / iPad <button onclick="document.getElementById('pwa-ios-guide-modal').remove()" style="font-size:1.2rem; cursor:pointer;">✕</button></h3>
+      <ol class="pwa-ios-steps">
+        <li><b>1</b>Toque no ícone de <strong>Compartilhar</strong> (quadrado com seta para cima) na barra do Safari.</li>
+        <li><b>2</b>Role as opções e toque em <strong>"Adicionar à Tela de Início"</strong>.</li>
+        <li><b>3</b>Toque em <strong>"Adicionar"</strong> no canto superior direito para concluir.</li>
+      </ol>
+      <button class="pwa-ios-close-btn" onclick="document.getElementById('pwa-ios-guide-modal').remove()">Entendido</button>
+    </div>
+  `;
+  document.body.appendChild(modal);
+}
+
+function renderPwaBanner() {
+  if (isAppStandalone) return;
+  const page = document.querySelector('.page-home');
+  if (!page || document.querySelector('.pwa-install-banner')) return;
+
+  const banner = document.createElement('div');
+  banner.className = 'pwa-install-banner';
+  banner.innerHTML = `
+    <div class="pwa-banner-left">
+      <div class="pwa-banner-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+          <polyline points="7 10 12 15 17 10"/>
+          <line x1="12" y1="15" x2="12" y2="3"/>
+        </svg>
+      </div>
+      <div class="pwa-banner-texts">
+        <span class="pwa-banner-title">Instalar Código da Areia</span>
+        <span class="pwa-banner-sub">Acesse direto da tela inicial, rápido e offline</span>
+      </div>
+    </div>
+    <button class="pwa-install-btn" onclick="triggerPwaInstall()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" style="width:14px; height:14px;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+      Instalar
+    </button>
+  `;
+  // Insert at top of page right after hero
+  const hero = page.querySelector('.hero');
+  if (hero && hero.nextSibling) {
+    page.insertBefore(banner, hero.nextSibling);
+  } else {
+    page.prepend(banner);
+  }
+}
+
+</script>
 </body>
 </html>

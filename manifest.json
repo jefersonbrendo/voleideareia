@@ -1,0 +1,33 @@
+{
+  "id": "/",
+  "name": "Código da Areia - Vôlei de Praia",
+  "short_name": "CódigoAreia",
+  "description": "Guia prático e metodologia de treinamento de vôlei de praia com 240 exercícios, diagramas e táticas.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "theme_color": "#0E4B75",
+  "background_color": "#0E4B75",
+  "categories": ["sports", "education"],
+  "icons": [
+    {
+      "src": "/pwa-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/pwa-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/pwa-maskable-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}
