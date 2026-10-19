@@ -290,6 +290,29 @@ input { font: inherit; }
 .pl-seg-btn.on { background: var(--coral); color: #fff; box-shadow: 0 3px 8px rgba(255,74,63,.3); }
 .pl-hint { margin: 0; font-size: 12px; color: var(--text-muted); }
 
+.pl-stepper { display: flex; align-items: center; gap: 10px; }
+.pl-step-btn { width: 54px; height: 54px; flex-shrink: 0; border-radius: 16px; display: flex; align-items: center; justify-content: center;
+  background: var(--bg); border: 2px solid var(--border); color: var(--coral); }
+.pl-step-btn svg { width: 22px; height: 22px; }
+.pl-step-btn:active { transform: scale(.93); }
+.pl-stepper-input { flex: 1; min-width: 0; height: 54px; text-align: center; border-radius: 16px; border: 2px solid var(--border);
+  background: var(--bg); color: var(--text); font-family: 'Bebas Neue', 'Inter', sans-serif; font-size: 2.3rem; line-height: 1; -moz-appearance: textfield; }
+.pl-stepper-input::-webkit-outer-spin-button, .pl-stepper-input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+.pl-stepper-input:focus { outline: none; border-color: var(--accent); }
+.pl-stepper-wrap { display: flex; flex-direction: column; gap: 10px; }
+.pl-chips { display: flex; gap: 8px; flex-wrap: wrap; }
+.pl-chip-btn { padding: 8px 16px; border-radius: 999px; border: 1.5px solid var(--border); background: var(--bg); color: var(--text-sec); font-size: 13px; font-weight: 700; }
+.pl-chip-btn.on { background: var(--coral); border-color: var(--coral); color: #fff; }
+.pl-sub { display: flex; flex-direction: column; gap: 10px; padding-top: 6px; }
+.pl-switch-row { display: flex; align-items: center; gap: 14px; }
+.pl-switch-txt { flex: 1; display: flex; flex-direction: column; gap: 2px; }
+.pl-switch-txt strong { font-size: 14px; color: var(--text); }
+.pl-switch-txt span { font-size: 12px; line-height: 1.4; color: var(--text-muted); }
+.pl-switch { position: relative; flex-shrink: 0; width: 54px; height: 32px; border-radius: 999px; background: var(--bg-chip); border: 2px solid var(--border); transition: background .15s; }
+.pl-switch::after { content: ''; position: absolute; top: 3px; left: 3px; width: 22px; height: 22px; border-radius: 50%; background: #fff; box-shadow: 0 1px 3px rgba(15,23,42,.3); transition: transform .15s; }
+.pl-switch.on { background: var(--coral); border-color: var(--coral); }
+.pl-switch.on::after { transform: translateX(22px); }
+
 /* ===== PAGE CONTAINER ===== */
 .page {
   padding: 0 max(16px, env(safe-area-inset-left, 0px));
@@ -3173,16 +3196,24 @@ let _placarPendingConfig = null;
 let _wakeLock = null;
 let _plWrap = null;
 
-function sideChangeThreshold(pts) { return pts===21?7:pts===15?5:4; }
-function shouldChangeSide(pA,pB,nA,nB,pts) {
-  const th=sideChangeThreshold(pts);
+/* Regras configuráveis: pts, formato (bo1/bo3/bo5), ptsDes (set decisivo), troca (undefined=auto, 0=sem, N), vantagem (padrão true) */
+function sideChangeThreshold(pts) { return Math.max(1, Math.round(pts/3)); }   // 21→7, 15→5, 11→4
+function plNumSets(cfg) { return parseInt(String(cfg.formato||'bo1').slice(2),10)||1; }
+function plDesempate(cfg) { return cfg.ptsDes>0 ? cfg.ptsDes : (cfg.pts>=15?15:cfg.pts); }
+function setAlvo(cfg,setAtual) { const n=plNumSets(cfg); return n>1&&setAtual===n ? plDesempate(cfg) : cfg.pts; }
+function plTroca(cfg,setAtual) {   // pontos entre trocas de lado (0 = sem troca)
+  if(cfg.troca===0) return 0;
+  if(cfg.troca>0) return cfg.troca;
+  return sideChangeThreshold(setAlvo(cfg,setAtual));
+}
+function shouldChangeSide(pA,pB,nA,nB,th) {
+  if(!(th>0)) return false;
   return Math.floor((pA+pB)/th)<Math.floor((nA+nB)/th);
 }
-function isSetOver(a,b,alvo) {
+function isSetOver(a,b,alvo,vantagem) {
   if(a<alvo&&b<alvo) return false;
-  return Math.abs(a-b)>=2;
+  return vantagem===false ? a!==b : Math.abs(a-b)>=2;
 }
-function setAlvo(cfg,setAtual) { return cfg.formato==='bo3'&&setAtual===3?15:cfg.pts; }
 
 function plBuild(cfg) {
   return { cfg, setAtual:1, pA:0, pB:0, setsA:0, setsB:0, sets:[], encerrada:false, vencedora:null, ladoInv:false, inicio:Date.now() };
@@ -3199,15 +3230,15 @@ function placarAddPonto(dupla) {
   _plSnap = JSON.parse(JSON.stringify(_plState));
   let pA=_plState.pA+(dupla==='A'?1:0), pB=_plState.pB+(dupla==='B'?1:0);
   const alvo=setAlvo(_plState.cfg,_plState.setAtual);
-  const fim=isSetOver(pA,pB,alvo);
-  const mudaLado=!fim&&shouldChangeSide(_plState.pA,_plState.pB,pA,pB,_plState.cfg.pts);
+  const fim=isSetOver(pA,pB,alvo,_plState.cfg.vantagem);
+  const mudaLado=!fim&&shouldChangeSide(_plState.pA,_plState.pB,pA,pB,plTroca(_plState.cfg,_plState.setAtual));
   if(!fim){
     _plState={..._plState,pA,pB}; _plPedeSide=mudaLado; plSave(_plState); renderPlacarInline(); return;
   }
   const vSet=pA>pB?'A':'B';
   const setsA=_plState.setsA+(vSet==='A'?1:0), setsB=_plState.setsB+(vSet==='B'?1:0);
   const sets=[..._plState.sets,{a:pA,b:pB}];
-  const setsParaV=_plState.cfg.formato==='bo3'?2:1;
+  const setsParaV=Math.ceil(plNumSets(_plState.cfg)/2);
   const partidaFim=setsA>=setsParaV||setsB>=setsParaV;
   _plState={..._plState,pA:partidaFim?pA:0,pB:partidaFim?pB:0,setsA,setsB,sets,setAtual:_plState.setAtual+(partidaFim?0:1),encerrada:partidaFim,vencedora:partidaFim?(setsA>=setsParaV?'A':'B'):null};
   _plPedeSide=!partidaFim;
@@ -3305,8 +3336,8 @@ function renderPlacarInline() {
 
   const st = _plState, cfg = st.cfg;
   const esq = st.ladoInv ? 'B' : 'A', dir = st.ladoInv ? 'A' : 'B';
-  const th = sideChangeThreshold(cfg.pts);
-  const prox = th - ((st.pA + st.pB) % th) || th;
+  const th = plTroca(cfg, st.setAtual);
+  const prox = th > 0 ? (th - ((st.pA + st.pB) % th) || th) : 0;
   const alvo = setAlvo(cfg, st.setAtual);
 
   // topo
@@ -3318,7 +3349,8 @@ function renderPlacarInline() {
   top.appendChild(undo);
   wrap.appendChild(top);
 
-  wrap.appendChild(e('div', { cls: 'pl-meta' }, 'Set ' + st.setAtual + ' · até ' + alvo + ' pontos · troca de lado a cada ' + th));
+  wrap.appendChild(e('div', { cls: 'pl-meta' }, 'Set ' + st.setAtual + (plNumSets(cfg) > 1 ? ' de ' + plNumSets(cfg) : '') + ' · até ' + alvo + ' pontos · ' +
+    (th > 0 ? 'troca de lado a cada ' + th : 'sem troca de lado') + (cfg.vantagem === false ? ' · sem vantagem' : '')));
 
   // cartões das duplas
   const teams = e('div', { cls: 'pl-teams' });
@@ -3351,7 +3383,7 @@ function renderPlacarInline() {
   if (st.sets.length) sets.appendChild(e('div', { cls: 'pl-sets-hist' }, st.sets.map((s, i) => 'Set ' + (i + 1) + ': ' + s.a + '–' + s.b).join('  ·  ')));
   wrap.appendChild(sets);
 
-  wrap.appendChild(e('div', { cls: 'pl-note' }, 'Próxima troca de lado em ' + prox + (prox === 1 ? ' ponto' : ' pontos')));
+  if (th > 0) wrap.appendChild(e('div', { cls: 'pl-note' }, 'Próxima troca de lado em ' + prox + (prox === 1 ? ' ponto' : ' pontos')));
 
   // ações
   const acoes = e('div', { cls: 'pl-actions' });
@@ -3389,6 +3421,65 @@ function renderResultado(wrap) {
   wrap.appendChild(res);
 }
 
+/* Campo numérico com - / + e atalhos (valor livre entre min e max) */
+function plStepper(inicial, min, max, atalhos, onChange) {
+  let v = inicial;
+  const root = e('div', { cls: 'pl-stepper-wrap' });
+  const row = e('div', { cls: 'pl-stepper' });
+  const inp = e('input', { type: 'number', inputmode: 'numeric', min: String(min), max: String(max), cls: 'pl-stepper-input', 'aria-label': 'Valor' });
+  inp.value = v;
+  const chips = [];
+  const pintar = () => chips.forEach(c => c.classList.toggle('on', +c.dataset.v === v));
+  const set = (n, soTexto) => {
+    n = Math.round(+n);
+    if (isNaN(n)) n = v;
+    n = Math.min(max, Math.max(min, n));
+    v = n;
+    if (!soTexto) inp.value = n;
+    pintar();
+    if (onChange) onChange(n);
+  };
+  row.appendChild(plBtn('pl-step-btn', '', PL_ICON.minus, () => set(v - 1), 'Diminuir'));
+  row.appendChild(inp);
+  row.appendChild(plBtn('pl-step-btn', '', PL_ICON.plus, () => set(v + 1), 'Aumentar'));
+  root.appendChild(row);
+  inp.addEventListener('input', () => {
+    const n = Math.round(+inp.value);
+    if (inp.value !== '' && !isNaN(n) && n >= min && n <= max) set(n, true);
+  });
+  inp.addEventListener('blur', () => set(inp.value));
+  inp.addEventListener('focus', () => inp.select());
+  if (atalhos && atalhos.length) {
+    const cw = e('div', { cls: 'pl-chips' });
+    atalhos.forEach(a => {
+      const c = e('button', { cls: 'pl-chip-btn', onclick: () => set(a) }, String(a));
+      c.dataset.v = a; chips.push(c); cw.appendChild(c);
+    });
+    root.appendChild(cw);
+  }
+  pintar();
+  root.getValue = () => {
+    const n = Math.round(+inp.value);
+    if (inp.value !== '' && !isNaN(n)) { v = Math.min(max, Math.max(min, n)); }
+    inp.value = v; pintar();
+    return v;
+  };
+  root.setValue = n => set(n);
+  return root;
+}
+
+function plSwitch(ligado, titulo, descricao, onChange) {
+  const row = e('div', { cls: 'pl-switch-row' });
+  const txt = e('div', { cls: 'pl-switch-txt' });
+  txt.appendChild(e('strong', {}, titulo));
+  txt.appendChild(e('span', {}, descricao));
+  const sw = e('button', { cls: 'pl-switch' + (ligado ? ' on' : ''), role: 'switch', 'aria-checked': String(!!ligado), 'aria-label': titulo });
+  let on = !!ligado;
+  sw.addEventListener('click', () => { on = !on; sw.classList.toggle('on', on); sw.setAttribute('aria-checked', String(on)); onChange(on); });
+  row.appendChild(txt); row.appendChild(sw);
+  return row;
+}
+
 function renderConfigModal(wrap, cfgAtual, onConfirm) {
   wrap.innerHTML = '';
   const m = e('div', { cls: 'pl-config' });
@@ -3399,30 +3490,80 @@ function renderConfigModal(wrap, cfgAtual, onConfirm) {
     g.appendChild(e('p', { cls: 'pl-label' }, rotulo));
     filhos.forEach(f => g.appendChild(f));
     m.appendChild(g);
+    return g;
   };
-
-  const nomA = e('input', { type: 'text', placeholder: 'Dupla A', maxlength: '20', cls: 'pl-input pl-input-a', value: cfgAtual ? cfgAtual.nomA : 'Dupla A' });
-  const nomB = e('input', { type: 'text', placeholder: 'Dupla B', maxlength: '20', cls: 'pl-input pl-input-b', value: cfgAtual ? cfgAtual.nomB : 'Dupla B' });
-  grupo('Duplas', nomA, nomB);
-
   const seg = (valores, rotulos, atual, onSel) => {
     const w = e('div', { cls: 'pl-seg' });
-    const bs = valores.map((val, i) => {
-      const b = e('button', { cls: 'pl-seg-btn' + (val === atual ? ' on' : ''), onclick: () => { onSel(val); bs.forEach((x, j) => x.classList.toggle('on', valores[j] === val)); } }, rotulos[i]);
-      return b;
-    });
+    const bs = valores.map((val, i) => e('button', { cls: 'pl-seg-btn' + (val === atual ? ' on' : ''), onclick: () => {
+      onSel(val); bs.forEach((x, j) => x.classList.toggle('on', valores[j] === val)); } }, rotulos[i]));
     bs.forEach(b => w.appendChild(b));
     return w;
   };
-  let selPts = cfgAtual ? cfgAtual.pts : 21;
-  let selFmt = cfgAtual ? cfgAtual.formato : 'bo1';
-  grupo('Pontos por set', seg([21, 15, 11], ['21', '15', '11'], selPts, v => { selPts = v; }));
-  grupo('Formato', seg(['bo1', 'bo3'], ['Melhor de 1', 'Melhor de 3'], selFmt, v => { selFmt = v; }),
-    e('p', { cls: 'pl-hint' }, 'No melhor de 3, o 3.º set (desempate) vai até 15 pontos.'));
+
+  // estado inicial (cfgAtual pode ser de jogo, de partida anterior ou nulo)
+  const c0 = cfgAtual || {};
+  let nSets = c0.formato ? plNumSets(c0) : 1;
+  let modoTroca = c0.troca === 0 ? 'sem' : c0.troca > 0 ? 'custom' : 'auto';
+  let vantagem = c0.vantagem !== false;
+  const pts0 = c0.pts || 21;
+  let desTocado = !!c0.ptsDes;
+
+  // duplas
+  const nomA = e('input', { type: 'text', placeholder: 'Dupla A', maxlength: '20', cls: 'pl-input pl-input-a', value: c0.nomA || 'Dupla A' });
+  const nomB = e('input', { type: 'text', placeholder: 'Dupla B', maxlength: '20', cls: 'pl-input pl-input-b', value: c0.nomB || 'Dupla B' });
+  grupo('Duplas', nomA, nomB);
+
+  // pontos por set (livre)
+  let stepDes;
+  const stepPts = plStepper(pts0, 1, 99, [21, 15, 11, 7], n => {
+    if (stepDes && !desTocado) stepDes.setValue(n >= 15 ? 15 : n);
+    atualizaHintAuto();
+  });
+  const gPts = grupo('Pontos por set', stepPts, e('p', { cls: 'pl-hint' }, 'Digite qualquer valor ou use os atalhos.'));
+
+  // número de sets
+  const gDes = e('div', { cls: 'pl-sub' });
+  stepDes = plStepper(c0.ptsDes > 0 ? c0.ptsDes : (pts0 >= 15 ? 15 : pts0), 1, 99, [15, 11, 7], () => { desTocado = true; });
+  gDes.appendChild(e('p', { cls: 'pl-label' }, 'Pontos do set decisivo'));
+  gDes.appendChild(stepDes);
+  gDes.appendChild(e('p', { cls: 'pl-hint' }, 'O último set (desempate) pode ter outra pontuação.'));
+  const mostraDes = () => { gDes.style.display = nSets > 1 ? '' : 'none'; };
+  grupo('Número de sets', seg([1, 3, 5], ['Melhor de 1', 'Melhor de 3', 'Melhor de 5'], nSets, v => { nSets = v; mostraDes(); }), gDes);
+  mostraDes();
+
+  // troca de lado
+  const hintAuto = e('p', { cls: 'pl-hint' });
+  const atualizaHintAuto = () => { hintAuto.textContent = 'Automática: a cada ' + sideChangeThreshold(stepPts.getValue()) + ' pontos (1/3 do set).'; };
+  const gCustom = e('div', { cls: 'pl-sub' });
+  const stepTroca = plStepper(c0.troca > 0 ? c0.troca : 7, 1, 99, [5, 7], null);
+  gCustom.appendChild(e('p', { cls: 'pl-label' }, 'Trocar de lado a cada (pontos)'));
+  gCustom.appendChild(stepTroca);
+  const mostraTroca = () => {
+    gCustom.style.display = modoTroca === 'custom' ? '' : 'none';
+    hintAuto.style.display = modoTroca === 'auto' ? '' : 'none';
+    semHint.style.display = modoTroca === 'sem' ? '' : 'none';
+  };
+  const semHint = e('p', { cls: 'pl-hint' }, 'As duplas não trocam de meia-quadra durante o set.');
+  grupo('Troca de lado', seg(['auto', 'custom', 'sem'], ['Automática', 'Personalizada', 'Sem troca'], modoTroca, v => { modoTroca = v; mostraTroca(); }), hintAuto, gCustom, semHint);
+  atualizaHintAuto(); mostraTroca();
+
+  // vantagem
+  grupo('Regra do set', plSwitch(vantagem, 'Vantagem de 2 pontos', 'O set só termina com 2 pontos de diferença (deuce).', v => { vantagem = v; }));
 
   const acoes = e('div', { cls: 'pl-actions' });
   acoes.appendChild(plBtn('pl-btn pri', 'Iniciar partida', PL_ICON.play, () => {
-    onConfirm({ pts: selPts, formato: selFmt, nomA: nomA.value.trim() || 'Dupla A', nomB: nomB.value.trim() || 'Dupla B', jogoNome: cfgAtual && cfgAtual.jogoNome });
+    const cfg = {
+      pts: stepPts.getValue(),
+      formato: 'bo' + nSets,
+      nomA: nomA.value.trim() || 'Dupla A',
+      nomB: nomB.value.trim() || 'Dupla B',
+      vantagem,
+      jogoNome: c0.jogoNome
+    };
+    if (nSets > 1) cfg.ptsDes = stepDes.getValue();
+    if (modoTroca === 'sem') cfg.troca = 0;
+    else if (modoTroca === 'custom') cfg.troca = stepTroca.getValue();
+    onConfirm(cfg);
   }));
   if (cfgAtual && _plState && !_plState.encerrada) acoes.appendChild(plBtn('pl-btn sec', 'Cancelar', '', () => renderPlacarInline()));
   m.appendChild(acoes);
