@@ -159,6 +159,72 @@ input { font: inherit; }
 .nav-item.active { color: var(--cta); }
 .nav-item svg { width: 22px; height: 22px; }
 
+/* ===== COMPETIÇÃO STYLES ===== */
+.comp-subnav { display:flex; gap:0; border-bottom:1px solid var(--border); background:var(--bg); position:sticky; top:0; z-index:10; }
+.comp-subnav-btn { flex:1; padding:10px 0; font-size:13px; font-weight:600; color:var(--text-muted); border-bottom:2px solid transparent; transition:all .15s; background:none; }
+.comp-subnav-btn.active { color:var(--cta); border-bottom-color:var(--cta); }
+.section-block { margin:0 -4px 0; }
+.section-header { padding:8px 4px 4px; }
+.cat-badge { display:inline-block; font-size:11px; font-weight:700; padding:2px 8px; border-radius:999px; }
+.comp-section { margin:16px 0; }
+.comp-section-title { font-size:10px; font-weight:700; color:var(--text-muted); text-transform:uppercase; letter-spacing:.08em; margin-bottom:6px; }
+.comp-text { font-size:14px; color:var(--text); line-height:1.5; }
+.comp-chips { display:flex; gap:8px; flex-wrap:wrap; margin:12px 0; }
+.comp-chip { font-size:12px; color:var(--text-muted); background:var(--bg-card); padding:4px 10px; border-radius:999px; }
+.comp-list-num { list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:8px; }
+.comp-list-num li { display:flex; gap:8px; }
+.comp-list-n { font-weight:700; color:var(--cta); flex-shrink:0; }
+.comp-regra-box { background:rgba(232,155,23,.1); border-radius:10px; padding:10px 12px; font-size:13px; color:var(--text); }
+.comp-var-list { display:flex; flex-direction:column; gap:12px; }
+.comp-var {}
+.comp-cta-bar { position:fixed; bottom:calc(56px + env(safe-area-inset-bottom,0px)); left:0; right:0; padding:10px 16px; background:var(--bg); border-top:1px solid var(--border); z-index:150; }
+.detail-topbar { display:flex; align-items:center; gap:10px; padding:10px 0 8px; border-bottom:1px solid var(--border); margin-bottom:4px; }
+.detail-topbar-text { flex:1; min-width:0; }
+.detail-topbar-cat { font-size:11px; color:var(--text-muted); }
+.detail-topbar-title { font-size:14px; font-weight:700; color:var(--text); }
+.back-btn { background:none; padding:2px; color:var(--text-muted); flex-shrink:0; }
+
+/* ===== PLACAR STYLES ===== */
+#placar-wrap { position:fixed; top:0; left:0; right:0; bottom:calc(56px + env(safe-area-inset-bottom,0px)); background:#13314A; display:flex; flex-direction:column; overflow:hidden; z-index:50; }
+.placar-topbar { display:flex; align-items:center; justify-content:space-between; padding:env(safe-area-inset-top,8px) 16px 8px; flex-shrink:0; }
+.placar-info {}
+.placar-jogo-nome { font-size:10px; color:rgba(255,255,255,.35); text-transform:uppercase; letter-spacing:.07em; }
+.placar-meta { font-size:12px; color:rgba(255,255,255,.55); font-weight:500; }
+.placar-top-right { display:flex; align-items:center; gap:8px; }
+.placar-sets-badge { font-size:12px; color:rgba(255,255,255,.45); background:rgba(255,255,255,.1); padding:2px 8px; border-radius:999px; }
+.placar-nova-btn { color:rgba(255,255,255,.35); background:none; padding:4px; }
+.placar-area { flex:1; display:flex; gap:2px; overflow:hidden; }
+.placar-side { flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:12px; cursor:pointer; -webkit-tap-highlight-color:transparent; border:none; }
+.placar-side-left { background:rgba(15,111,168,.25); }
+.placar-side-right { background:rgba(46,125,50,.2); }
+.placar-side:active { opacity:.75; }
+.placar-side-nome { font-size:14px; font-weight:600; color:rgba(255,255,255,.7); text-align:center; padding:0 8px; word-break:break-word; }
+.placar-side-pts { font-family:'Bebas Neue',sans-serif; font-size:clamp(72px,18vw,110px); color:#fff; line-height:1; letter-spacing:-1px; }
+.placar-side-plus { width:48px; height:48px; border-radius:50%; background:rgba(255,255,255,.15); display:flex; align-items:center; justify-content:center; }
+.placar-bot { padding:6px 16px; display:flex; align-items:center; justify-content:space-between; flex-shrink:0; padding-bottom:calc(6px + env(safe-area-inset-bottom,0px)); }
+.placar-bot-info { font-size:10px; color:rgba(255,255,255,.3); }
+.placar-desfazer { font-size:12px; color:rgba(232,155,23,.8); background:none; }
+.placar-overlay { position:absolute; inset:0; background:rgba(19,49,74,.96); display:flex; flex-direction:column; align-items:center; justify-content:center; gap:16px; padding:24px; z-index:60; }
+.placar-overlay-icon { width:64px; height:64px; border-radius:50%; background:rgba(232,155,23,.15); display:flex; align-items:center; justify-content:center; }
+.placar-overlay-title { font-family:'Bebas Neue',sans-serif; font-size:36px; color:#E89B17; letter-spacing:.05em; text-align:center; }
+.placar-overlay-sub { font-size:13px; color:rgba(255,255,255,.45); text-align:center; }
+.placar-overlay-btn { width:100%; background:#E89B17; color:#fff; font-weight:700; font-size:16px; padding:18px; border-radius:16px; margin-top:8px; }
+.placar-resultado { display:flex; flex-direction:column; align-items:center; justify-content:center; gap:12px; height:100%; padding:24px; }
+.placar-res-campa { font-family:'Bebas Neue',sans-serif; font-size:40px; color:#E89B17; letter-spacing:.05em; }
+.placar-res-nome { font-size:22px; font-weight:700; color:#fff; text-align:center; }
+.placar-res-sets { display:flex; gap:8px; flex-wrap:wrap; justify-content:center; }
+.placar-set-chip { font-size:13px; color:rgba(255,255,255,.5); background:rgba(255,255,255,.1); padding:3px 10px; border-radius:999px; }
+.placar-config { background:#13314A; min-height:100%; padding:24px 20px; display:flex; flex-direction:column; gap:12px; }
+.placar-config-title { font-family:'Bebas Neue',sans-serif; font-size:28px; color:#E89B17; letter-spacing:.05em; margin-bottom:4px; }
+.placar-label { font-size:10px; font-weight:700; color:rgba(255,255,255,.4); text-transform:uppercase; letter-spacing:.1em; }
+.placar-input { width:100%; background:rgba(255,255,255,.1); color:#fff; border:none; border-radius:12px; padding:12px 14px; font-size:14px; font-weight:500; box-sizing:border-box; }
+.placar-input::placeholder { color:rgba(255,255,255,.3); }
+.placar-vs { text-align:center; font-size:12px; color:rgba(255,255,255,.25); font-weight:700; }
+.placar-opts { display:flex; gap:8px; }
+.placar-opt { flex:1; padding:12px 0; border-radius:12px; background:rgba(255,255,255,.1); color:rgba(255,255,255,.5); font-weight:700; font-size:13px; transition:.15s; }
+.placar-opt-sel { background:#E89B17; color:#fff; }
+.placar-cancel-btn { width:100%; padding:12px; border-radius:12px; background:rgba(255,255,255,.08); color:rgba(255,255,255,.5); font-weight:600; font-size:14px; margin-top:4px; }
+
 /* ===== PAGE CONTAINER ===== */
 .page {
   padding: 0 max(16px, env(safe-area-inset-left, 0px));
@@ -1395,6 +1461,10 @@ body { padding-bottom: calc(64px + env(safe-area-inset-bottom, 0px)); }
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
         Aulas
       </button>
+      <button class="nav-item" data-route="competicao" aria-label="Competição">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9H4.5a2.5 2.5 0 010-5H6"/><path d="M18 9h1.5a2.5 2.5 0 000-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0012 0V2z"/></svg>
+        Compet.
+      </button>
       <button class="nav-item" data-route="favoritos" aria-label="Salvos">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
         Salvos
@@ -1406,9 +1476,6 @@ body { padding-bottom: calc(64px + env(safe-area-inset-bottom, 0px)); }
     </nav>
     <div id="main"></div>
   </div>
-
-  <div id="root"></div>
-  <script type="module" src="/src/main.tsx"></script>
 
   <script>
   
@@ -1460,6 +1527,7 @@ function getRoute() {
   if (!h) return { name: 'home' };
   if (h.startsWith('secao-')) return { name: 'secao', n: parseInt(h.slice(6)) };
   if (h.startsWith('ex-')) return { name: 'ex', num: parseInt(h.slice(3)) };
+  if (h.startsWith('jogo-comp-')) return { name: 'jogo-comp', id: h.slice(10) };
   return { name: h };
 }
 function go(hash) { location.hash = hash; }
@@ -2562,7 +2630,7 @@ function updateNavBadge() {
   b.textContent = favorites.size;
 }
 function updateNav(route) {
-  const map = { home: 'home', secao: 'home', ex: 'home', buscar: 'buscar', aulas: 'aulas', favoritos: 'favoritos', 'como-usar': 'como-usar' };
+  const map = { home: 'home', secao: 'home', ex: 'home', buscar: 'buscar', aulas: 'aulas', favoritos: 'favoritos', 'como-usar': 'como-usar', competicao: 'competicao', 'jogo-comp': 'competicao', placar: 'competicao' };
   const active = map[route.name] || route.name;
   updateNavBadge();
   document.querySelectorAll('.nav-item').forEach(b => {
@@ -2583,6 +2651,9 @@ function render() {
   else if (route.name === 'favoritos') frag = renderFavoritos();
   else if (route.name === 'aulas') frag = renderAulas();
   else if (route.name === 'como-usar') frag = renderComoUsar();
+  else if (route.name === 'competicao') frag = renderCompeticao();
+  else if (route.name === 'jogo-comp') frag = renderJogoComp(route.id);
+  else if (route.name === 'placar') frag = renderPlacarPage();
   else frag = renderHome();
 
   main.appendChild(frag);
@@ -2591,6 +2662,406 @@ function render() {
 }
 
 function renderPage() { render(); }
+
+/* ===== COMPETIÇÃO DATA ===== */
+const JOGOS_COMP = [
+  { id:'rei-da-quadra', nome:'Rei da Quadra', cat:'Disputa', jogs:'6+', pts:21,
+    obj:'Manter-se na quadra o maior número de rallies consecutivos.',
+    como:['Três ou mais duplas participam; duas jogam e a terceira aguarda.','A dupla que perde o rally sai e cede o lugar à que esperava.','A dupla que vence fica e acumula 1 ponto por rally.','Ganha quem acumular mais pontos ao fim do tempo combinado.'],
+    regra:'1 ponto por rally vencido enquanto permanece na quadra.',
+    vars:[{n:'Iniciante',d:'Rally máximo de 8 toques por lado.'},{n:'Intermediário',d:'Dupla que sai faz 5 agachamentos antes de voltar.'},{n:'Avançado',d:'Erro no saque inverte as duplas sem troca de lado.'}] },
+  { id:'ponto-diagonal', nome:'Ponto na Diagonal', cat:'Disputa', jogs:'4', pts:15,
+    obj:'Estimular o ataque diagonal como jogada de maior valor.',
+    como:['Jogo normal 2×2.','Ataque que cai na diagonal vale 2 pontos.','Ataque na paralela vale 1 ponto.','Qualquer outro ponto (erro adversário) vale 1 ponto.'],
+    regra:'Diagonal = 2 pts · Paralela = 1 pt · Erro adversário = 1 pt.',
+    vars:[{n:'Iniciante',d:'Inverta: paralela vale 2.'},{n:'Intermediário',d:'Zona central (< 2 m da rede) vale 3 pontos.'},{n:'Avançado',d:'Defesa que resulta em contra-ataque diagonal também vale 2.'}] },
+  { id:'set-curto', nome:'Set Curto com Regra Especial', cat:'Disputa', jogs:'4', pts:11,
+    obj:'Criar pressão e criatividade em sets curtos.',
+    como:['Jogo até 11 pontos.','A cada 4 pts totais, a dupla PERDENDO escolhe uma regra especial.','Exemplos: 3 toques obrigatórios, saque por baixo, ataque de trás da linha de 3 m.'],
+    regra:'11 pts, vantagem de 2. Dupla perdedora escolhe regra a cada 4 pts somados.',
+    vars:[{n:'Iniciante',d:'Regra é sortida pelo professor.'},{n:'Intermediário',d:'Regras em cartões; a dupla retira um aleatório.'},{n:'Avançado',d:'Regra vigora até o próximo bloco, não pode ser repetida.'}] },
+  { id:'sequencia', nome:'Sequência de Pontos', cat:'Disputa', jogs:'4', pts:21,
+    obj:'Premiação extra por sequências consecutivas de pontos.',
+    como:['Jogo normal até 21.','Sequência de 3 pts consecutivos = bônus de +2.','Sequência de 5 pts consecutivos = bônus de +5.','Adversário "zera" a sequência ao marcar.'],
+    regra:'Seq. de 3 = +2 pts · Seq. de 5 = +5 pts.',
+    vars:[{n:'Iniciante',d:'Sequência de 2 já gera +1.'},{n:'Intermediário',d:'Padrão acima.'},{n:'Avançado',d:'Bônus só vale se vier de ataque (não erro adversário).'}] },
+  { id:'tres-toques', nome:'Três Toques Obrigatórios', cat:'Jogo condicionado', jogs:'4', pts:15,
+    obj:'Consolidar o hábito dos três toques e a organização da dupla.',
+    como:['Jogo normal 2×2.','Ponto só vale se a dupla usou exatamente 3 toques.','2 ou 1 toque = ponto para o adversário.'],
+    regra:'3 toques exatos; violação = 1 ponto ao adversário.',
+    vars:[{n:'Iniciante',d:'Mínimo 2 toques.'},{n:'Intermediário',d:'Exatamente 3.'},{n:'Avançado',d:'3 toques E o terceiro deve ser ataque.'}] },
+  { id:'zona-proibida', nome:'Zona Proibida', cat:'Jogo condicionado', jogs:'4', pts:15,
+    obj:'Forçar os jogadores a explorar toda a quadra ao atacar.',
+    como:['Marque com cones uma zona de ~2×2 m no centro-fundo de cada meia-quadra.','Bola que cai na zona proibida = 1 pt ao adversário.'],
+    regra:'Bola na zona proibida = 1 ponto ao adversário.',
+    vars:[{n:'Iniciante',d:'Zona pequena (1×1 m).'},{n:'Intermediário',d:'Zona de 2×2 m no centro-fundo.'},{n:'Avançado',d:'Duas zonas: centro-fundo e lateral curta.'}] },
+  { id:'levantador-fixo', nome:'Levantador Fixo', cat:'Jogo condicionado', jogs:'4', pts:15,
+    obj:'Desenvolver a especialização na função de levantador.',
+    como:['Defina o levantador de cada dupla.','O segundo toque deve ser obrigatoriamente do levantador.','Toque de outro jogador = ponto para o adversário.'],
+    regra:'2.º toque de quem não é levantador = 1 ponto ao adversário.',
+    vars:[{n:'Iniciante',d:'Levantador pode levantar para qualquer zona.'},{n:'Intermediário',d:'Levantamento deve ir para o fundo.'},{n:'Avançado',d:'Levantador recebe e levanta; atacante finaliza no mesmo rally.'}] },
+  { id:'batalha-side-out', nome:'Batalha de Side-out', cat:'Side-out e transição', jogs:'4', pts:15,
+    obj:'Treinar o sistema de recepção-levantamento-ataque sob pressão.',
+    como:['Uma dupla SACA durante toda a partida; a outra RECEBE.','Receptora pontua só convertendo side-out no 1.º ataque.','Se a bola voltar à sacadora, ela pontua.','A cada 5 pts inverte-se quem saca.'],
+    regra:'Receptora: 1 pt por side-out no 1.º ataque · Sacadora: 1 pt por erro da receptora.',
+    vars:[{n:'Iniciante',d:'2 toques permitidos para converter.'},{n:'Intermediário',d:'Converter no 1.º ataque.'},{n:'Avançado',d:'Saque float; 1.º ataque na diagonal.'}] },
+  { id:'transicao-dupla', nome:'Transição Dupla', cat:'Side-out e transição', jogs:'4', pts:15,
+    obj:'Treinar a transição de defesa para ataque em sequência.',
+    como:['Para pontuar, a dupla deve ter feito ao menos 1 transição: defender e contra-atacar.','Vitória sem transição = 0 ponto.','Rallies com 4+ trocas valem 2 pontos.'],
+    regra:'Rally com transição = 1 pt · Rally longo (4+ trocas) = 2 pts · Sem transição = 0.',
+    vars:[{n:'Iniciante',d:'Qualquer toque defensivo conta.'},{n:'Intermediário',d:'Padrão.'},{n:'Avançado',d:'Transição válida só se a defesa for manchete.'}] },
+  { id:'desafio-saque', nome:'Desafio do Saque', cat:'Saque e recepção', jogs:'4-6', pts:15,
+    obj:'Aprimorar a precisão do saque competitivo.',
+    como:['Marque zonas com cones na quadra adversária.','Saque na zona = 1 pt.','Saque errado = 1 pt ao adversário.'],
+    regra:'Saque na zona = +1 pt · Fora da zona = 0 · Erro = +1 pt ao adversário.',
+    vars:[{n:'Iniciante',d:'Zona grande (metade da quadra).'},{n:'Intermediário',d:'Zonas específicas (fundo direito, fundo esquerdo).'},{n:'Avançado',d:'Zona de 2×2 m; tipo de saque anunciado antes.'}] },
+  { id:'saque-pressao', nome:'Saque Sob Pressão', cat:'Saque e recepção', jogs:'4', pts:21,
+    obj:'Simular a pressão do saque em momentos decisivos.',
+    como:['Jogo normal 2×2 até 21.','A partir de 18-18 (zona de pressão), o saque vale DOBRO.','Ace = 2 pts · Erro de saque = 2 pts ao adversário.'],
+    regra:'Zona de pressão (18+ pts): pontos de saque valem 2.',
+    vars:[{n:'Iniciante',d:'Zona de pressão a partir de 14-14.'},{n:'Intermediário',d:'A partir de 18-18.'},{n:'Avançado',d:'19-19 + saque com efeito obrigatório.'}] },
+  { id:'defesa-ou-nada', nome:'Defesa ou Nada', cat:'Defesa', jogs:'4', pts:15,
+    obj:'Estimular a defesa ativa e o não-abandono de bolas difíceis.',
+    como:['Ponto só vale se a dupla tocou ao menos 1 bola defensiva antes de pontuar.','Perder sem tocar nenhuma bola = replay (sem ponto).'],
+    regra:'Ponto somente se a dupla defendeu ao menos 1 bola no rally.',
+    vars:[{n:'Iniciante',d:'Qualquer toque conta como defesa.'},{n:'Intermediário',d:'Toque deve ser de manchete.'},{n:'Avançado',d:'2 toques defensivos obrigatórios.'}] },
+  { id:'bloqueio-defesa', nome:'Bloqueio + Defesa', cat:'Defesa', jogs:'4', pts:15,
+    obj:'Integrar o trabalho de bloqueio com a cobertura defensiva.',
+    como:['Jogo normal 2×2.','Ponto com bloqueio = 2 pts.','Bloqueio + transição + ponto = 3 pts.'],
+    regra:'Bloqueio direto = 2 pts · Bloqueio + transição + ponto = 3 pts.',
+    vars:[{n:'Iniciante',d:'Defesa de manchete ao lado da rede vale 2.'},{n:'Intermediário',d:'Padrão.'},{n:'Avançado',d:'Bloqueio deve cobrir a diagonal.'}] },
+  { id:'rodizio-classico', nome:'Rodízio Clássico', cat:'Rodízio de duplas', jogs:'6+', pts:11,
+    obj:'Fazer todos jogarem com todos e criar ranking individual.',
+    como:['Divida em duplas (A, B, C...).','Sets de 7 pts. Vencedora permanece; perdedora sai.','1 pt individual por set vencido.','Ranqueie os jogadores no fim.'],
+    regra:'1 pt individual por set vencido.',
+    vars:[{n:'Iniciante',d:'Sets de 5 pts.'},{n:'Intermediário',d:'Sets de 7 pts.'},{n:'Avançado',d:'Sets de 11 pts; vencedora se separa.'}] },
+];
+
+const COMP_CAT_COLORS = {
+  'Disputa':'#EFF6FF|#1D4ED8','Jogo condicionado':'#F5F3FF|#6D28D9','Side-out e transição':'#F0FDF4|#15803D',
+  'Saque e recepção':'#FFF7ED|#C2410C','Defesa':'#FEF2F2|#B91C1C','Rodízio de duplas':'#F0FDF4|#166534'
+};
+
+function renderCompeticao() {
+  const frag = document.createDocumentFragment();
+  const page = e('div', {cls:'page', style:'padding-bottom:80px'});
+
+  // Sub-nav
+  const sub = e('div', {cls:'comp-subnav'});
+  const btnJogos = e('button', {cls:'comp-subnav-btn active', onclick:()=>go('competicao')}, 'Jogos');
+  const btnPlacar = e('button', {cls:'comp-subnav-btn', onclick:()=>go('placar')}, 'Placar');
+  sub.appendChild(btnJogos); sub.appendChild(btnPlacar);
+  page.appendChild(sub);
+
+  // Header
+  const hdr = e('div', {cls:'page-header'});
+  hdr.appendChild(e('h1', {cls:'page-title'}, 'Competição'));
+  hdr.appendChild(e('p', {cls:'page-subtitle'}, JOGOS_COMP.length + ' jogos competitivos'));
+  page.appendChild(hdr);
+
+  // Games list grouped by category
+  const cats = [...new Set(JOGOS_COMP.map(j=>j.cat))];
+  cats.forEach(cat => {
+    const jogos = JOGOS_COMP.filter(j=>j.cat===cat);
+    const sec = e('div', {cls:'section-block'});
+    const colors = (COMP_CAT_COLORS[cat]||'#F3F4F6|#374151').split('|');
+    const secHdr = e('div', {cls:'section-header'});
+    secHdr.appendChild(e('span', {cls:'cat-badge', style:`background:${colors[0]};color:${colors[1]}`}, cat));
+    sec.appendChild(secHdr);
+    jogos.forEach(jogo => {
+      const card = e('button', {cls:'ex-card', onclick:()=>go('jogo-comp-'+jogo.id)});
+      const info = e('div', {cls:'ex-card-info'});
+      info.appendChild(e('div', {cls:'ex-card-nome'}, jogo.nome));
+      info.appendChild(e('div', {cls:'ex-card-sub'}, '👥 '+jogo.jogs+' · '+jogo.pts+' pts'));
+      card.appendChild(info);
+      card.appendChild(e('svg', {viewBox:'0 0 24 24',fill:'none',stroke:'currentColor','stroke-width':'2',style:'width:16px;height:16px;flex-shrink:0;color:var(--border)'}, html('<path d="m9 18 6-6-6-6" stroke-linecap="round" stroke-linejoin="round"/>').firstChild));
+      sec.appendChild(card);
+    });
+    page.appendChild(sec);
+  });
+
+  frag.appendChild(page);
+  return frag;
+}
+
+function renderJogoComp(id) {
+  const jogo = JOGOS_COMP.find(j=>j.id===id);
+  if (!jogo) { go('competicao'); return document.createDocumentFragment(); }
+  const frag = document.createDocumentFragment();
+  const page = e('div', {cls:'page', style:'padding-bottom:100px'});
+
+  // Back bar
+  const bar = e('div', {cls:'detail-topbar'});
+  bar.appendChild(e('button', {cls:'back-btn', onclick:()=>go('competicao'), 'aria-label':'Voltar'},
+    html('<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:20px;height:20px"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>').firstChild));
+  const t = e('div', {cls:'detail-topbar-text'});
+  t.appendChild(e('div', {cls:'detail-topbar-cat'}, jogo.cat));
+  t.appendChild(e('div', {cls:'detail-topbar-title'}, jogo.nome));
+  bar.appendChild(t);
+  page.appendChild(bar);
+
+  // Chips
+  const chips = e('div', {cls:'comp-chips'});
+  chips.appendChild(e('span', {cls:'comp-chip'}, '👥 '+jogo.jogs));
+  chips.appendChild(e('span', {cls:'comp-chip'}, '🏐 '+jogo.pts+' pts por set'));
+  page.appendChild(chips);
+
+  // Sections
+  page.appendChild(compSection('Objetivo', e('p', {cls:'comp-text'}, jogo.obj)));
+
+  const ol = e('ol', {cls:'comp-list-num'});
+  jogo.como.forEach((p,i)=>{ const li=e('li',{}); li.appendChild(e('span',{cls:'comp-list-n'},String(i+1)+'.')); li.appendChild(e('span',{cls:'comp-text'},p)); ol.appendChild(li); });
+  page.appendChild(compSection('Como funciona', ol));
+
+  const rbox = e('div', {cls:'comp-regra-box'}); rbox.textContent = jogo.regra;
+  page.appendChild(compSection('Regra de pontuação', rbox));
+
+  const vlist = e('div', {cls:'comp-var-list'});
+  const NIVEL_CLS = {Iniciante:'badge-ini',Intermediário:'badge-inter',Avançado:'badge-adv'};
+  jogo.vars.forEach(v => {
+    const vd = e('div', {cls:'comp-var'});
+    vd.appendChild(e('span', {cls:'nivel-badge '+( NIVEL_CLS[v.n]||'badge-ini')}, v.n));
+    vd.appendChild(e('p', {cls:'comp-text', style:'margin-top:4px'}, v.d));
+    vlist.appendChild(vd);
+  });
+  page.appendChild(compSection('Variações por nível', vlist));
+
+  frag.appendChild(page);
+
+  // Fixed CTA
+  const cta = e('div', {cls:'comp-cta-bar'});
+  const ctaBtn = e('button', {cls:'cta-btn', onclick:()=>{ placarIniciarComJogo(jogo); go('placar'); }});
+  ctaBtn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg> Usar no Placar';
+  cta.appendChild(ctaBtn);
+  frag.appendChild(cta);
+
+  return frag;
+}
+
+function compSection(title, child) {
+  const s = e('div', {cls:'comp-section'});
+  s.appendChild(e('p', {cls:'comp-section-title'}, title));
+  s.appendChild(child);
+  return s;
+}
+
+/* ===== PLACAR (SCOREBOARD) ===== */
+const LS_MC = 'mc_partida_atual';
+let _plState = null;
+let _plSnap = null;
+let _plPedeSide = false;
+let _placarPendingConfig = null;
+let _wakeLock = null;
+
+function sideChangeThreshold(pts) { return pts===21?7:pts===15?5:4; }
+function shouldChangeSide(pA,pB,nA,nB,pts) {
+  const th=sideChangeThreshold(pts);
+  return Math.floor((pA+pB)/th)<Math.floor((nA+nB)/th);
+}
+function isSetOver(a,b,alvo) {
+  if(a<alvo&&b<alvo) return false;
+  return Math.abs(a-b)>=2;
+}
+function setAlvo(cfg,setAtual) { return cfg.formato==='bo3'&&setAtual===3?15:cfg.pts; }
+
+function plBuild(cfg) {
+  return { cfg, setAtual:1, pA:0, pB:0, setsA:0, setsB:0, sets:[], encerrada:false, vencedora:null, ladoInv:false, inicio:Date.now() };
+}
+function plSave(st) { try{ localStorage.setItem(LS_MC,JSON.stringify(st)); }catch(_){} }
+function plLoad() { try{ const r=localStorage.getItem(LS_MC); return r?JSON.parse(r):null; }catch(_){return null;} }
+
+function placarIniciarComJogo(jogo) {
+  _placarPendingConfig = { pts:jogo.pts, formato:'bo1', nomA:jogo.nome+' A', nomB:jogo.nome+' B', jogoNome:jogo.nome };
+}
+
+function placarAddPonto(dupla) {
+  if(!_plState||_plState.encerrada) return;
+  _plSnap = JSON.parse(JSON.stringify(_plState));
+  let pA=_plState.pA+(dupla==='A'?1:0), pB=_plState.pB+(dupla==='B'?1:0);
+  const alvo=setAlvo(_plState.cfg,_plState.setAtual);
+  const fim=isSetOver(pA,pB,alvo);
+  const mudaLado=!fim&&shouldChangeSide(_plState.pA,_plState.pB,pA,pB,_plState.cfg.pts);
+  if(!fim){
+    _plState={..._plState,pA,pB}; _plPedeSide=mudaLado; plSave(_plState); renderPlacarInline(); return;
+  }
+  const vSet=pA>pB?'A':'B';
+  const setsA=_plState.setsA+(vSet==='A'?1:0), setsB=_plState.setsB+(vSet==='B'?1:0);
+  const sets=[..._plState.sets,{a:pA,b:pB}];
+  const setsParaV=_plState.cfg.formato==='bo3'?2:1;
+  const partidaFim=setsA>=setsParaV||setsB>=setsParaV;
+  _plState={..._plState,pA:partidaFim?pA:0,pB:partidaFim?pB:0,setsA,setsB,sets,setAtual:_plState.setAtual+(partidaFim?0:1),encerrada:partidaFim,vencedora:partidaFim?(setsA>=setsParaV?'A':'B'):null};
+  _plPedeSide=!partidaFim;
+  plSave(_plState);
+  if(partidaFim) salvarHistorico(_plState);
+  renderPlacarInline();
+}
+function placarDesfazer(){ if(!_plSnap) return; _plState=_plSnap; _plSnap=null; _plPedeSide=false; plSave(_plState); renderPlacarInline(); }
+function placarTrocarLado(){ _plState={..._plState,ladoInv:!_plState.ladoInv}; _plPedeSide=false; plSave(_plState); renderPlacarInline(); }
+function placarNova(cfg){ _plSnap=null; _plPedeSide=false; _plState=plBuild(cfg); plSave(_plState); renderPlacarInline(); }
+
+function salvarHistorico(st){
+  try{
+    const h=JSON.parse(localStorage.getItem('mc_historico')||'[]');
+    h.unshift({id:Date.now().toString(36),cfg:st.cfg,sets:st.sets,vencedora:st.vencedora,fim:Date.now()});
+    localStorage.setItem('mc_historico',JSON.stringify(h.slice(0,50)));
+  }catch(_){}
+}
+
+async function acquireWakeLock(){
+  try{ if('wakeLock' in navigator){ _wakeLock=await navigator.wakeLock.request('screen'); } }catch(_){}
+}
+function releaseWakeLock(){ try{ _wakeLock&&_wakeLock.release(); _wakeLock=null; }catch(_){} }
+
+function renderPlacarPage() {
+  // Init state
+  if(!_plState){
+    const saved=plLoad();
+    if(saved) _plState=saved;
+    else {
+      const cfg=_placarPendingConfig||{pts:21,formato:'bo1',nomA:'Dupla A',nomB:'Dupla B'};
+      _plState=plBuild(cfg);
+    }
+  }
+  if(_placarPendingConfig){ _plState=plBuild(_placarPendingConfig); _placarPendingConfig=null; plSave(_plState); _plPedeSide=false; _plSnap=null; }
+
+  const frag=document.createDocumentFragment();
+  const wrap=e('div',{id:'placar-wrap'});
+  frag.appendChild(wrap);
+  renderPlacarInline();
+  return frag;
+}
+
+function renderPlacarInline(){
+  const wrap=document.getElementById('placar-wrap');
+  if(!wrap) return;
+  wrap.innerHTML='';
+
+  if(!_plState||_plState.cfg===undefined){
+    renderConfigModal(wrap, null, cfg=>placarNova(cfg));
+    return;
+  }
+
+  if(_plState.encerrada){
+    renderResultado(wrap);
+    releaseWakeLock();
+    return;
+  }
+
+  acquireWakeLock();
+
+  const st=_plState;
+  const inv=st.ladoInv;
+  const nomA=inv?st.cfg.nomB:st.cfg.nomA, nomB=inv?st.cfg.nomA:st.cfg.nomB;
+  const pA=inv?st.pB:st.pA, pB=inv?st.pA:st.pB;
+  const addA=()=>placarAddPonto(inv?'B':'A'), addB=()=>placarAddPonto(inv?'A':'B');
+  const th=sideChangeThreshold(st.cfg.pts);
+  const prox=th-((st.pA+st.pB)%th)||th;
+  const alvo=setAlvo(st.cfg,st.setAtual);
+
+  // Top bar
+  const topbar=e('div',{cls:'placar-topbar'});
+  const info=e('div',{cls:'placar-info'});
+  if(st.cfg.jogoNome) info.appendChild(e('p',{cls:'placar-jogo-nome'},st.cfg.jogoNome));
+  info.appendChild(e('p',{cls:'placar-meta'},'Set '+st.setAtual+' · '+alvo+' pts · Troca a cada '+th));
+  topbar.appendChild(info);
+  const topRight=e('div',{cls:'placar-top-right'});
+  if(st.cfg.formato==='bo3') topRight.appendChild(e('span',{cls:'placar-sets-badge'},st.setsA+' – '+st.setsB));
+  const novaBtn=e('button',{cls:'placar-nova-btn','aria-label':'Nova partida', onclick:()=>{ if(confirm('Iniciar nova partida?')) renderConfigModal(wrap,st.cfg,cfg=>placarNova(cfg)); }});
+  novaBtn.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:18px;height:18px"><path d="M3 12a9 9 0 109-9 9.75 9.75 0 00-6.74 2.74L3 8" stroke-linecap="round"/><path d="M3 3v5h5" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+  topRight.appendChild(novaBtn);
+  topbar.appendChild(topRight);
+  wrap.appendChild(topbar);
+
+  // Score area
+  const area=e('div',{cls:'placar-area'});
+  area.appendChild(makeSide(nomA,pA,addA,'left'));
+  area.appendChild(makeSide(nomB,pB,addB,'right'));
+  wrap.appendChild(area);
+
+  // Bottom info
+  const bot=e('div',{cls:'placar-bot'});
+  bot.appendChild(e('span',{cls:'placar-bot-info'},'Troca de lado em '+prox+' '+(prox===1?'pt':'pts')));
+  if(_plSnap){ const ub=e('button',{cls:'placar-desfazer',onclick:placarDesfazer},'↩ Desfazer'); bot.appendChild(ub); }
+  wrap.appendChild(bot);
+
+  // Side-change overlay
+  if(_plPedeSide){
+    const ov=e('div',{cls:'placar-overlay'});
+    ov.appendChild(e('div',{cls:'placar-overlay-icon'},html('<svg viewBox="0 0 24 24" fill="none" stroke="#E89B17" stroke-width="2" style="width:36px;height:36px"><path d="M8 3L4 7l4 4M4 7h16M16 21l4-4-4-4M20 17H4" stroke-linecap="round" stroke-linejoin="round"/></svg>').firstChild));
+    ov.appendChild(e('p',{cls:'placar-overlay-title'},'Troca de Lado'));
+    ov.appendChild(e('p',{cls:'placar-overlay-sub'},(st.pA+st.pB)+' pontos disputados'));
+    const okBtn=e('button',{cls:'placar-overlay-btn',onclick:placarTrocarLado},'Trocar Lado ↔');
+    ov.appendChild(okBtn);
+    wrap.appendChild(ov);
+  }
+}
+
+function makeSide(nome,pts,onAdd,side){
+  const btn=e('button',{cls:'placar-side placar-side-'+side,'aria-label':'Ponto para '+nome,onclick:onAdd});
+  btn.appendChild(e('p',{cls:'placar-side-nome'},nome));
+  btn.appendChild(e('p',{cls:'placar-side-pts'},String(pts)));
+  btn.appendChild(e('div',{cls:'placar-side-plus'},html('<svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" style="width:24px;height:24px"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>').firstChild));
+  return btn;
+}
+
+function renderResultado(wrap){
+  const st=_plState;
+  const vNome=st.vencedora==='A'?st.cfg.nomA:st.cfg.nomB;
+  const res=e('div',{cls:'placar-resultado'});
+  res.appendChild(e('p',{cls:'placar-res-campa'},'Campeã'));
+  res.appendChild(e('p',{cls:'placar-res-nome'},vNome));
+  const sets=e('div',{cls:'placar-res-sets'});
+  st.sets.forEach((s,i)=>sets.appendChild(e('span',{cls:'placar-set-chip'},'Set '+(i+1)+': '+s.a+'–'+s.b)));
+  res.appendChild(sets);
+  const novaBtn=e('button',{cls:'cta-btn',style:'width:100%',onclick:()=>renderConfigModal(wrap,st.cfg,cfg=>placarNova(cfg))},'Nova Partida');
+  res.appendChild(novaBtn);
+  wrap.appendChild(res);
+}
+
+function renderConfigModal(wrap, cfgAtual, onConfirm){
+  wrap.innerHTML='';
+  const m=e('div',{cls:'placar-config'});
+  m.appendChild(e('h2',{cls:'placar-config-title'},'Nova Partida'));
+
+  const nomA=e('input',{type:'text',placeholder:'Dupla A',maxlength:'20',cls:'placar-input',value:cfgAtual?cfgAtual.nomA:'Dupla A'});
+  const nomB=e('input',{type:'text',placeholder:'Dupla B',maxlength:'20',cls:'placar-input',value:cfgAtual?cfgAtual.nomB:'Dupla B'});
+  m.appendChild(e('p',{cls:'placar-label'},'Duplas'));
+  m.appendChild(nomA);
+  m.appendChild(e('div',{cls:'placar-vs'},'VS'));
+  m.appendChild(nomB);
+
+  m.appendChild(e('p',{cls:'placar-label'},'Pontos por set'));
+  const ptsWrap=e('div',{cls:'placar-opts'});
+  let selPts=cfgAtual?cfgAtual.pts:21;
+  const ptsbtns=[21,15,11].map(p=>{
+    const b=e('button',{cls:'placar-opt'+(p===selPts?' placar-opt-sel':''),onclick:()=>{ selPts=p; ptsbtns.forEach((x,i)=>x.classList.toggle('placar-opt-sel',[21,15,11][i]===p)); }},String(p));
+    return b;
+  });
+  ptsbtns.forEach(b=>ptsWrap.appendChild(b));
+  m.appendChild(ptsWrap);
+
+  m.appendChild(e('p',{cls:'placar-label'},'Formato'));
+  const fmtWrap=e('div',{cls:'placar-opts'});
+  let selFmt=cfgAtual?cfgAtual.formato:'bo1';
+  const fmtbtns=['bo1','bo3'].map(f=>{
+    const b=e('button',{cls:'placar-opt'+(f===selFmt?' placar-opt-sel':''),onclick:()=>{ selFmt=f; fmtbtns.forEach((x,i)=>x.classList.toggle('placar-opt-sel',['bo1','bo3'][i]===f)); }},f==='bo1'?'Melhor de 1':'Melhor de 3');
+    return b;
+  });
+  fmtbtns.forEach(b=>fmtWrap.appendChild(b));
+  m.appendChild(fmtWrap);
+
+  const ok=e('button',{cls:'cta-btn',style:'width:100%;margin-top:24px',onclick:()=>{
+    onConfirm({pts:selPts,formato:selFmt,nomA:nomA.value||'Dupla A',nomB:nomB.value||'Dupla B'});
+  }},'Iniciar Partida');
+  m.appendChild(ok);
+
+  // back button if existing game
+  if(cfgAtual&&_plState&&!_plState.encerrada){
+    const back=e('button',{cls:'placar-cancel-btn',onclick:()=>renderPlacarInline()},'Cancelar');
+    m.appendChild(back);
+  }
+  wrap.appendChild(m);
+}
 
 /* ===== INIT ===== */
 window.addEventListener('hashchange', render);
