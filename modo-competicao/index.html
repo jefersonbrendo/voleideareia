@@ -202,8 +202,10 @@ input { font: inherit; }
 .nivel-badge.badge-adv { color: var(--c-ava); background: color-mix(in srgb, var(--c-ava) 14%, transparent); }
 
 /* ===== PLACAR STYLES ===== */
-#placar-wrap { position:fixed; top:0; left:0; right:0; bottom:calc(56px + env(safe-area-inset-bottom,0px)); background:#13314A; display:flex; flex-direction:column; overflow:hidden; z-index:50; }
+#placar-wrap { position:fixed; top:0; left:0; right:0; bottom:calc(60px + env(safe-area-inset-bottom,0px)); background:#13314A; display:flex; flex-direction:column; overflow:hidden; z-index:50; }
 .placar-topbar { display:flex; align-items:center; justify-content:space-between; padding:env(safe-area-inset-top,8px) 16px 8px; flex-shrink:0; }
+.placar-top-left { display:flex; align-items:center; gap:8px; min-width:0; }
+.placar-back { color:rgba(255,255,255,.7); background:rgba(255,255,255,.1); width:36px; height:36px; border-radius:10px; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
 .placar-info {}
 .placar-jogo-nome { font-size:10px; color:rgba(255,255,255,.35); text-transform:uppercase; letter-spacing:.07em; }
 .placar-meta { font-size:12px; color:rgba(255,255,255,.55); font-weight:500; }
@@ -216,7 +218,7 @@ input { font: inherit; }
 .placar-side-right { background:rgba(46,125,50,.2); }
 .placar-side:active { opacity:.75; }
 .placar-side-nome { font-size:14px; font-weight:600; color:rgba(255,255,255,.7); text-align:center; padding:0 8px; word-break:break-word; }
-.placar-side-pts { font-family:'Bebas Neue',sans-serif; font-size:clamp(72px,18vw,110px); color:#fff; line-height:1; letter-spacing:-1px; }
+.placar-side-pts { font-family:'Bebas Neue',sans-serif; font-size:clamp(100px,30vw,150px); color:#fff; line-height:1; letter-spacing:-1px; }
 .placar-side-plus { width:48px; height:48px; border-radius:50%; background:rgba(255,255,255,.15); display:flex; align-items:center; justify-content:center; }
 .placar-bot { padding:6px 16px; display:flex; align-items:center; justify-content:space-between; flex-shrink:0; padding-bottom:calc(6px + env(safe-area-inset-bottom,0px)); }
 .placar-bot-info { font-size:10px; color:rgba(255,255,255,.3); }
@@ -2657,6 +2659,7 @@ function updateNav(route) {
 
 function render() {
   const route = getRoute();
+  if (route.name !== 'placar') releaseWakeLock();
   const main = document.getElementById('main');
   main.innerHTML = '';
 
@@ -3122,6 +3125,7 @@ let _plSnap = null;
 let _plPedeSide = false;
 let _placarPendingConfig = null;
 let _wakeLock = null;
+let _plWrap = null;
 
 function sideChangeThreshold(pts) { return pts===21?7:pts===15?5:4; }
 function shouldChangeSide(pA,pB,nA,nB,pts) {
@@ -3141,7 +3145,7 @@ function plSave(st) { try{ localStorage.setItem(LS_MC,JSON.stringify(st)); }catc
 function plLoad() { try{ const r=localStorage.getItem(LS_MC); return r?JSON.parse(r):null; }catch(_){return null;} }
 
 function placarIniciarComJogo(jogo) {
-  _placarPendingConfig = { pts:jogo.pts, formato:'bo1', nomA:jogo.nome+' A', nomB:jogo.nome+' B', jogoNome:jogo.nome };
+  _placarPendingConfig = { pts:jogo.pts, formato:'bo1', nomA:'Dupla A', nomB:'Dupla B', jogoNome:jogo.nome };
 }
 
 function placarAddPonto(dupla) {
@@ -3178,7 +3182,7 @@ function salvarHistorico(st){
 }
 
 async function acquireWakeLock(){
-  try{ if('wakeLock' in navigator){ _wakeLock=await navigator.wakeLock.request('screen'); } }catch(_){}
+  try{ if(!_wakeLock && 'wakeLock' in navigator){ _wakeLock=await navigator.wakeLock.request('screen'); } }catch(_){}
 }
 function releaseWakeLock(){ try{ _wakeLock&&_wakeLock.release(); _wakeLock=null; }catch(_){} }
 
@@ -3195,14 +3199,14 @@ function renderPlacarPage() {
   if(_placarPendingConfig){ _plState=plBuild(_placarPendingConfig); _placarPendingConfig=null; plSave(_plState); _plPedeSide=false; _plSnap=null; }
 
   const frag=document.createDocumentFragment();
-  const wrap=e('div',{id:'placar-wrap'});
-  frag.appendChild(wrap);
+  _plWrap=e('div',{id:'placar-wrap'});
+  frag.appendChild(_plWrap);
   renderPlacarInline();
   return frag;
 }
 
 function renderPlacarInline(){
-  const wrap=document.getElementById('placar-wrap');
+  const wrap=_plWrap;
   if(!wrap) return;
   wrap.innerHTML='';
 
@@ -3233,7 +3237,11 @@ function renderPlacarInline(){
   const info=e('div',{cls:'placar-info'});
   if(st.cfg.jogoNome) info.appendChild(e('p',{cls:'placar-jogo-nome'},st.cfg.jogoNome));
   info.appendChild(e('p',{cls:'placar-meta'},'Set '+st.setAtual+' · '+alvo+' pts · Troca a cada '+th));
-  topbar.appendChild(info);
+  const topLeft=e('div',{cls:'placar-top-left'});
+  const backJ=e('button',{cls:'placar-back','aria-label':'Voltar aos jogos',onclick:()=>go('competicao')});
+  backJ.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" style="width:20px;height:20px"><polyline points="15 18 9 12 15 6"/></svg>';
+  topLeft.appendChild(backJ); topLeft.appendChild(info);
+  topbar.appendChild(topLeft);
   const topRight=e('div',{cls:'placar-top-right'});
   if(st.cfg.formato==='bo3') topRight.appendChild(e('span',{cls:'placar-sets-badge'},st.setsA+' – '+st.setsB));
   const novaBtn=e('button',{cls:'placar-nova-btn','aria-label':'Nova partida', onclick:()=>{ if(confirm('Iniciar nova partida?')) renderConfigModal(wrap,st.cfg,cfg=>placarNova(cfg)); }});
