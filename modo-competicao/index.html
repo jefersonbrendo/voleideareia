@@ -185,6 +185,42 @@ input { font: inherit; }
 .detail-topbar-title { font-size:14px; font-weight:700; color:var(--text); }
 .back-btn { background:none; padding:2px; color:var(--text-muted); flex-shrink:0; }
 
+/* ===== JOGOS: lista e cards ===== */
+.comp-hero { margin: 16px 0 4px; }
+.comp-hero-title { font-family: 'Bebas Neue', 'Inter', sans-serif; font-size: 2.1rem; line-height: 1; letter-spacing: 0.01em; color: var(--accent); margin: 0 0 6px; }
+.comp-hero-sub { font-size: 0.92rem; line-height: 1.5; color: var(--text-sec); max-width: 46ch; }
+.comp-filters { display: flex; gap: 8px; overflow-x: auto; margin: 14px -16px 4px; padding: 2px 16px 8px; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
+.comp-filters::-webkit-scrollbar { display: none; }
+.comp-filter { flex: 0 0 auto; display: inline-flex; align-items: center; gap: 6px; padding: 8px 14px; border-radius: 999px; font-size: 13px; font-weight: 600; white-space: nowrap; color: var(--text-sec); background: var(--bg-card); border: 1.5px solid var(--border); transition: background .15s, color .15s, border-color .15s; }
+.comp-filter small { font-size: 11px; font-weight: 700; color: var(--text-muted); }
+.comp-filter.active { background: var(--accent); border-color: var(--accent); color: #fff; }
+.comp-filter.active small { color: rgba(255,255,255,.75); }
+.comp-group { margin-top: 20px; }
+.comp-group-head { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
+.comp-group-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--cc); flex-shrink: 0; }
+.comp-group-name { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .07em; color: var(--text-sec); margin: 0; }
+.comp-group-count { font-size: 12px; color: var(--text-muted); margin-left: auto; }
+.comp-cards { display: flex; flex-direction: column; gap: 10px; }
+.jogo-card { display: flex; align-items: stretch; width: 100%; text-align: left; background: var(--bg-card); border: 1px solid var(--border); border-radius: 14px; box-shadow: var(--shadow); overflow: hidden; transition: transform .12s, box-shadow .12s; }
+.jogo-card::before { content: ''; width: 5px; flex-shrink: 0; background: var(--cc); }
+.jogo-card:active { transform: scale(.985); box-shadow: none; }
+.jogo-card-body { flex: 1; min-width: 0; padding: 14px 8px 13px 14px; }
+.jogo-nome { font-size: 16px; font-weight: 700; line-height: 1.25; color: var(--text); margin-bottom: 4px; }
+.jogo-obj { font-size: 13px; line-height: 1.45; color: var(--text-sec); margin: 0; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.jogo-meta { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 10px; }
+.jogo-pill { display: inline-flex; align-items: center; gap: 5px; font-size: 12px; font-weight: 600; color: var(--text-sec); background: var(--bg-chip); padding: 4px 9px; border-radius: 8px; }
+.jogo-pill svg { width: 13px; height: 13px; flex-shrink: 0; }
+.jogo-chev { display: flex; align-items: center; padding-right: 12px; color: var(--text-muted); }
+.jogo-chev svg { width: 18px; height: 18px; }
+
+/* botão principal e badges de nível (detalhe do jogo / placar) */
+.cta-btn { display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; background: var(--cta); color: #fff; font-weight: 700; font-size: 15px; padding: 15px; border-radius: 14px; box-shadow: 0 4px 14px rgba(255,74,63,.28); }
+.cta-btn:active { opacity: .85; }
+.nivel-badge.badge-ini, .nivel-badge.badge-inter, .nivel-badge.badge-adv { display: inline-block; padding: 3px 10px; border-radius: 999px; font-size: 12px; }
+.nivel-badge.badge-ini { color: var(--c-ini); background: color-mix(in srgb, var(--c-ini) 14%, transparent); }
+.nivel-badge.badge-inter { color: var(--c-int); background: color-mix(in srgb, var(--c-int) 14%, transparent); }
+.nivel-badge.badge-adv { color: var(--c-ava); background: color-mix(in srgb, var(--c-ava) 14%, transparent); }
+
 /* ===== PLACAR STYLES ===== */
 #placar-wrap { position:fixed; top:0; left:0; right:0; bottom:calc(56px + env(safe-area-inset-bottom,0px)); background:#13314A; display:flex; flex-direction:column; overflow:hidden; z-index:50; }
 .placar-topbar { display:flex; align-items:center; justify-content:space-between; padding:env(safe-area-inset-top,8px) 16px 8px; flex-shrink:0; }
@@ -2739,46 +2775,71 @@ const JOGOS_COMP = [
 ];
 
 const COMP_CAT_COLORS = {
-  'Disputa':'#EFF6FF|#1D4ED8','Jogo condicionado':'#F5F3FF|#6D28D9','Side-out e transição':'#F0FDF4|#15803D',
-  'Saque e recepção':'#FFF7ED|#C2410C','Defesa':'#FEF2F2|#B91C1C','Rodízio de duplas':'#F0FDF4|#166534'
+  'Disputa':'#0284C7','Jogo condicionado':'#7C3AED','Side-out e transição':'#1E9E5A',
+  'Saque e recepção':'#E08A00','Defesa':'#E5352B','Rodízio de duplas':'#0E9AA7'
 };
+let _compFiltro = null;
+
+const ICON_USERS = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>';
+const ICON_TARGET = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>';
+const ICON_LAYERS = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>';
+const ICON_CHEV = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>';
+
+function jogoCard(jogo) {
+  const card = e('button', {cls:'jogo-card', style:'--cc:'+(COMP_CAT_COLORS[jogo.cat]||'#64748B'), onclick:()=>go('jogo-comp-'+jogo.id), 'aria-label':jogo.nome});
+  const body = e('div', {cls:'jogo-card-body'});
+  body.appendChild(e('div', {cls:'jogo-nome'}, jogo.nome));
+  body.appendChild(e('p', {cls:'jogo-obj'}, jogo.obj));
+  const meta = e('div', {cls:'jogo-meta'});
+  [[ICON_USERS, jogo.jogs+' jogadores'], [ICON_TARGET, jogo.pts+' pts'], [ICON_LAYERS, jogo.vars.length+' níveis']].forEach(([ic, txt]) => {
+    const p = e('span', {cls:'jogo-pill'});
+    p.innerHTML = ic + '<span>' + txt + '</span>';
+    meta.appendChild(p);
+  });
+  body.appendChild(meta);
+  card.appendChild(body);
+  const chev = e('span', {cls:'jogo-chev'}); chev.innerHTML = ICON_CHEV;
+  card.appendChild(chev);
+  return card;
+}
 
 function renderCompeticao() {
   const frag = document.createDocumentFragment();
   const page = e('div', {cls:'page', style:'padding-bottom:80px'});
 
-  // Sub-nav
   const sub = e('div', {cls:'comp-subnav'});
-  const btnJogos = e('button', {cls:'comp-subnav-btn active', onclick:()=>go('competicao')}, 'Jogos');
-  const btnPlacar = e('button', {cls:'comp-subnav-btn', onclick:()=>go('placar')}, 'Placar');
-  sub.appendChild(btnJogos); sub.appendChild(btnPlacar);
+  sub.appendChild(e('button', {cls:'comp-subnav-btn active', onclick:()=>go('competicao')}, 'Jogos'));
+  sub.appendChild(e('button', {cls:'comp-subnav-btn', onclick:()=>go('placar')}, 'Placar'));
   page.appendChild(sub);
 
-  // Header
-  const hdr = e('div', {cls:'page-header'});
-  hdr.appendChild(e('h1', {cls:'page-title'}, 'Competição'));
-  hdr.appendChild(e('p', {cls:'page-subtitle'}, JOGOS_COMP.length + ' jogos competitivos'));
-  page.appendChild(hdr);
+  const hero = e('div', {cls:'comp-hero'});
+  hero.appendChild(e('h1', {cls:'comp-hero-title'}, 'Jogos de Competição'));
+  hero.appendChild(e('p', {cls:'comp-hero-sub'}, JOGOS_COMP.length + ' jogos com pontuação especial para treinar sob pressão. Escolha um e toque em "Usar no Placar".'));
+  page.appendChild(hero);
 
-  // Games list grouped by category
   const cats = [...new Set(JOGOS_COMP.map(j=>j.cat))];
-  cats.forEach(cat => {
+  const filters = e('div', {cls:'comp-filters', role:'tablist'});
+  const mkFilter = (label, value, count) => {
+    const b = e('button', {cls:'comp-filter'+(_compFiltro===value?' active':''), onclick:()=>{ _compFiltro = value; render(); }});
+    b.innerHTML = label + ' <small>' + count + '</small>';
+    return b;
+  };
+  filters.appendChild(mkFilter('Todos', null, JOGOS_COMP.length));
+  cats.forEach(c => filters.appendChild(mkFilter(c, c, JOGOS_COMP.filter(j=>j.cat===c).length)));
+  page.appendChild(filters);
+
+  cats.filter(c => !_compFiltro || c === _compFiltro).forEach(cat => {
     const jogos = JOGOS_COMP.filter(j=>j.cat===cat);
-    const sec = e('div', {cls:'section-block'});
-    const colors = (COMP_CAT_COLORS[cat]||'#F3F4F6|#374151').split('|');
-    const secHdr = e('div', {cls:'section-header'});
-    secHdr.appendChild(e('span', {cls:'cat-badge', style:`background:${colors[0]};color:${colors[1]}`}, cat));
-    sec.appendChild(secHdr);
-    jogos.forEach(jogo => {
-      const card = e('button', {cls:'ex-card', onclick:()=>go('jogo-comp-'+jogo.id)});
-      const info = e('div', {cls:'ex-card-info'});
-      info.appendChild(e('div', {cls:'ex-card-nome'}, jogo.nome));
-      info.appendChild(e('div', {cls:'ex-card-sub'}, '👥 '+jogo.jogs+' · '+jogo.pts+' pts'));
-      card.appendChild(info);
-      card.appendChild(e('svg', {viewBox:'0 0 24 24',fill:'none',stroke:'currentColor','stroke-width':'2',style:'width:16px;height:16px;flex-shrink:0;color:var(--border)'}, html('<path d="m9 18 6-6-6-6" stroke-linecap="round" stroke-linejoin="round"/>').firstChild));
-      sec.appendChild(card);
-    });
-    page.appendChild(sec);
+    const group = e('section', {cls:'comp-group', style:'--cc:'+(COMP_CAT_COLORS[cat]||'#64748B')});
+    const head = e('div', {cls:'comp-group-head'});
+    head.appendChild(e('span', {cls:'comp-group-dot'}));
+    head.appendChild(e('h2', {cls:'comp-group-name'}, cat));
+    head.appendChild(e('span', {cls:'comp-group-count'}, jogos.length + (jogos.length === 1 ? ' jogo' : ' jogos')));
+    group.appendChild(head);
+    const list = e('div', {cls:'comp-cards'});
+    jogos.forEach(j => list.appendChild(jogoCard(j)));
+    group.appendChild(list);
+    page.appendChild(group);
   });
 
   frag.appendChild(page);
