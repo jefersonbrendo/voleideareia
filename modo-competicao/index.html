@@ -202,47 +202,93 @@ input { font: inherit; }
 .nivel-badge.badge-adv { color: var(--c-ava); background: color-mix(in srgb, var(--c-ava) 14%, transparent); }
 
 /* ===== PLACAR STYLES ===== */
-#placar-wrap { position:fixed; top:0; left:0; right:0; bottom:calc(60px + env(safe-area-inset-bottom,0px)); background:#13314A; display:flex; flex-direction:column; overflow:hidden; z-index:50; }
-.placar-topbar { display:flex; align-items:center; justify-content:space-between; padding:env(safe-area-inset-top,8px) 16px 8px; flex-shrink:0; }
-.placar-top-left { display:flex; align-items:center; gap:8px; min-width:0; }
-.placar-back { color:rgba(255,255,255,.7); background:rgba(255,255,255,.1); width:36px; height:36px; border-radius:10px; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
-.placar-info {}
-.placar-jogo-nome { font-size:10px; color:rgba(255,255,255,.35); text-transform:uppercase; letter-spacing:.07em; }
-.placar-meta { font-size:12px; color:rgba(255,255,255,.55); font-weight:500; }
-.placar-top-right { display:flex; align-items:center; gap:8px; }
-.placar-sets-badge { font-size:12px; color:rgba(255,255,255,.45); background:rgba(255,255,255,.1); padding:2px 8px; border-radius:999px; }
-.placar-nova-btn { color:rgba(255,255,255,.35); background:none; padding:4px; }
-.placar-area { flex:1; display:flex; gap:2px; overflow:hidden; }
-.placar-side { flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:12px; cursor:pointer; -webkit-tap-highlight-color:transparent; border:none; }
-.placar-side-left { background:rgba(15,111,168,.25); }
-.placar-side-right { background:rgba(46,125,50,.2); }
-.placar-side:active { opacity:.75; }
-.placar-side-nome { font-size:14px; font-weight:600; color:rgba(255,255,255,.7); text-align:center; padding:0 8px; word-break:break-word; }
-.placar-side-pts { font-family:'Bebas Neue',sans-serif; font-size:clamp(100px,30vw,150px); color:#fff; line-height:1; letter-spacing:-1px; }
-.placar-side-plus { width:48px; height:48px; border-radius:50%; background:rgba(255,255,255,.15); display:flex; align-items:center; justify-content:center; }
-.placar-bot { padding:6px 16px; display:flex; align-items:center; justify-content:space-between; flex-shrink:0; padding-bottom:calc(6px + env(safe-area-inset-bottom,0px)); }
-.placar-bot-info { font-size:10px; color:rgba(255,255,255,.3); }
-.placar-desfazer { font-size:12px; color:rgba(232,155,23,.8); background:none; }
-.placar-overlay { position:absolute; inset:0; background:rgba(19,49,74,.96); display:flex; flex-direction:column; align-items:center; justify-content:center; gap:16px; padding:24px; z-index:60; }
-.placar-overlay-icon { width:64px; height:64px; border-radius:50%; background:rgba(232,155,23,.15); display:flex; align-items:center; justify-content:center; }
-.placar-overlay-title { font-family:'Bebas Neue',sans-serif; font-size:36px; color:#E89B17; letter-spacing:.05em; text-align:center; }
-.placar-overlay-sub { font-size:13px; color:rgba(255,255,255,.45); text-align:center; }
-.placar-overlay-btn { width:100%; background:#E89B17; color:#fff; font-weight:700; font-size:16px; padding:18px; border-radius:16px; margin-top:8px; }
-.placar-resultado { display:flex; flex-direction:column; align-items:center; justify-content:center; gap:12px; height:100%; padding:24px; }
-.placar-res-campa { font-family:'Bebas Neue',sans-serif; font-size:40px; color:#E89B17; letter-spacing:.05em; }
-.placar-res-nome { font-size:22px; font-weight:700; color:#fff; text-align:center; }
-.placar-res-sets { display:flex; gap:8px; flex-wrap:wrap; justify-content:center; }
-.placar-set-chip { font-size:13px; color:rgba(255,255,255,.5); background:rgba(255,255,255,.1); padding:3px 10px; border-radius:999px; }
-.placar-config { background:#13314A; min-height:100%; padding:24px 20px; display:flex; flex-direction:column; gap:12px; }
-.placar-config-title { font-family:'Bebas Neue',sans-serif; font-size:28px; color:#E89B17; letter-spacing:.05em; margin-bottom:4px; }
-.placar-label { font-size:10px; font-weight:700; color:rgba(255,255,255,.4); text-transform:uppercase; letter-spacing:.1em; }
-.placar-input { width:100%; background:rgba(255,255,255,.1); color:#fff; border:none; border-radius:12px; padding:12px 14px; font-size:14px; font-weight:500; box-sizing:border-box; }
-.placar-input::placeholder { color:rgba(255,255,255,.3); }
-.placar-vs { text-align:center; font-size:12px; color:rgba(255,255,255,.25); font-weight:700; }
-.placar-opts { display:flex; gap:8px; }
-.placar-opt { flex:1; padding:12px 0; border-radius:12px; background:rgba(255,255,255,.1); color:rgba(255,255,255,.5); font-weight:700; font-size:13px; transition:.15s; }
-.placar-opt-sel { background:#E89B17; color:#fff; }
-.placar-cancel-btn { width:100%; padding:12px; border-radius:12px; background:rgba(255,255,255,.08); color:rgba(255,255,255,.5); font-weight:600; font-size:14px; margin-top:4px; }
+#placar-wrap { position: fixed; top: 0; left: 0; right: 0; bottom: calc(60px + env(safe-area-inset-bottom, 0px)); z-index: 50;
+  background: var(--bg); overflow-y: auto; -webkit-overflow-scrolling: touch;
+  display: flex; flex-direction: column; gap: 12px;
+  padding: calc(12px + env(safe-area-inset-top, 0px)) 16px 20px; --ta: #FF4A3F; --tb: #12A594; }
+.pl-top { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.pl-icon-btn { width: 42px; height: 42px; border-radius: 13px; flex-shrink: 0; display: flex; align-items: center; justify-content: center;
+  background: var(--bg-card); border: 1px solid var(--border); color: var(--text-sec); box-shadow: var(--shadow); }
+.pl-icon-btn svg { width: 20px; height: 20px; }
+.pl-icon-btn:disabled { opacity: .35; }
+.pl-icon-btn:active:not(:disabled) { transform: scale(.94); }
+.pl-pill { background: var(--bg-card); border: 1px solid var(--border); border-radius: 999px; padding: 8px 16px; max-width: 62%;
+  font-size: 12px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; color: var(--accent);
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap; box-shadow: var(--shadow); }
+.pl-meta { text-align: center; font-size: 12px; font-weight: 600; color: var(--text-muted); }
+
+.pl-teams { display: flex; align-items: stretch; margin-top: 4px; }
+.pl-team { flex: 1; min-width: 0; display: flex; flex-direction: column; background: var(--bg-card); border: 2px solid var(--tc);
+  border-radius: 22px; overflow: hidden; box-shadow: 0 10px 26px rgba(15,23,42,.10); }
+.pl-team.a { --tc: var(--ta); } .pl-team.b { --tc: var(--tb); }
+.pl-team-head { background: var(--tc); color: #fff; text-align: center; padding: 11px 10px; font-size: 13px; font-weight: 800;
+  letter-spacing: .08em; text-transform: uppercase; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.pl-score-btn { width: 100%; flex: 1; display: flex; align-items: center; justify-content: center; padding: 18px 0 6px; background: none;
+  font-family: 'Bebas Neue', 'Inter', sans-serif; font-size: clamp(100px, 31vw, 150px); line-height: .92; color: var(--tc);
+  -webkit-tap-highlight-color: transparent; transition: transform .1s; }
+.pl-score-btn:active { transform: scale(.96); }
+.pl-team-actions { display: flex; justify-content: center; gap: 12px; padding: 6px 10px 18px; }
+.pl-btn-round { width: 54px; height: 54px; border-radius: 50%; border: 2.5px solid var(--tc); color: var(--tc); background: transparent;
+  display: flex; align-items: center; justify-content: center; transition: transform .1s; }
+.pl-btn-round.plus { background: var(--tc); color: #fff; box-shadow: 0 6px 14px rgba(15,23,42,.18); }
+.pl-btn-round svg { width: 24px; height: 24px; }
+.pl-btn-round:active { transform: scale(.9); }
+.pl-x { align-self: center; z-index: 2; width: 32px; height: 32px; margin: 0 -16px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+  background: var(--bg-card); border: 2px solid var(--border); color: var(--text-muted); font-size: 16px; font-weight: 800; }
+
+.pl-sets { background: var(--bg-card); border: 1px solid var(--border); border-radius: 18px; padding: 12px 16px 14px; box-shadow: var(--shadow); }
+.pl-sets-label { display: flex; align-items: center; gap: 12px; font-size: 11px; font-weight: 800; letter-spacing: .14em; color: var(--text-muted); text-transform: uppercase; }
+.pl-sets-label::before, .pl-sets-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+.pl-sets-row { display: flex; align-items: center; justify-content: space-around; margin-top: 6px; }
+.pl-sets-num { font-family: 'Bebas Neue', 'Inter', sans-serif; font-size: 2.8rem; line-height: 1; }
+.pl-sets-num.a { color: var(--ta); } .pl-sets-num.b { color: var(--tb); }
+.pl-trophy { width: 42px; height: 42px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+  background: rgba(255,159,28,.16); color: var(--laranja); }
+.pl-trophy svg { width: 22px; height: 22px; }
+.pl-sets-hist { text-align: center; font-size: 12px; color: var(--text-muted); margin-top: 6px; }
+.pl-note { text-align: center; font-size: 12px; color: var(--text-muted); }
+
+.pl-actions { display: flex; flex-direction: column; gap: 10px; }
+.pl-btn { width: 100%; height: 54px; border-radius: 15px; display: flex; align-items: center; justify-content: center; gap: 9px;
+  font-size: 14px; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; }
+.pl-btn svg { width: 19px; height: 19px; }
+.pl-btn.pri { background: var(--coral); color: #fff; box-shadow: 0 8px 18px rgba(255,74,63,.30); }
+.pl-btn.sec { background: var(--bg-card); color: var(--coral); border: 1.5px solid var(--border); }
+.pl-btn:active { transform: scale(.98); }
+
+.pl-modal { position: fixed; top: 0; left: 0; right: 0; bottom: calc(60px + env(safe-area-inset-bottom, 0px)); z-index: 60;
+  display: flex; align-items: center; justify-content: center; padding: 20px; background: rgba(15,23,42,.58); }
+.pl-modal-card { width: min(340px, 100%); background: var(--bg-card); border-radius: 26px; padding: 26px 20px 20px; text-align: center;
+  box-shadow: var(--shadow-lg); display: flex; flex-direction: column; gap: 10px; }
+.pl-modal-icon { width: 66px; height: 66px; border-radius: 50%; margin: 0 auto 2px; display: flex; align-items: center; justify-content: center;
+  background: rgba(255,159,28,.16); color: var(--laranja); }
+.pl-modal-icon svg { width: 32px; height: 32px; }
+.pl-modal-title { font-family: 'Bebas Neue', 'Inter', sans-serif; font-size: 2rem; line-height: 1; color: var(--text); margin: 0; }
+.pl-modal-text { font-size: .9rem; line-height: 1.5; color: var(--text-sec); margin: 0 0 8px; }
+
+.pl-result { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; text-align: center; padding: 8px 0; }
+.pl-result-icon { width: 92px; height: 92px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+  background: rgba(255,159,28,.16); color: var(--laranja); }
+.pl-result-icon svg { width: 46px; height: 46px; }
+.pl-result-kicker { font-size: 12px; font-weight: 800; letter-spacing: .2em; text-transform: uppercase; color: var(--text-muted); margin: 6px 0 0; }
+.pl-result-name { font-family: 'Bebas Neue', 'Inter', sans-serif; font-size: 3.4rem; line-height: 1; margin: 0; word-break: break-word; }
+.pl-result-name.a { color: var(--ta); } .pl-result-name.b { color: var(--tb); }
+.pl-result-score { font-size: 15px; font-weight: 700; color: var(--text-sec); }
+.pl-result-sets { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; margin-bottom: 8px; }
+.pl-chip { font-size: 13px; font-weight: 600; color: var(--text-sec); background: var(--bg-card); border: 1px solid var(--border); padding: 5px 12px; border-radius: 999px; }
+
+.pl-config { display: flex; flex-direction: column; gap: 14px; }
+.pl-config-title { font-family: 'Bebas Neue', 'Inter', sans-serif; font-size: 2.1rem; line-height: 1; color: var(--accent); margin: 6px 0 0; }
+.pl-group { background: var(--bg-card); border: 1px solid var(--border); border-radius: 18px; padding: 14px; display: flex; flex-direction: column; gap: 10px; box-shadow: var(--shadow); }
+.pl-label { margin: 0; font-size: 11px; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; color: var(--text-muted); }
+.pl-input { width: 100%; box-sizing: border-box; height: 48px; padding: 0 14px; border-radius: 13px; font-size: 15px; font-weight: 700;
+  background: var(--bg); color: var(--text); border: 2px solid var(--border); }
+.pl-input-a { border-left: 6px solid var(--ta); } .pl-input-b { border-left: 6px solid var(--tb); }
+.pl-input:focus { outline: none; border-color: var(--accent); }
+.pl-seg { display: flex; gap: 6px; background: var(--bg-chip); border-radius: 13px; padding: 4px; }
+.pl-seg-btn { flex: 1; height: 42px; border-radius: 10px; font-size: 14px; font-weight: 700; color: var(--text-sec); transition: background .15s, color .15s; }
+.pl-seg-btn.on { background: var(--coral); color: #fff; box-shadow: 0 3px 8px rgba(255,74,63,.3); }
+.pl-hint { margin: 0; font-size: 12px; color: var(--text-muted); }
 
 /* ===== PAGE CONTAINER ===== */
 .page {
@@ -3205,139 +3251,181 @@ function renderPlacarPage() {
   return frag;
 }
 
-function renderPlacarInline(){
-  const wrap=_plWrap;
-  if(!wrap) return;
-  wrap.innerHTML='';
+const PL_ICON = {
+  back:  '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>',
+  undo:  '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 14L4 9l5-5"/><path d="M4 9h10.5a5.5 5.5 0 010 11H11"/></svg>',
+  plus:  '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>',
+  minus: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round"><line x1="5" y1="12" x2="19" y2="12"/></svg>',
+  trophy:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9H4.5a2.5 2.5 0 010-5H6"/><path d="M18 9h1.5a2.5 2.5 0 000-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0012 0V2z"/></svg>',
+  swap:  '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3L4 7l4 4M4 7h16M16 21l4-4-4-4M20 17H4"/></svg>',
+  play:  '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 000 20M2 12h20"/></svg>',
+  reset: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 109-9 9.75 9.75 0 00-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>'
+};
 
-  if(!_plState||_plState.cfg===undefined){
-    renderConfigModal(wrap, null, cfg=>placarNova(cfg));
-    return;
-  }
+function plBtn(cls, label, iconSvg, onclick, aria) {
+  const b = e('button', { cls, onclick });
+  if (aria) b.setAttribute('aria-label', aria);
+  b.innerHTML = (iconSvg || '') + (label ? '<span>' + label + '</span>' : '');
+  return b;
+}
 
-  if(_plState.encerrada){
-    renderResultado(wrap);
-    releaseWakeLock();
-    return;
-  }
+function plModal(wrap, icon, titulo, texto, botoes) {
+  const m = e('div', { cls: 'pl-modal' });
+  const card = e('div', { cls: 'pl-modal-card' });
+  const ic = e('div', { cls: 'pl-modal-icon' }); ic.innerHTML = icon;
+  card.appendChild(ic);
+  card.appendChild(e('h3', { cls: 'pl-modal-title' }, titulo));
+  card.appendChild(e('p', { cls: 'pl-modal-text' }, texto));
+  botoes.forEach(b => card.appendChild(b));
+  m.appendChild(card);
+  wrap.appendChild(m);
+  return m;
+}
 
+function placarMenos(t) {
+  if (!_plState || _plState.encerrada) return;
+  const k = t === 'A' ? 'pA' : 'pB';
+  if (_plState[k] <= 0) return;
+  _plSnap = JSON.parse(JSON.stringify(_plState));
+  _plState = { ..._plState, [k]: _plState[k] - 1 };
+  _plPedeSide = false;
+  plSave(_plState); renderPlacarInline();
+}
+
+function placarZerar() { placarNova(_plState.cfg); }
+
+function renderPlacarInline() {
+  const wrap = _plWrap;
+  if (!wrap) return;
+  wrap.innerHTML = '';
+
+  if (!_plState || _plState.cfg === undefined) { renderConfigModal(wrap, null, cfg => placarNova(cfg)); return; }
+  if (_plState.encerrada) { renderResultado(wrap); releaseWakeLock(); return; }
   acquireWakeLock();
 
-  const st=_plState;
-  const inv=st.ladoInv;
-  const nomA=inv?st.cfg.nomB:st.cfg.nomA, nomB=inv?st.cfg.nomA:st.cfg.nomB;
-  const pA=inv?st.pB:st.pA, pB=inv?st.pA:st.pB;
-  const addA=()=>placarAddPonto(inv?'B':'A'), addB=()=>placarAddPonto(inv?'A':'B');
-  const th=sideChangeThreshold(st.cfg.pts);
-  const prox=th-((st.pA+st.pB)%th)||th;
-  const alvo=setAlvo(st.cfg,st.setAtual);
+  const st = _plState, cfg = st.cfg;
+  const esq = st.ladoInv ? 'B' : 'A', dir = st.ladoInv ? 'A' : 'B';
+  const th = sideChangeThreshold(cfg.pts);
+  const prox = th - ((st.pA + st.pB) % th) || th;
+  const alvo = setAlvo(cfg, st.setAtual);
 
-  // Top bar
-  const topbar=e('div',{cls:'placar-topbar'});
-  const info=e('div',{cls:'placar-info'});
-  if(st.cfg.jogoNome) info.appendChild(e('p',{cls:'placar-jogo-nome'},st.cfg.jogoNome));
-  info.appendChild(e('p',{cls:'placar-meta'},'Set '+st.setAtual+' · '+alvo+' pts · Troca a cada '+th));
-  const topLeft=e('div',{cls:'placar-top-left'});
-  const backJ=e('button',{cls:'placar-back','aria-label':'Voltar aos jogos',onclick:()=>go('competicao')});
-  backJ.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" style="width:20px;height:20px"><polyline points="15 18 9 12 15 6"/></svg>';
-  topLeft.appendChild(backJ); topLeft.appendChild(info);
-  topbar.appendChild(topLeft);
-  const topRight=e('div',{cls:'placar-top-right'});
-  if(st.cfg.formato==='bo3') topRight.appendChild(e('span',{cls:'placar-sets-badge'},st.setsA+' – '+st.setsB));
-  const novaBtn=e('button',{cls:'placar-nova-btn','aria-label':'Nova partida', onclick:()=>{ if(confirm('Iniciar nova partida?')) renderConfigModal(wrap,st.cfg,cfg=>placarNova(cfg)); }});
-  novaBtn.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:18px;height:18px"><path d="M3 12a9 9 0 109-9 9.75 9.75 0 00-6.74 2.74L3 8" stroke-linecap="round"/><path d="M3 3v5h5" stroke-linecap="round" stroke-linejoin="round"/></svg>';
-  topRight.appendChild(novaBtn);
-  topbar.appendChild(topRight);
-  wrap.appendChild(topbar);
+  // topo
+  const top = e('div', { cls: 'pl-top' });
+  top.appendChild(plBtn('pl-icon-btn', '', PL_ICON.back, () => go('competicao'), 'Voltar aos jogos'));
+  top.appendChild(e('span', { cls: 'pl-pill' }, cfg.jogoNome || 'Placar'));
+  const undo = plBtn('pl-icon-btn', '', PL_ICON.undo, placarDesfazer, 'Desfazer');
+  if (!_plSnap) undo.disabled = true;
+  top.appendChild(undo);
+  wrap.appendChild(top);
 
-  // Score area
-  const area=e('div',{cls:'placar-area'});
-  area.appendChild(makeSide(nomA,pA,addA,'left'));
-  area.appendChild(makeSide(nomB,pB,addB,'right'));
-  wrap.appendChild(area);
+  wrap.appendChild(e('div', { cls: 'pl-meta' }, 'Set ' + st.setAtual + ' · até ' + alvo + ' pontos · troca de lado a cada ' + th));
 
-  // Bottom info
-  const bot=e('div',{cls:'placar-bot'});
-  bot.appendChild(e('span',{cls:'placar-bot-info'},'Troca de lado em '+prox+' '+(prox===1?'pt':'pts')));
-  if(_plSnap){ const ub=e('button',{cls:'placar-desfazer',onclick:placarDesfazer},'↩ Desfazer'); bot.appendChild(ub); }
-  wrap.appendChild(bot);
+  // cartões das duplas
+  const teams = e('div', { cls: 'pl-teams' });
+  const card = t => {
+    const nome = t === 'A' ? cfg.nomA : cfg.nomB;
+    const pts = t === 'A' ? st.pA : st.pB;
+    const c = e('div', { cls: 'pl-team ' + t.toLowerCase() });
+    c.appendChild(e('div', { cls: 'pl-team-head' }, nome));
+    const sc = e('button', { cls: 'pl-score-btn', 'aria-label': 'Ponto para ' + nome, onclick: () => placarAddPonto(t) }, String(pts));
+    c.appendChild(sc);
+    const ac = e('div', { cls: 'pl-team-actions' });
+    ac.appendChild(plBtn('pl-btn-round', '', PL_ICON.minus, () => placarMenos(t), 'Tirar ponto de ' + nome));
+    ac.appendChild(plBtn('pl-btn-round plus', '', PL_ICON.plus, () => placarAddPonto(t), 'Ponto para ' + nome));
+    c.appendChild(ac);
+    return c;
+  };
+  teams.appendChild(card(esq));
+  teams.appendChild(e('div', { cls: 'pl-x' }, '×'));
+  teams.appendChild(card(dir));
+  wrap.appendChild(teams);
 
-  // Side-change overlay
-  if(_plPedeSide){
-    const ov=e('div',{cls:'placar-overlay'});
-    ov.appendChild(e('div',{cls:'placar-overlay-icon'},html('<svg viewBox="0 0 24 24" fill="none" stroke="#E89B17" stroke-width="2" style="width:36px;height:36px"><path d="M8 3L4 7l4 4M4 7h16M16 21l4-4-4-4M20 17H4" stroke-linecap="round" stroke-linejoin="round"/></svg>').firstChild));
-    ov.appendChild(e('p',{cls:'placar-overlay-title'},'Troca de Lado'));
-    ov.appendChild(e('p',{cls:'placar-overlay-sub'},(st.pA+st.pB)+' pontos disputados'));
-    const okBtn=e('button',{cls:'placar-overlay-btn',onclick:placarTrocarLado},'Trocar Lado ↔');
-    ov.appendChild(okBtn);
-    wrap.appendChild(ov);
+  // sets vencidos
+  const sets = e('div', { cls: 'pl-sets' });
+  sets.appendChild(e('div', { cls: 'pl-sets-label' }, 'Sets vencidos'));
+  const row = e('div', { cls: 'pl-sets-row' });
+  row.appendChild(e('span', { cls: 'pl-sets-num ' + esq.toLowerCase() }, String(esq === 'A' ? st.setsA : st.setsB)));
+  const tr = e('span', { cls: 'pl-trophy' }); tr.innerHTML = PL_ICON.trophy; row.appendChild(tr);
+  row.appendChild(e('span', { cls: 'pl-sets-num ' + dir.toLowerCase() }, String(dir === 'A' ? st.setsA : st.setsB)));
+  sets.appendChild(row);
+  if (st.sets.length) sets.appendChild(e('div', { cls: 'pl-sets-hist' }, st.sets.map((s, i) => 'Set ' + (i + 1) + ': ' + s.a + '–' + s.b).join('  ·  ')));
+  wrap.appendChild(sets);
+
+  wrap.appendChild(e('div', { cls: 'pl-note' }, 'Próxima troca de lado em ' + prox + (prox === 1 ? ' ponto' : ' pontos')));
+
+  // ações
+  const acoes = e('div', { cls: 'pl-actions' });
+  acoes.appendChild(plBtn('pl-btn pri', 'Nova partida', PL_ICON.play, () => renderConfigModal(wrap, cfg, c => placarNova(c))));
+  acoes.appendChild(plBtn('pl-btn sec', 'Zerar placar', PL_ICON.reset, () => {
+    const m = plModal(wrap, PL_ICON.reset, 'Zerar placar?', 'Pontos e sets desta partida voltam para zero.', [
+      plBtn('pl-btn pri', 'Zerar', '', placarZerar),
+      plBtn('pl-btn sec', 'Cancelar', '', () => m.remove())
+    ]);
+  }));
+  wrap.appendChild(acoes);
+
+  // troca de lado
+  if (_plPedeSide) {
+    plModal(wrap, PL_ICON.swap, 'Troca de lado', (st.pA + st.pB) + ' pontos disputados. As duplas trocam de meia-quadra.', [
+      plBtn('pl-btn pri', 'Trocar de lado', '', placarTrocarLado)
+    ]);
   }
 }
 
-function makeSide(nome,pts,onAdd,side){
-  const btn=e('button',{cls:'placar-side placar-side-'+side,'aria-label':'Ponto para '+nome,onclick:onAdd});
-  btn.appendChild(e('p',{cls:'placar-side-nome'},nome));
-  btn.appendChild(e('p',{cls:'placar-side-pts'},String(pts)));
-  btn.appendChild(e('div',{cls:'placar-side-plus'},html('<svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" style="width:24px;height:24px"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>').firstChild));
-  return btn;
-}
-
-function renderResultado(wrap){
-  const st=_plState;
-  const vNome=st.vencedora==='A'?st.cfg.nomA:st.cfg.nomB;
-  const res=e('div',{cls:'placar-resultado'});
-  res.appendChild(e('p',{cls:'placar-res-campa'},'Campeã'));
-  res.appendChild(e('p',{cls:'placar-res-nome'},vNome));
-  const sets=e('div',{cls:'placar-res-sets'});
-  st.sets.forEach((s,i)=>sets.appendChild(e('span',{cls:'placar-set-chip'},'Set '+(i+1)+': '+s.a+'–'+s.b)));
-  res.appendChild(sets);
-  const novaBtn=e('button',{cls:'cta-btn',style:'width:100%',onclick:()=>renderConfigModal(wrap,st.cfg,cfg=>placarNova(cfg))},'Nova Partida');
-  res.appendChild(novaBtn);
+function renderResultado(wrap) {
+  const st = _plState, cfg = st.cfg, v = st.vencedora;
+  const res = e('div', { cls: 'pl-result' });
+  const ic = e('div', { cls: 'pl-result-icon' }); ic.innerHTML = PL_ICON.trophy; res.appendChild(ic);
+  res.appendChild(e('p', { cls: 'pl-result-kicker' }, 'Campeã'));
+  res.appendChild(e('h2', { cls: 'pl-result-name ' + v.toLowerCase() }, v === 'A' ? cfg.nomA : cfg.nomB));
+  res.appendChild(e('div', { cls: 'pl-result-score' }, st.setsA + ' × ' + st.setsB + ' em sets'));
+  const chips = e('div', { cls: 'pl-result-sets' });
+  st.sets.forEach((s, i) => chips.appendChild(e('span', { cls: 'pl-chip' }, 'Set ' + (i + 1) + ': ' + s.a + '–' + s.b)));
+  res.appendChild(chips);
+  const acoes = e('div', { cls: 'pl-actions', style: 'width:100%;margin-top:8px' });
+  acoes.appendChild(plBtn('pl-btn pri', 'Nova partida', PL_ICON.play, () => renderConfigModal(wrap, cfg, c => placarNova(c))));
+  acoes.appendChild(plBtn('pl-btn sec', 'Voltar aos jogos', '', () => go('competicao')));
+  res.appendChild(acoes);
   wrap.appendChild(res);
 }
 
-function renderConfigModal(wrap, cfgAtual, onConfirm){
-  wrap.innerHTML='';
-  const m=e('div',{cls:'placar-config'});
-  m.appendChild(e('h2',{cls:'placar-config-title'},'Nova Partida'));
+function renderConfigModal(wrap, cfgAtual, onConfirm) {
+  wrap.innerHTML = '';
+  const m = e('div', { cls: 'pl-config' });
+  m.appendChild(e('h2', { cls: 'pl-config-title' }, 'Nova partida'));
 
-  const nomA=e('input',{type:'text',placeholder:'Dupla A',maxlength:'20',cls:'placar-input',value:cfgAtual?cfgAtual.nomA:'Dupla A'});
-  const nomB=e('input',{type:'text',placeholder:'Dupla B',maxlength:'20',cls:'placar-input',value:cfgAtual?cfgAtual.nomB:'Dupla B'});
-  m.appendChild(e('p',{cls:'placar-label'},'Duplas'));
-  m.appendChild(nomA);
-  m.appendChild(e('div',{cls:'placar-vs'},'VS'));
-  m.appendChild(nomB);
+  const grupo = (rotulo, ...filhos) => {
+    const g = e('div', { cls: 'pl-group' });
+    g.appendChild(e('p', { cls: 'pl-label' }, rotulo));
+    filhos.forEach(f => g.appendChild(f));
+    m.appendChild(g);
+  };
 
-  m.appendChild(e('p',{cls:'placar-label'},'Pontos por set'));
-  const ptsWrap=e('div',{cls:'placar-opts'});
-  let selPts=cfgAtual?cfgAtual.pts:21;
-  const ptsbtns=[21,15,11].map(p=>{
-    const b=e('button',{cls:'placar-opt'+(p===selPts?' placar-opt-sel':''),onclick:()=>{ selPts=p; ptsbtns.forEach((x,i)=>x.classList.toggle('placar-opt-sel',[21,15,11][i]===p)); }},String(p));
-    return b;
-  });
-  ptsbtns.forEach(b=>ptsWrap.appendChild(b));
-  m.appendChild(ptsWrap);
+  const nomA = e('input', { type: 'text', placeholder: 'Dupla A', maxlength: '20', cls: 'pl-input pl-input-a', value: cfgAtual ? cfgAtual.nomA : 'Dupla A' });
+  const nomB = e('input', { type: 'text', placeholder: 'Dupla B', maxlength: '20', cls: 'pl-input pl-input-b', value: cfgAtual ? cfgAtual.nomB : 'Dupla B' });
+  grupo('Duplas', nomA, nomB);
 
-  m.appendChild(e('p',{cls:'placar-label'},'Formato'));
-  const fmtWrap=e('div',{cls:'placar-opts'});
-  let selFmt=cfgAtual?cfgAtual.formato:'bo1';
-  const fmtbtns=['bo1','bo3'].map(f=>{
-    const b=e('button',{cls:'placar-opt'+(f===selFmt?' placar-opt-sel':''),onclick:()=>{ selFmt=f; fmtbtns.forEach((x,i)=>x.classList.toggle('placar-opt-sel',['bo1','bo3'][i]===f)); }},f==='bo1'?'Melhor de 1':'Melhor de 3');
-    return b;
-  });
-  fmtbtns.forEach(b=>fmtWrap.appendChild(b));
-  m.appendChild(fmtWrap);
+  const seg = (valores, rotulos, atual, onSel) => {
+    const w = e('div', { cls: 'pl-seg' });
+    const bs = valores.map((val, i) => {
+      const b = e('button', { cls: 'pl-seg-btn' + (val === atual ? ' on' : ''), onclick: () => { onSel(val); bs.forEach((x, j) => x.classList.toggle('on', valores[j] === val)); } }, rotulos[i]);
+      return b;
+    });
+    bs.forEach(b => w.appendChild(b));
+    return w;
+  };
+  let selPts = cfgAtual ? cfgAtual.pts : 21;
+  let selFmt = cfgAtual ? cfgAtual.formato : 'bo1';
+  grupo('Pontos por set', seg([21, 15, 11], ['21', '15', '11'], selPts, v => { selPts = v; }));
+  grupo('Formato', seg(['bo1', 'bo3'], ['Melhor de 1', 'Melhor de 3'], selFmt, v => { selFmt = v; }),
+    e('p', { cls: 'pl-hint' }, 'No melhor de 3, o 3.º set (desempate) vai até 15 pontos.'));
 
-  const ok=e('button',{cls:'cta-btn',style:'width:100%;margin-top:24px',onclick:()=>{
-    onConfirm({pts:selPts,formato:selFmt,nomA:nomA.value||'Dupla A',nomB:nomB.value||'Dupla B'});
-  }},'Iniciar Partida');
-  m.appendChild(ok);
-
-  // back button if existing game
-  if(cfgAtual&&_plState&&!_plState.encerrada){
-    const back=e('button',{cls:'placar-cancel-btn',onclick:()=>renderPlacarInline()},'Cancelar');
-    m.appendChild(back);
-  }
+  const acoes = e('div', { cls: 'pl-actions' });
+  acoes.appendChild(plBtn('pl-btn pri', 'Iniciar partida', PL_ICON.play, () => {
+    onConfirm({ pts: selPts, formato: selFmt, nomA: nomA.value.trim() || 'Dupla A', nomB: nomB.value.trim() || 'Dupla B', jogoNome: cfgAtual && cfgAtual.jogoNome });
+  }));
+  if (cfgAtual && _plState && !_plState.encerrada) acoes.appendChild(plBtn('pl-btn sec', 'Cancelar', '', () => renderPlacarInline()));
+  m.appendChild(acoes);
   wrap.appendChild(m);
 }
 
