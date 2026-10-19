@@ -1,1 +1,1 @@
-{"rewrites":[{"source":"/(.*)","destination":"/index.html"}]}
+{"rewrites":[{"source":"/modo-competicao","destination":"/modo-competicao/index.html"},{"source":"/modo-competicao/(.*)","destination":"/modo-competicao/index.html"},{"source":"/(.*)","destination":"/index.html"}]}
