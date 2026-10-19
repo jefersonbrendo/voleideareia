@@ -164,26 +164,6 @@ input { font: inherit; }
 .comp-subnav { display:flex; gap:0; border-bottom:1px solid var(--border); background:var(--bg); position:sticky; top:0; z-index:10; }
 .comp-subnav-btn { flex:1; padding:10px 0; font-size:13px; font-weight:600; color:var(--text-muted); border-bottom:2px solid transparent; transition:all .15s; background:none; }
 .comp-subnav-btn.active { color:var(--cta); border-bottom-color:var(--cta); }
-.section-block { margin:0 -4px 0; }
-.section-header { padding:8px 4px 4px; }
-.cat-badge { display:inline-block; font-size:11px; font-weight:700; padding:2px 8px; border-radius:999px; }
-.comp-section { margin:16px 0; }
-.comp-section-title { font-size:10px; font-weight:700; color:var(--text-muted); text-transform:uppercase; letter-spacing:.08em; margin-bottom:6px; }
-.comp-text { font-size:14px; color:var(--text); line-height:1.5; }
-.comp-chips { display:flex; gap:8px; flex-wrap:wrap; margin:12px 0; }
-.comp-chip { font-size:12px; color:var(--text-muted); background:var(--bg-card); padding:4px 10px; border-radius:999px; }
-.comp-list-num { list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:8px; }
-.comp-list-num li { display:flex; gap:8px; }
-.comp-list-n { font-weight:700; color:var(--cta); flex-shrink:0; }
-.comp-regra-box { background:rgba(232,155,23,.1); border-radius:10px; padding:10px 12px; font-size:13px; color:var(--text); }
-.comp-var-list { display:flex; flex-direction:column; gap:12px; }
-.comp-var {}
-.comp-cta-bar { position:fixed; bottom:calc(56px + env(safe-area-inset-bottom,0px)); left:0; right:0; padding:10px 16px; background:var(--bg); border-top:1px solid var(--border); z-index:150; }
-.detail-topbar { display:flex; align-items:center; gap:10px; padding:10px 0 8px; border-bottom:1px solid var(--border); margin-bottom:4px; }
-.detail-topbar-text { flex:1; min-width:0; }
-.detail-topbar-cat { font-size:11px; color:var(--text-muted); }
-.detail-topbar-title { font-size:14px; font-weight:700; color:var(--text); }
-.back-btn { background:none; padding:2px; color:var(--text-muted); flex-shrink:0; }
 
 /* ===== JOGOS: lista e cards ===== */
 .comp-hero { margin: 16px 0 4px; }
@@ -2846,65 +2826,293 @@ function renderCompeticao() {
   return frag;
 }
 
-function renderJogoComp(id) {
-  const jogo = JOGOS_COMP.find(j=>j.id===id);
-  if (!jogo) { go('competicao'); return document.createDocumentFragment(); }
-  const frag = document.createDocumentFragment();
-  const page = e('div', {cls:'page', style:'padding-bottom:100px'});
+/* ---- Conteúdo extra dos jogos (revisar com professor de vôlei de praia antes de publicar) ---- */
+const JOGOS_EXTRA = {
+  'rei-da-quadra': {
+    tempo:'15 a 20 min', material:'Bola, quadra com rede, cronômetro',
+    montar:'Monte a quadra com a rede na altura oficial. Duas duplas começam em lados opostos e as demais formam fila atrás da linha de fundo. Combine o tempo total da rodada antes de começar.',
+    atencao:['A dupla que perde sai na hora e a próxima já entra no lado de quem saiu.','Anote os pontos de cada dupla no papel ou no Placar.','Troque o lado das duplas a cada rally para dividir sol e vento.'],
+    erro:'A dupla campeã ficar muito tempo na quadra e a fila esfriar. Combine um limite de vitórias seguidas (ex.: 3) antes de ela sair.',
+    turma:'Com 6 a 12 alunos, use duas quadras e some os pontos de cada dupla no final.',
+    extra:100, diag:[['p',200,110,'A1','a'],['p',200,346,'A2','a'],['p',656,110,'B1','b'],['p',656,346,'B2','b'],
+      ['p',130,510,'C1','g'],['p',215,510,'C2','g'],['a',172,474,172,426,'d'],
+      ['t',290,510,'FILA DE ESPERA',null,26,'start'],['t',590,510,'Perdeu: sai|Próxima entra',null,22,'start']]
+  },
+  'ponto-diagonal': {
+    tempo:'10 a 15 min', material:'Bola, quadra com rede',
+    montar:'Quadra normal 2x2. Se quiser ajudar a visualizar, marque a diagonal e a paralela com cones nas pontas de cada lado.',
+    atencao:['Cada ataque vale pelo lugar onde a bola cai, não pela direção da batida.','Combine antes quem vai ser o juiz da diagonal em caso de dúvida.','O ponto por erro do adversário continua valendo 1.'],
+    erro:'Atacar sempre na diagonal e ficar previsível. Alterne com a paralela para surpreender a defesa.',
+    turma:'Com 8 alunos, duas duplas jogam e as outras duas contam pontos e marcam as diagonais.',
+    diag:[['p',200,330,'A2','a'],['p',330,110,'A1','a'],['p',560,340,'B1','b'],['p',700,200,'B2','b'],
+      ['c',790,60],['c',790,396],
+      ['a',362,128,740,380,'r'],['n',590,281,1,'r'],['a',362,100,740,64,'d'],['n',560,81,2,'d'],
+      ['t',215,200,'1 DIAGONAL: 2 pts','#C0392B',27],['t',215,244,'2 PARALELA: 1 pt',null,27]]
+  },
+  'set-curto': {
+    tempo:'10 min por set', material:'Bola, quadra com rede, cartões de regra (opcional)',
+    montar:'Quadra normal 2x2. Escreva as regras especiais em pedaços de papel ou combine uma lista antes de começar.',
+    atencao:['A cada 4 pontos somados, quem está perdendo escolhe a regra do próximo bloco.','A regra vale só até o próximo bloco de 4 pontos.','Se estiver empatado, a dupla que sacou por último escolhe.'],
+    erro:'Regras complicadas demais que travam o jogo. Escolha regras simples, de uma frase.',
+    turma:'Faça um sorteio de regras em cartões para ninguém perder tempo decidindo.',
+    diag:[['p',200,110,'A1','a'],['p',200,346,'A2','a'],['p',656,110,'B1','b'],['p',656,346,'B2','b'],
+      ['b',245,228,290,'ATÉ 11|PONTOS'],['b',611,228,330,'A CADA 4 PTS:|REGRA ESPECIAL']]
+  },
+  'sequencia': {
+    tempo:'15 min', material:'Bola, quadra com rede',
+    montar:'Quadra normal 2x2. Alguém fora da quadra conta as sequências em voz alta (ou use o Placar).',
+    atencao:['A sequência zera quando o adversário marca qualquer ponto.','Bônus de 3 pontos seguidos: +2. Bônus de 5 seguidos: +5.','Quem conta as sequências precisa falar alto: "dois, três, bônus!".'],
+    erro:'Esquecer de contar a sequência. Nomeie um aluno só para isso.',
+    turma:'Com número ímpar, o aluno que sobra é o contador oficial e troca a cada set.',
+    diag:[['p',200,110,'A1','a'],['p',200,346,'A2','a'],['p',656,110,'B1','b'],['p',656,346,'B2','b'],
+      ['a',152,228,188,228,'r'],['a',236,228,272,228,'r'],['n',130,228,1,'r'],['n',215,228,2,'r'],['n',300,228,3,'r'],
+      ['t',215,180,'3 SEGUIDOS = +2',null,26],['t',611,228,'Ponto do|adversário zera|a sequência',null,26]]
+  },
+  'tres-toques': {
+    tempo:'10 a 15 min', material:'Bola, quadra com rede',
+    montar:'Quadra normal 2x2. Os dois jogadores de cada dupla precisam tocar na bola antes de ela passar a rede.',
+    atencao:['Contam como toque: manchete, toque por cima e ataque.','Um toque ou dois toques e a bola passa: ponto do adversário.','Combine se o bloqueio conta como toque antes de começar.'],
+    erro:'Mandar a bola de graça no segundo toque. Se faltar controle, é melhor tocar o terceiro para ajeitar.',
+    turma:'Faça mini torneio: cada dupla joga 2 sets e quem vencer mais sobe de quadra.',
+    diag:[['p',150,340,'A1','a'],['p',330,150,'A2','a'],['p',656,120,'B1','b'],['p',656,330,'B2','b'],
+      ['a',176,316,306,178,'r'],['n',110,300,1,'r'],['n',240,247,2,'r'],
+      ['a',366,150,610,215,'r'],['n',490,182,3,'r'],['t',611,396,'EXATAMENTE 3 TOQUES',null,24]]
+  },
+  'zona-proibida': {
+    tempo:'10 a 15 min', material:'Bola, quadra com rede, 8 cones',
+    montar:'Marque com cones uma zona de 2 x 2 metros no centro do fundo de cada lado da quadra. É a "zona proibida".',
+    atencao:['Bola dentro da zona dá ponto ao adversário, mesmo que a bola seja boa.','Bola na linha do cone conta como dentro.','Os atacantes precisam variar a direção para fugir da zona.'],
+    erro:'Ficar com medo da zona e errar pra fora. Treine o alvo primeiro, depois a velocidade.',
+    turma:'Cada aluno cuida de um cone e dá o aviso quando a bola cai dentro da zona.',
+    diag:[['p',260,110,'A1','a'],['p',260,346,'A2','a'],['p',596,110,'B1','b'],['p',596,346,'B2','b'],
+      ['z',70,182,92,92,'2x2 m','r'],['z',694,182,92,92,'2x2 m','r'],
+      ['c',70,182],['c',162,182],['c',70,274],['c',162,274],['c',694,182],['c',786,182],['c',694,274],['c',786,274],
+      ['t',125,318,'ZONA|PROIBIDA','#8E1B14',22],['t',738,318,'ZONA|PROIBIDA','#8E1B14',22]]
+  },
+  'levantador-fixo': {
+    tempo:'10 a 15 min', material:'Bola, quadra com rede',
+    montar:'Quadra normal 2x2. Cada dupla escolhe quem é o levantador antes do jogo e troca de função a cada set.',
+    atencao:['O segundo toque é sempre do levantador, mesmo se a bola vier longe.','Se o outro jogador fizer o segundo toque, o ponto é do adversário.','O levantador também pode atacar de segunda quando o adversário errar.'],
+    erro:'O levantador ficar parado na rede. Ele precisa buscar a bola e chegar embaixo dela.',
+    turma:'Com 8 alunos, troque o levantador a cada set e peça que todos passem pela função.',
+    diag:[['p',150,290,'A1','a'],['p',340,150,'LEV','l'],['p',656,110,'B1','b'],['p',656,346,'B2','b'],
+      ['a',176,270,316,176,'r'],['n',232,236,1,'r'],['a',340,184,300,286,'d'],['n',336,232,2,'d'],
+      ['a',322,300,610,340,'r'],['n',470,322,3,'r'],['t',245,372,'SEMPRE O LEVANTADOR|FAZ O 2.º TOQUE',null,24]]
+  },
+  'batalha-side-out': {
+    tempo:'15 min', material:'Bola, quadra com rede',
+    montar:'Quadra normal 2x2. Uma dupla saca durante a rodada; a outra recebe. Combine em que ponto inverte (a cada 5 pontos).',
+    atencao:['A dupla que recebe só pontua se converter o primeiro ataque.','Se a bola voltar para a sacadora, o ponto é dela.','Troque quem saca a cada 5 pontos somados.'],
+    erro:'Receber sem comunicação. A dupla receptora precisa combinar quem pega cada zona.',
+    turma:'Faça rodízio de quadras: a dupla que perder desce de quadra.',
+    diag:[['p',200,110,'A1','a'],['p',200,346,'A2','a'],['p',640,330,'B2','b'],['p',822,228,'S','b'],
+      ['a',790,228,238,150,'r'],['n',520,189,1,'r'],['a',200,146,200,310,'d'],['n',200,228,2,'d'],
+      ['a',236,336,610,240,'r'],['n',420,288,3,'r'],['t',330,392,'RECEBE',null,26],['t',700,392,'SACA',null,26]]
+  },
+  'transicao-dupla': {
+    tempo:'15 min', material:'Bola, quadra com rede',
+    montar:'Quadra normal 2x2. Um aluno fora da quadra observa se a dupla fez a transição antes do ponto (defesa e contra-ataque).',
+    atencao:['A transição é: defender o ataque do adversário e contra-atacar.','Vitória sem transição não vale ponto.','Rally de 4 ou mais trocas vale 2 pontos.'],
+    erro:'Defender sem organizar o contra-ataque. O segundo toque tem que ser planejado.',
+    turma:'O aluno observador marca no papel quantas transições cada dupla fez.',
+    diag:[['p',170,300,'A2','a'],['p',340,120,'A1','a'],['p',640,120,'B1','b'],['p',690,340,'B2','b'],
+      ['a',610,130,206,292,'d'],['n',540,158,1,'d'],['a',190,276,326,150,'r'],['n',256,212,2,'r'],
+      ['a',366,140,600,320,'r'],['n',560,289,3,'r'],['t',245,385,'DEFESA +|CONTRA-ATAQUE',null,24]]
+  },
+  'desafio-saque': {
+    tempo:'10 a 15 min', material:'Bolas, quadra com rede, 8 cones',
+    montar:'Marque duas zonas de 2 x 2 metros nos cantos do fundo da quadra adversária (fundo direito e fundo esquerdo) com cones. O receptor não joga.',
+    atencao:['Só o saque dentro da zona marcada vale ponto.','Saque na rede ou fora dá ponto ao adversário.','Anuncie a zona antes de sacar para dar mais desafio.'],
+    erro:'Sacar forte demais e errar a zona. Controle a direção antes de aumentar a força.',
+    turma:'Faça rodízio: cada aluno saca 5 bolas e a turma anota o total de acertos.',
+    diag:[['p',822,228,'S','b'],['z',70,52,110,90,'+1 PT','g'],['z',70,314,110,90,'+1 PT','g'],
+      ['c',70,52],['c',180,142],['c',70,404],['c',180,314],
+      ['a',790,228,192,106,'r'],['n',500,166,1,'r'],['a',790,228,192,350,'d'],['n',500,290,2,'d'],
+      ['t',290,228,'FORA DA ZONA = 0',null,24]]
+  },
+  'saque-pressao': {
+    tempo:'15 a 20 min', material:'Bola, quadra com rede',
+    montar:'Quadra normal 2x2 até 21 pontos. Combine a partir de que placar começa a zona de pressão (padrão: 18-18).',
+    atencao:['Na zona de pressão, todo ponto de saque vale 2.','Ace conta 2 pontos. Erro de saque dá 2 pontos ao adversário.','Respire e escolha a zona antes de sacar.'],
+    erro:'Sacar mais forte e perder o controle. Na pressão, a regularidade ganha o jogo.',
+    turma:'Treine a pressão de plateia: os alunos de fora torcem e gritam para atrapalhar.',
+    diag:[['p',200,110,'A1','a'],['p',200,346,'A2','a'],['p',656,110,'B2','b'],['p',822,228,'S','b'],
+      ['a',790,228,240,150,'r'],['n',520,189,1,'r'],['b',611,360,330,'A PARTIR DE 18–18|SAQUE VALE 2']]
+  },
+  'defesa-ou-nada': {
+    tempo:'15 min', material:'Bola, quadra com rede',
+    montar:'Quadra normal 2x2. Combine o que conta como toque de defesa (qualquer toque ou só manchete).',
+    atencao:['Ponto só vale se a dupla defendeu ao menos 1 bola no rally.','Se perder sem defender, a bola é repetida e ninguém perde ponto.','O ataque precisa ser feito para valer defesa.'],
+    erro:'Deixar a bola cair por receio de errar. Vale a pena tentar toda bola.',
+    turma:'Um aluno fora da quadra avisa em voz alta quando houve defesa válida.',
+    diag:[['p',170,300,'A2','a'],['p',340,110,'A1','a'],['p',600,200,'B1','b'],['p',700,110,'B2','b'],
+      ['a',570,206,206,292,'d'],['n',440,246,1,'d'],['a',190,276,322,136,'r'],['n',256,206,2,'r'],
+      ['b',611,356,330,'SÓ PONTUA QUEM|DEFENDEU ≥ 1 BOLA']]
+  },
+  'bloqueio-defesa': {
+    tempo:'15 a 20 min', material:'Bola, quadra com rede',
+    montar:'Quadra normal 2x2. Um jogador da dupla bloqueia na rede e o outro faz a cobertura atrás. Troquem os papéis a cada set.',
+    atencao:['O bloqueador fecha a diagonal e deixa a paralela para o parceiro cobrir.','Ponto de bloqueio direto vale 2.','Bloqueio + defesa + contra-ataque que vira ponto vale 3.'],
+    erro:'Bloquear tarde demais. Salte junto com o ataque e feche a mão por cima da rede.',
+    turma:'Faça rodízio: a cada 5 pontos, os bloqueadores viram defensores.',
+    diag:[['z',336,128,92,150,'BLOQ.','g'],['p',382,210,'BLQ','a'],['p',190,310,'DEF','l'],['p',560,200,'B1','b'],['p',700,110,'B2','b'],
+      ['a',528,206,440,206,'r'],['n',484,172,1,'r'],['a',352,242,222,290,'d'],['n',290,276,2,'d'],
+      ['b',611,360,340,'BLOQUEIO = 2|COM TRANSIÇÃO = 3']]
+  },
+  'rodizio-classico': {
+    tempo:'20 a 30 min', material:'Bola, quadra com rede, papel para anotar',
+    montar:'Divida os jogadores em duplas (A, B, C...). Duas duplas jogam; as demais esperam atrás da linha de fundo. Sets curtos de 7 pontos.',
+    atencao:['A dupla vencedora permanece e a perdedora vai para o fim da fila.','Cada jogador soma 1 ponto individual por set vencido.','No final, ranqueie os jogadores pelos pontos individuais.'],
+    erro:'Esquecer de anotar. Faça uma tabela com os nomes antes de começar.',
+    turma:'Com 12 ou mais alunos, use duas quadras e combine o rodízio entre elas.',
+    extra:100, diag:[['p',200,110,'A1','a'],['p',200,346,'A2','a'],['p',656,110,'B1','b'],['p',656,346,'B2','b'],
+      ['p',130,510,'C1','g'],['p',215,510,'C2','g'],['p',320,510,'D1','g'],['p',405,510,'D2','g'],
+      ['a',172,474,172,426,'d'],['t',470,478,'PRÓXIMAS DUPLAS',null,24,'start'],['t',470,518,'Vencedora fica|Perdedora vai ao fim',null,22,'start']]
+  }
+};
 
-  // Back bar
-  const bar = e('div', {cls:'detail-topbar'});
-  bar.appendChild(e('button', {cls:'back-btn', onclick:()=>go('competicao'), 'aria-label':'Voltar'},
-    html('<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:20px;height:20px"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>').firstChild));
-  const t = e('div', {cls:'detail-topbar-text'});
-  t.appendChild(e('div', {cls:'detail-topbar-cat'}, jogo.cat));
-  t.appendChild(e('div', {cls:'detail-topbar-title'}, jogo.nome));
-  bar.appendChild(t);
-  page.appendChild(bar);
-
-  // Chips
-  const chips = e('div', {cls:'comp-chips'});
-  chips.appendChild(e('span', {cls:'comp-chip'}, '👥 '+jogo.jogs));
-  chips.appendChild(e('span', {cls:'comp-chip'}, '🏐 '+jogo.pts+' pts por set'));
-  page.appendChild(chips);
-
-  // Sections
-  page.appendChild(compSection('Objetivo', e('p', {cls:'comp-text'}, jogo.obj)));
-
-  const ol = e('ol', {cls:'comp-list-num'});
-  jogo.como.forEach((p,i)=>{ const li=e('li',{}); li.appendChild(e('span',{cls:'comp-list-n'},String(i+1)+'.')); li.appendChild(e('span',{cls:'comp-text'},p)); ol.appendChild(li); });
-  page.appendChild(compSection('Como funciona', ol));
-
-  const rbox = e('div', {cls:'comp-regra-box'}); rbox.textContent = jogo.regra;
-  page.appendChild(compSection('Regra de pontuação', rbox));
-
-  const vlist = e('div', {cls:'comp-var-list'});
-  const NIVEL_CLS = {Iniciante:'badge-ini',Intermediário:'badge-inter',Avançado:'badge-adv'};
-  jogo.vars.forEach(v => {
-    const vd = e('div', {cls:'comp-var'});
-    vd.appendChild(e('span', {cls:'nivel-badge '+( NIVEL_CLS[v.n]||'badge-ini')}, v.n));
-    vd.appendChild(e('p', {cls:'comp-text', style:'margin-top:4px'}, v.d));
-    vlist.appendChild(vd);
-  });
-  page.appendChild(compSection('Variações por nível', vlist));
-
-  frag.appendChild(page);
-
-  // Fixed CTA
-  const cta = e('div', {cls:'comp-cta-bar'});
-  const ctaBtn = e('button', {cls:'cta-btn', onclick:()=>{ placarIniciarComJogo(jogo); go('placar'); }});
-  ctaBtn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg> Usar no Placar';
-  cta.appendChild(ctaBtn);
-  frag.appendChild(cta);
-
-  return frag;
+/* ---- Gerador de diagrama SVG no mesmo estilo dos diagramas dos exercícios ---- */
+function diagSvg(items, extra) {
+  const H = 455 + (extra || 0);
+  const COR = { a:'#1E88C8', b:'#7A3FC0', g:'#6B7280', l:'#0F7B78' };
+  const SETA = { r:'#E5352B', d:'#1B2A3A' };
+  const txt = (x, y, str, size, anchor, fill) => String(str).split('|').map((ln, i, arr) =>
+    `<text x="${x}" y="${y + (i - (arr.length - 1) / 2) * (size + 4) + size * 0.35}" font-size="${size}" text-anchor="${anchor}" fill="${fill}">${escHtml(ln)}</text>`).join('');
+  let s = `<svg viewBox="0 0 860 ${H}" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Diagrama do jogo" font-family="Inter,Arial,sans-serif" font-weight="700">`;
+  s += `<defs><marker id="ahr" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="3.4" markerHeight="3.4" orient="auto"><path d="M0 0L10 5L0 10z" fill="${SETA.r}"/></marker>` +
+       `<marker id="ahd" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="3.4" markerHeight="3.4" orient="auto"><path d="M0 0L10 5L0 10z" fill="${SETA.d}"/></marker></defs>`;
+  s += `<rect x="0" y="0" width="860" height="${H}" rx="28" fill="#FFE08A"/>`;
+  s += `<rect x="62" y="44" width="734" height="368" fill="#F2CD62" stroke="#fff" stroke-width="5"/>`;
+  s += `<line x1="428" y1="30" x2="428" y2="426" stroke="#1B2A3A" stroke-width="9" stroke-dasharray="14 10"/>`;
+  s += `<rect x="418" y="24" width="20" height="16" rx="4" fill="#1B2A3A"/><rect x="418" y="418" width="20" height="16" rx="4" fill="#1B2A3A"/>`;
+  s += txt(62, 28, 'LINHA LATERAL (16 METROS)', 17, 'start', '#7A4A12') + txt(446, 28, 'REDE', 17, 'start', '#1B2A3A');
+  for (const it of items) {
+    const k = it[0];
+    if (k === 'z') {
+      const [, x, y, w, h, l, c] = it; const g = c === 'g';
+      s += `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="10" fill="${g ? 'rgba(76,175,80,.38)' : 'rgba(229,53,43,.30)'}" stroke="${g ? '#2E7D32' : '#C62828'}" stroke-width="4" stroke-dasharray="10 8"/>`;
+      s += txt(x + w / 2, y + h / 2, l, 24, 'middle', g ? '#1B5E20' : '#8E1B14');
+    } else if (k === 'c') {
+      const [, x, y] = it; s += `<polygon points="${x},${y - 17} ${x - 15},${y + 12} ${x + 15},${y + 12}" fill="#F57C00" stroke="#fff" stroke-width="3"/>`;
+    } else if (k === 'a') {
+      const [, x1, y1, x2, y2, c] = it;
+      s += `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${SETA[c]}" stroke-width="6" stroke-linecap="round"${c === 'd' ? ' stroke-dasharray="1 11"' : ''} marker-end="url(#ah${c})"/>`;
+    } else if (k === 'n') {
+      const [, x, y, n, c] = it; s += `<circle cx="${x}" cy="${y}" r="20" fill="${SETA[c]}" stroke="#fff" stroke-width="4"/>` + txt(x, y, n, 23, 'middle', '#fff');
+    } else if (k === 'p') {
+      const [, x, y, l, c] = it; s += `<circle cx="${x}" cy="${y}" r="32" fill="${COR[c]}" stroke="#fff" stroke-width="5"/>` + txt(x, y, l, l.length > 2 ? 19 : 25, 'middle', '#fff');
+    } else if (k === 't') {
+      const [, x, y, str, fill, size, anchor] = it; s += txt(x, y, str, size || 26, anchor || 'middle', fill || '#7A4A12');
+    } else if (k === 'b') {
+      const [, x, y, w, str] = it; const n = String(str).split('|').length, h = n * 36 + 24;
+      s += `<rect x="${x - w / 2}" y="${y - h / 2}" width="${w}" height="${h}" rx="14" fill="#13314A" opacity=".93"/>` + txt(x, y, str, 28, 'middle', '#fff');
+    }
+  }
+  return s + '</svg>';
 }
 
-function compSection(title, child) {
-  const s = e('div', {cls:'comp-section'});
-  s.appendChild(e('p', {cls:'comp-section-title'}, title));
-  s.appendChild(child);
-  return s;
+function renderJogoComp(id) {
+  const idx = JOGOS_COMP.findIndex(j => j.id === id);
+  if (idx < 0) { go('competicao'); return document.createDocumentFragment(); }
+  const jogo = JOGOS_COMP[idx];
+  const X = JOGOS_EXTRA[id] || {};
+  const cor = COMP_CAT_COLORS[jogo.cat] || '#64748B';
+  const frag = document.createDocumentFragment();
+
+  const header = document.createElement('header');
+  header.className = 'top-bar top-bar-ex';
+  const back = document.createElement('button');
+  back.className = 'hdr-btn'; back.setAttribute('aria-label', 'Voltar'); back.title = 'Voltar';
+  back.innerHTML = ICON.chevL;
+  back.addEventListener('click', () => go('competicao'));
+  header.appendChild(back);
+  const ctx = document.createElement('div');
+  ctx.className = 'hdr-ctx-box';
+  ctx.innerHTML = '<span class="hdr-ctx-title">' + escHtml(jogo.nome) + '</span><span class="hdr-ctx-sub"><span class="hdr-pill-badge" style="background:' + cor + ';color:#fff;">JOGO ' + String(idx + 1).padStart(2, '0') + '</span><span>• ' + escHtml(jogo.cat) + '</span></span>';
+  header.appendChild(ctx);
+  frag.appendChild(header);
+
+  const doGrupo = JOGOS_COMP.filter(j => j.cat === jogo.cat);
+  const gi = doGrupo.findIndex(j => j.id === id);
+  const page = document.createElement('div');
+  page.className = 'page ex-page';
+  page.insertAdjacentHTML('beforeend', `
+    <div class="progresso">
+      <div class="progresso-txt"><span>Jogo ${gi + 1} de ${doGrupo.length} em ${escHtml(jogo.cat)}</span><span>${jogo.pts} pts</span></div>
+      <div class="progresso-barra"><i style="width:${(gi + 1) / doGrupo.length * 100}%;background:${cor}"></i></div>
+    </div>
+    <div class="ex-hero">
+      <figure class="diag-hero">${X.diag ? diagSvg(X.diag, X.extra) : ''}<figcaption>${ICON.map} Montagem na quadra</figcaption></figure>
+    </div>
+    <h2 class="ex-titulo">${escHtml(jogo.nome)}</h2>
+    <div class="ex-sub"><span class="pill" style="background:${cor}">${escHtml(jogo.cat)}</span></div>
+    <div class="info-grid">
+      ${X.tempo ? `<div class="info-tile">${ICON.clock}<div><small>Tempo</small><strong>${escHtml(X.tempo)}</strong></div></div>` : ''}
+      <div class="info-tile">${ICON.users}<div><small>Jogadores</small><strong>${escHtml(jogo.jogs)}</strong></div></div>
+      <div class="info-tile full">${ICON.target}<div><small>Pontuação</small><strong>${jogo.pts} pts por set</strong></div></div>
+      ${X.material ? `<div class="info-tile full">${ICON.box}<div><small>Material</small><strong>${escHtml(X.material)}</strong></div></div>` : ''}
+    </div>`);
+
+  let aba = 'jogar';
+  const seg = document.createElement('div');
+  seg.className = 'seg';
+  seg.setAttribute('role', 'tablist');
+  for (const [k, l] of [['jogar', 'Como jogar'], ['corrigir', 'Corrigir'], ['variar', 'Variações']]) {
+    const b = document.createElement('button');
+    b.textContent = l; b.dataset.k = k; b.setAttribute('role', 'tab');
+    b.addEventListener('click', () => { aba = k; pintar(); });
+    seg.appendChild(b);
+  }
+  page.appendChild(seg);
+  const conteudo = document.createElement('div');
+  page.appendChild(conteudo);
+
+  const bloco = (icone, titulo, inner) => inner ? `<section class="bloco"><h3>${icone}${titulo}</h3>${inner}</section>` : '';
+  const p = t => t ? `<p>${escHtml(t)}</p>` : '';
+  const caixa = (c, t, rotulo) => t ? `<div class="caixa ${c}">${rotulo ? `<strong>${rotulo}</strong>` : ''}${escHtml(t)}</div>` : '';
+  const passos = `<ul class="step-list">${jogo.como.map((s, i) => `<li class="step-item"><span class="step-num">${i + 1}</span><span class="step-text">${escHtml(s)}</span></li>`).join('')}</ul>`;
+  const bullets = (X.atencao || []).length ? `<ul class="bullet-list">${X.atencao.map(s => `<li class="bullet-item"><span class="bullet-dot"></span><span>${escHtml(s)}</span></li>`).join('')}</ul>` : '';
+  const NV = { 'Iniciante': 'caixa-facil', 'Intermediário': 'caixa-objetivo', 'Avançado': 'caixa-dificil' };
+
+  function pintar() {
+    seg.querySelectorAll('button').forEach(b => {
+      b.classList.toggle('active', b.dataset.k === aba);
+      b.setAttribute('aria-selected', b.dataset.k === aba);
+    });
+    let h = '';
+    if (aba === 'jogar') {
+      h += bloco(ICON.target, 'Objetivo', caixa('caixa-objetivo', jogo.obj));
+      h += bloco(ICON.tool, 'Como montar', p(X.montar));
+      h += bloco(ICON.list, 'Passo a passo', passos);
+      h += bloco(ICON.flag, 'Regra de pontuação', caixa('caixa-meta', jogo.regra));
+    } else if (aba === 'corrigir') {
+      h += bloco(ICON.alert, 'Pontos de atenção', bullets);
+      h += bloco(ICON.alert, 'Erro mais comum', caixa('caixa-erro', X.erro));
+      if (!h) h = '<div class="search-empty">Sem observações de correção para este jogo.</div>';
+    } else {
+      h += bloco(ICON.layers, 'Ajustar a dificuldade', jogo.vars.map(v => '<div style="margin-bottom:8px">' + caixa(NV[v.n] || 'caixa-objetivo', v.d, v.n) + '</div>').join(''));
+      h += bloco(ICON.users, 'Para turma', p(X.turma));
+    }
+    conteudo.innerHTML = h;
+  }
+  pintar();
+  frag.appendChild(page);
+
+  const prev = idx > 0 ? JOGOS_COMP[idx - 1] : null;
+  const next = idx < JOGOS_COMP.length - 1 ? JOGOS_COMP[idx + 1] : null;
+  const acao = document.createElement('div');
+  acao.className = 'acao-bar';
+  acao.innerHTML = `<div class="acao-bar-inner">
+      <button class="btn-sec" ${prev ? '' : 'disabled'} aria-label="Jogo anterior">${ICON.chevL}</button>
+      <button class="btn-pri">Usar no Placar</button>
+      <button class="btn-sec" ${next ? '' : 'disabled'} aria-label="Próximo jogo">${ICON.chevR}</button>
+    </div>`;
+  const [bPrev, bUsar, bNext] = acao.querySelectorAll('button');
+  if (prev) bPrev.addEventListener('click', () => go('jogo-comp-' + prev.id));
+  if (next) bNext.addEventListener('click', () => go('jogo-comp-' + next.id));
+  bUsar.addEventListener('click', () => { placarIniciarComJogo(jogo); go('placar'); });
+  frag.appendChild(acao);
+  return frag;
 }
 
 /* ===== PLACAR (SCOREBOARD) ===== */
