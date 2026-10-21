@@ -207,10 +207,10 @@ describe('seção Treino em Casa', () => {
     const { ctx } = liberada()
     const tela = montar(renderRota(ctx, { name: 'casa' }))
     const chips = [...tela.querySelectorAll('.level-chips .chip')].map((c) => c.getAttribute('data-val'))
-    expect(chips).toEqual(['', 'Com bola', 'Impulsão', 'Força', 'Agilidade', 'Mobilidade'])
+    expect(chips).toEqual(['', 'Com bola', 'Impulsão', 'Força', 'Agilidade', 'Coordenação', 'Mobilidade'])
     const card = tela.querySelector('.ex-row') as HTMLElement
     expect(card.querySelector('.ex-row-nome')?.textContent).toBe(TREINO_CASA[0].nome)
-    expect(card.textContent).toContain('Exemplo')
+    expect(tela.querySelectorAll('.ex-row').length).toBeGreaterThanOrEqual(100)
   })
 
   it('filtrar por categoria mostra só aquela categoria', () => {

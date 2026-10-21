@@ -87,9 +87,34 @@ describe('dados do Treino em Casa', () => {
     }
   })
 
-  it('traz 3 exemplos marcados como exemplo', () => {
-    expect(TREINO_CASA).toHaveLength(3)
-    expect(TREINO_CASA.every((e) => e.exemplo === true)).toBe(true)
+  it('tem pelo menos 100 exercícios, e bem distribuídos entre as categorias', () => {
+    expect(TREINO_CASA.length).toBeGreaterThanOrEqual(100)
+    for (const c of CATEGORIAS_CASA) {
+      expect(TREINO_CASA.filter((e) => e.categoria === c).length, c).toBeGreaterThanOrEqual(10)
+    }
+  })
+
+  it('nomes não se repetem e cada exercício tem passos suficientes', () => {
+    const nomes = TREINO_CASA.map((e) => e.nome.toLowerCase())
+    expect(new Set(nomes).size).toBe(nomes.length)
+    for (const e of TREINO_CASA) expect(e.passoAPasso.length, e.nome).toBeGreaterThanOrEqual(3)
+  })
+
+  it('nenhum exercício está marcado como rascunho/exemplo', () => {
+    expect(TREINO_CASA.filter((e) => e.exemplo)).toEqual([])
+  })
+
+  it('sem promessa de saúde ou de resultado garantido', () => {
+    const proibidas = /garantid|milagr|cura\b|curar|emagrec|perder peso|queima de gordura|resultado certo|sem esforço/i
+    for (const e of TREINO_CASA) {
+      const texto = [e.nome, e.objetivo, e.tempo, e.material, ...e.passoAPasso, e.variacaoFacil, e.variacaoDificil, e.erroComum ?? '', ...(e.pontosAtencao ?? [])].join(' ')
+      expect(texto, e.nome).not.toMatch(proibidas)
+    }
+  })
+
+  it('material pede o mínimo: nada de equipamento de academia', () => {
+    const academia = /halter|barra |anilha|esteira|bicicleta ergom|kettlebell|máquina|aparelho/i
+    for (const e of TREINO_CASA) expect(e.material, e.nome).not.toMatch(academia)
   })
 
   it('o arquivo explica como adicionar exercícios e pede revisão profissional', () => {

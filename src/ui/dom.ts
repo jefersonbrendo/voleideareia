@@ -52,5 +52,6 @@ export const ICONES_CATEGORIA: Record<string, string> = {
   'Impulsão': '<line x1="12" y1="20" x2="12" y2="5"/><polyline points="6 11 12 5 18 11"/><line x1="7" y1="21" x2="17" y2="21"/>',
   'Força': '<path d="M6.5 6.5v11M17.5 6.5v11M3 9v6M21 9v6M6.5 12h11"/>',
   'Agilidade': '<polyline points="4 17 9 9 14 17 20 6"/><polyline points="15 6 20 6 20 11"/>',
+  'Coordenação': '<polyline points="16 3 21 3 21 8"/><line x1="4" y1="20" x2="21" y2="3"/><polyline points="21 16 21 21 16 21"/><line x1="15" y1="15" x2="21" y2="21"/><line x1="4" y1="4" x2="9" y2="9"/>',
   'Mobilidade': '<path d="M20 12a8 8 0 1 1-2.4-5.7"/><polyline points="20 4 20 9 15 9"/>',
 }
