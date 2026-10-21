@@ -1,1 +1,8 @@
-{"rewrites":[{"source":"/modo-competicao","destination":"/modo-competicao/index.html"},{"source":"/modo-competicao/(.*)","destination":"/modo-competicao/index.html"},{"source":"/(.*)","destination":"/index.html"}]}
+{
+  "framework": "vite",
+  "buildCommand": "npm run build",
+  "outputDirectory": "dist",
+  "rewrites": [
+    { "source": "/((?!assets/|gem/).*)", "destination": "/index.html" }
+  ]
+}

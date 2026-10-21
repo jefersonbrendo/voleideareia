@@ -159,6 +159,159 @@ input { font: inherit; }
 .nav-item.active { color: var(--cta); }
 .nav-item svg { width: 22px; height: 22px; }
 
+/* ===== COMPETIÇÃO STYLES ===== */
+.comp-subnav { display:flex; gap:0; border-bottom:1px solid var(--border); background:var(--bg); position:sticky; top:0; z-index:10; }
+.comp-subnav-btn { flex:1; padding:10px 0; font-size:13px; font-weight:600; color:var(--text-muted); border-bottom:2px solid transparent; transition:all .15s; background:none; }
+.comp-subnav-btn.active { color:var(--cta); border-bottom-color:var(--cta); }
+
+/* ===== JOGOS: lista e cards ===== */
+.comp-hero { margin: 16px 0 4px; }
+.comp-hero-title { font-family: 'Bebas Neue', 'Inter', sans-serif; font-size: 2.1rem; line-height: 1; letter-spacing: 0.01em; color: var(--accent); margin: 0 0 6px; }
+.comp-hero-sub { font-size: 0.92rem; line-height: 1.5; color: var(--text-sec); max-width: 46ch; }
+.comp-filters { display: flex; gap: 8px; overflow-x: auto; margin: 14px -16px 4px; padding: 2px 16px 8px; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
+.comp-filters::-webkit-scrollbar { display: none; }
+.comp-filter { flex: 0 0 auto; display: inline-flex; align-items: center; gap: 6px; padding: 8px 14px; border-radius: 999px; font-size: 13px; font-weight: 600; white-space: nowrap; color: var(--text-sec); background: var(--bg-card); border: 1.5px solid var(--border); transition: background .15s, color .15s, border-color .15s; }
+.comp-filter small { font-size: 11px; font-weight: 700; color: var(--text-muted); }
+.comp-filter.active { background: var(--accent); border-color: var(--accent); color: #fff; }
+.comp-filter.active small { color: rgba(255,255,255,.75); }
+.comp-group { margin-top: 20px; }
+.comp-group-head { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
+.comp-group-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--cc); flex-shrink: 0; }
+.comp-group-name { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .07em; color: var(--text-sec); margin: 0; }
+.comp-group-count { font-size: 12px; color: var(--text-muted); margin-left: auto; }
+.comp-cards { display: flex; flex-direction: column; gap: 10px; }
+.jogo-card { display: flex; align-items: stretch; width: 100%; text-align: left; background: var(--bg-card); border: 1px solid var(--border); border-radius: 14px; box-shadow: var(--shadow); overflow: hidden; transition: transform .12s, box-shadow .12s; }
+.jogo-card::before { content: ''; width: 5px; flex-shrink: 0; background: var(--cc); }
+.jogo-card:active { transform: scale(.985); box-shadow: none; }
+.jogo-card-body { flex: 1; min-width: 0; padding: 14px 8px 13px 14px; }
+.jogo-nome { font-size: 16px; font-weight: 700; line-height: 1.25; color: var(--text); margin-bottom: 4px; }
+.jogo-obj { font-size: 13px; line-height: 1.45; color: var(--text-sec); margin: 0; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.jogo-meta { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 10px; }
+.jogo-pill { display: inline-flex; align-items: center; gap: 5px; font-size: 12px; font-weight: 600; color: var(--text-sec); background: var(--bg-chip); padding: 4px 9px; border-radius: 8px; }
+.jogo-pill svg { width: 13px; height: 13px; flex-shrink: 0; }
+.jogo-chev { display: flex; align-items: center; padding-right: 12px; color: var(--text-muted); }
+.jogo-chev svg { width: 18px; height: 18px; }
+
+/* botão principal e badges de nível (detalhe do jogo / placar) */
+.cta-btn { display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; background: var(--cta); color: #fff; font-weight: 700; font-size: 15px; padding: 15px; border-radius: 14px; box-shadow: 0 4px 14px rgba(255,74,63,.28); }
+.cta-btn:active { opacity: .85; }
+.nivel-badge.badge-ini, .nivel-badge.badge-inter, .nivel-badge.badge-adv { display: inline-block; padding: 3px 10px; border-radius: 999px; font-size: 12px; }
+.nivel-badge.badge-ini { color: var(--c-ini); background: color-mix(in srgb, var(--c-ini) 14%, transparent); }
+.nivel-badge.badge-inter { color: var(--c-int); background: color-mix(in srgb, var(--c-int) 14%, transparent); }
+.nivel-badge.badge-adv { color: var(--c-ava); background: color-mix(in srgb, var(--c-ava) 14%, transparent); }
+
+/* ===== PLACAR STYLES ===== */
+#placar-wrap { position: fixed; top: 0; left: 0; right: 0; bottom: calc(60px + env(safe-area-inset-bottom, 0px)); z-index: 50;
+  background: var(--bg); overflow-y: auto; -webkit-overflow-scrolling: touch;
+  display: flex; flex-direction: column; gap: 12px;
+  padding: calc(12px + env(safe-area-inset-top, 0px)) 16px 20px; --ta: #FF4A3F; --tb: #12A594; }
+.pl-top { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.pl-icon-btn { width: 42px; height: 42px; border-radius: 13px; flex-shrink: 0; display: flex; align-items: center; justify-content: center;
+  background: var(--bg-card); border: 1px solid var(--border); color: var(--text-sec); box-shadow: var(--shadow); }
+.pl-icon-btn svg { width: 20px; height: 20px; }
+.pl-icon-btn:disabled { opacity: .35; }
+.pl-icon-btn:active:not(:disabled) { transform: scale(.94); }
+.pl-pill { background: var(--bg-card); border: 1px solid var(--border); border-radius: 999px; padding: 8px 16px; max-width: 62%;
+  font-size: 12px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; color: var(--accent);
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap; box-shadow: var(--shadow); }
+.pl-meta { text-align: center; font-size: 12px; font-weight: 600; color: var(--text-muted); }
+
+.pl-teams { display: flex; align-items: stretch; margin-top: 4px; }
+.pl-team { flex: 1; min-width: 0; display: flex; flex-direction: column; background: var(--bg-card); border: 2px solid var(--tc);
+  border-radius: 22px; overflow: hidden; box-shadow: 0 10px 26px rgba(15,23,42,.10); }
+.pl-team.a { --tc: var(--ta); } .pl-team.b { --tc: var(--tb); }
+.pl-team-head { background: var(--tc); color: #fff; text-align: center; padding: 11px 10px; font-size: 13px; font-weight: 800;
+  letter-spacing: .08em; text-transform: uppercase; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.pl-score-btn { width: 100%; flex: 1; display: flex; align-items: center; justify-content: center; padding: 18px 0 6px; background: none;
+  font-family: 'Bebas Neue', 'Inter', sans-serif; font-size: clamp(100px, 31vw, 150px); line-height: .92; color: var(--tc);
+  -webkit-tap-highlight-color: transparent; transition: transform .1s; }
+.pl-score-btn:active { transform: scale(.96); }
+.pl-team-actions { display: flex; justify-content: center; gap: 12px; padding: 6px 10px 18px; }
+.pl-btn-round { width: 54px; height: 54px; border-radius: 50%; border: 2.5px solid var(--tc); color: var(--tc); background: transparent;
+  display: flex; align-items: center; justify-content: center; transition: transform .1s; }
+.pl-btn-round.plus { background: var(--tc); color: #fff; box-shadow: 0 6px 14px rgba(15,23,42,.18); }
+.pl-btn-round svg { width: 24px; height: 24px; }
+.pl-btn-round:active { transform: scale(.9); }
+.pl-x { align-self: center; z-index: 2; width: 32px; height: 32px; margin: 0 -16px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+  background: var(--bg-card); border: 2px solid var(--border); color: var(--text-muted); font-size: 16px; font-weight: 800; }
+
+.pl-sets { background: var(--bg-card); border: 1px solid var(--border); border-radius: 18px; padding: 12px 16px 14px; box-shadow: var(--shadow); }
+.pl-sets-label { display: flex; align-items: center; gap: 12px; font-size: 11px; font-weight: 800; letter-spacing: .14em; color: var(--text-muted); text-transform: uppercase; }
+.pl-sets-label::before, .pl-sets-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+.pl-sets-row { display: flex; align-items: center; justify-content: space-around; margin-top: 6px; }
+.pl-sets-num { font-family: 'Bebas Neue', 'Inter', sans-serif; font-size: 2.8rem; line-height: 1; }
+.pl-sets-num.a { color: var(--ta); } .pl-sets-num.b { color: var(--tb); }
+.pl-trophy { width: 42px; height: 42px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+  background: rgba(255,159,28,.16); color: var(--laranja); }
+.pl-trophy svg { width: 22px; height: 22px; }
+.pl-sets-hist { text-align: center; font-size: 12px; color: var(--text-muted); margin-top: 6px; }
+.pl-note { text-align: center; font-size: 12px; color: var(--text-muted); }
+
+.pl-actions { display: flex; flex-direction: column; gap: 10px; }
+.pl-btn { width: 100%; height: 54px; border-radius: 15px; display: flex; align-items: center; justify-content: center; gap: 9px;
+  font-size: 14px; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; }
+.pl-btn svg { width: 19px; height: 19px; }
+.pl-btn.pri { background: var(--coral); color: #fff; box-shadow: 0 8px 18px rgba(255,74,63,.30); }
+.pl-btn.sec { background: var(--bg-card); color: var(--coral); border: 1.5px solid var(--border); }
+.pl-btn:active { transform: scale(.98); }
+
+.pl-modal { position: fixed; top: 0; left: 0; right: 0; bottom: calc(60px + env(safe-area-inset-bottom, 0px)); z-index: 60;
+  display: flex; align-items: center; justify-content: center; padding: 20px; background: rgba(15,23,42,.58); }
+.pl-modal-card { width: min(340px, 100%); background: var(--bg-card); border-radius: 26px; padding: 26px 20px 20px; text-align: center;
+  box-shadow: var(--shadow-lg); display: flex; flex-direction: column; gap: 10px; }
+.pl-modal-icon { width: 66px; height: 66px; border-radius: 50%; margin: 0 auto 2px; display: flex; align-items: center; justify-content: center;
+  background: rgba(255,159,28,.16); color: var(--laranja); }
+.pl-modal-icon svg { width: 32px; height: 32px; }
+.pl-modal-title { font-family: 'Bebas Neue', 'Inter', sans-serif; font-size: 2rem; line-height: 1; color: var(--text); margin: 0; }
+.pl-modal-text { font-size: .9rem; line-height: 1.5; color: var(--text-sec); margin: 0 0 8px; }
+
+.pl-result { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; text-align: center; padding: 8px 0; }
+.pl-result-icon { width: 92px; height: 92px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+  background: rgba(255,159,28,.16); color: var(--laranja); }
+.pl-result-icon svg { width: 46px; height: 46px; }
+.pl-result-kicker { font-size: 12px; font-weight: 800; letter-spacing: .2em; text-transform: uppercase; color: var(--text-muted); margin: 6px 0 0; }
+.pl-result-name { font-family: 'Bebas Neue', 'Inter', sans-serif; font-size: 3.4rem; line-height: 1; margin: 0; word-break: break-word; }
+.pl-result-name.a { color: var(--ta); } .pl-result-name.b { color: var(--tb); }
+.pl-result-score { font-size: 15px; font-weight: 700; color: var(--text-sec); }
+.pl-result-sets { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; margin-bottom: 8px; }
+.pl-chip { font-size: 13px; font-weight: 600; color: var(--text-sec); background: var(--bg-card); border: 1px solid var(--border); padding: 5px 12px; border-radius: 999px; }
+
+.pl-config { display: flex; flex-direction: column; gap: 14px; }
+.pl-config-title { font-family: 'Bebas Neue', 'Inter', sans-serif; font-size: 2.1rem; line-height: 1; color: var(--accent); margin: 6px 0 0; }
+.pl-group { background: var(--bg-card); border: 1px solid var(--border); border-radius: 18px; padding: 14px; display: flex; flex-direction: column; gap: 10px; box-shadow: var(--shadow); }
+.pl-label { margin: 0; font-size: 11px; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; color: var(--text-muted); }
+.pl-input { width: 100%; box-sizing: border-box; height: 48px; padding: 0 14px; border-radius: 13px; font-size: 15px; font-weight: 700;
+  background: var(--bg); color: var(--text); border: 2px solid var(--border); }
+.pl-input-a { border-left: 6px solid var(--ta); } .pl-input-b { border-left: 6px solid var(--tb); }
+.pl-input:focus { outline: none; border-color: var(--accent); }
+.pl-seg { display: flex; gap: 6px; background: var(--bg-chip); border-radius: 13px; padding: 4px; }
+.pl-seg-btn { flex: 1; height: 42px; border-radius: 10px; font-size: 14px; font-weight: 700; color: var(--text-sec); transition: background .15s, color .15s; }
+.pl-seg-btn.on { background: var(--coral); color: #fff; box-shadow: 0 3px 8px rgba(255,74,63,.3); }
+.pl-hint { margin: 0; font-size: 12px; color: var(--text-muted); }
+
+.pl-stepper { display: flex; align-items: center; gap: 10px; }
+.pl-step-btn { width: 54px; height: 54px; flex-shrink: 0; border-radius: 16px; display: flex; align-items: center; justify-content: center;
+  background: var(--bg); border: 2px solid var(--border); color: var(--coral); }
+.pl-step-btn svg { width: 22px; height: 22px; }
+.pl-step-btn:active { transform: scale(.93); }
+.pl-stepper-input { flex: 1; min-width: 0; height: 54px; text-align: center; border-radius: 16px; border: 2px solid var(--border);
+  background: var(--bg); color: var(--text); font-family: 'Bebas Neue', 'Inter', sans-serif; font-size: 2.3rem; line-height: 1; -moz-appearance: textfield; }
+.pl-stepper-input::-webkit-outer-spin-button, .pl-stepper-input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+.pl-stepper-input:focus { outline: none; border-color: var(--accent); }
+.pl-stepper-wrap { display: flex; flex-direction: column; gap: 10px; }
+.pl-chips { display: flex; gap: 8px; flex-wrap: wrap; }
+.pl-chip-btn { padding: 8px 16px; border-radius: 999px; border: 1.5px solid var(--border); background: var(--bg); color: var(--text-sec); font-size: 13px; font-weight: 700; }
+.pl-chip-btn.on { background: var(--coral); border-color: var(--coral); color: #fff; }
+.pl-sub { display: flex; flex-direction: column; gap: 10px; padding-top: 6px; }
+.pl-switch-row { display: flex; align-items: center; gap: 14px; }
+.pl-switch-txt { flex: 1; display: flex; flex-direction: column; gap: 2px; }
+.pl-switch-txt strong { font-size: 14px; color: var(--text); }
+.pl-switch-txt span { font-size: 12px; line-height: 1.4; color: var(--text-muted); }
+.pl-switch { position: relative; flex-shrink: 0; width: 54px; height: 32px; border-radius: 999px; background: var(--bg-chip); border: 2px solid var(--border); transition: background .15s; }
+.pl-switch::after { content: ''; position: absolute; top: 3px; left: 3px; width: 22px; height: 22px; border-radius: 50%; background: #fff; box-shadow: 0 1px 3px rgba(15,23,42,.3); transition: transform .15s; }
+.pl-switch.on { background: var(--coral); border-color: var(--coral); }
+.pl-switch.on::after { transform: translateX(22px); }
+
 /* ===== PAGE CONTAINER ===== */
 .page {
   padding: 0 max(16px, env(safe-area-inset-left, 0px));
@@ -1457,6 +1610,8 @@ function getRoute() {
   if (!h) return { name: 'home' };
   if (h.startsWith('secao-')) return { name: 'secao', n: parseInt(h.slice(6)) };
   if (h.startsWith('ex-')) return { name: 'ex', num: parseInt(h.slice(3)) };
+  if (h.startsWith('jogo-comp-')) return { name: 'jogo-comp', id: h.slice(10) };
+  if (h.startsWith('casa-')) return { name: 'casa-ex', id: h.slice(5) };
   return { name: h };
 }
 function go(hash) { location.hash = hash; }
@@ -1741,6 +1896,8 @@ function createHeader(type, payload) {
       themeBtn.innerHTML = themeIcon();
     });
     actionsGroup.appendChild(themeBtn);
+    var cfgBtn = makeBtn('<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>', 'Configurações', function() { go('configuracoes'); });
+    actionsGroup.appendChild(cfgBtn);
     header.appendChild(actionsGroup);
 
   } else if (type === 'secao') {
@@ -2559,7 +2716,7 @@ function updateNavBadge() {
   b.textContent = favorites.size;
 }
 function updateNav(route) {
-  const map = { home: 'home', secao: 'home', ex: 'home', buscar: 'buscar', aulas: 'aulas', favoritos: 'favoritos', 'como-usar': 'como-usar' };
+  const map = { home: 'home', secao: 'home', ex: 'home', buscar: 'buscar', aulas: 'aulas', favoritos: 'favoritos', 'como-usar': 'como-usar', competicao: 'home', 'jogo-comp': 'home', placar: 'home', casa: 'home', 'casa-ex': 'home', configuracoes: 'home' };
   const active = map[route.name] || route.name;
   updateNavBadge();
   document.querySelectorAll('.nav-item').forEach(b => {
@@ -2569,34 +2726,861 @@ function updateNav(route) {
 
 function render() {
   const route = getRoute();
+  if (route.name !== 'placar') releaseWakeLock();
   const main = document.getElementById('main');
   main.innerHTML = '';
 
-  let frag;
-  if (route.name === 'home') frag = renderHome();
+  // Acesso por senha: bônus bloqueado, Treino em Casa e Configurações são decididos pela camada src/ (window.CDA).
+  let frag = window.CDA ? window.CDA.renderRota(route) : null;
+  if (frag) { /* tela do módulo, bloqueio ou configurações */ }
+  else if (route.name === 'home') frag = renderHome();
   else if (route.name === 'secao') frag = renderSecao(route.n);
   else if (route.name === 'ex') frag = renderEx(route.num);
   else if (route.name === 'buscar') frag = renderBuscar();
   else if (route.name === 'favoritos') frag = renderFavoritos();
   else if (route.name === 'aulas') frag = renderAulas();
   else if (route.name === 'como-usar') frag = renderComoUsar();
+  else if (route.name === 'competicao') frag = renderCompeticao();
+  else if (route.name === 'jogo-comp') frag = renderJogoComp(route.id);
+  else if (route.name === 'placar') frag = renderPlacarPage();
   else frag = renderHome();
 
   main.appendChild(frag);
   updateNav(route);
+  if (window.CDA) window.CDA.aposRender(route, main);
   window.scrollTo(0, 0);
 }
 
 function renderPage() { render(); }
 
+/* ===== COMPETIÇÃO DATA ===== */
+const JOGOS_COMP = [
+  { id:'rei-da-quadra', nome:'Rei da Quadra', cat:'Disputa', jogs:'6+', pts:21,
+    obj:'Manter-se na quadra o maior número de rallies consecutivos.',
+    como:['Três ou mais duplas participam; duas jogam e a terceira aguarda.','A dupla que perde o rally sai e cede o lugar à que esperava.','A dupla que vence fica e acumula 1 ponto por rally.','Ganha quem acumular mais pontos ao fim do tempo combinado.'],
+    regra:'1 ponto por rally vencido enquanto permanece na quadra.',
+    vars:[{n:'Iniciante',d:'Rally máximo de 8 toques por lado.'},{n:'Intermediário',d:'Dupla que sai faz 5 agachamentos antes de voltar.'},{n:'Avançado',d:'Erro no saque inverte as duplas sem troca de lado.'}] },
+  { id:'ponto-diagonal', nome:'Ponto na Diagonal', cat:'Disputa', jogs:'4', pts:15,
+    obj:'Estimular o ataque diagonal como jogada de maior valor.',
+    como:['Jogo normal 2×2.','Ataque que cai na diagonal vale 2 pontos.','Ataque na paralela vale 1 ponto.','Qualquer outro ponto (erro adversário) vale 1 ponto.'],
+    regra:'Diagonal = 2 pts · Paralela = 1 pt · Erro adversário = 1 pt.',
+    vars:[{n:'Iniciante',d:'Inverta: paralela vale 2.'},{n:'Intermediário',d:'Zona central (< 2 m da rede) vale 3 pontos.'},{n:'Avançado',d:'Defesa que resulta em contra-ataque diagonal também vale 2.'}] },
+  { id:'set-curto', nome:'Set Curto com Regra Especial', cat:'Disputa', jogs:'4', pts:11,
+    obj:'Criar pressão e criatividade em sets curtos.',
+    como:['Jogo até 11 pontos.','A cada 4 pts totais, a dupla PERDENDO escolhe uma regra especial.','Exemplos: 3 toques obrigatórios, saque por baixo, ataque de trás da linha de 3 m.'],
+    regra:'11 pts, vantagem de 2. Dupla perdedora escolhe regra a cada 4 pts somados.',
+    vars:[{n:'Iniciante',d:'Regra é sortida pelo professor.'},{n:'Intermediário',d:'Regras em cartões; a dupla retira um aleatório.'},{n:'Avançado',d:'Regra vigora até o próximo bloco, não pode ser repetida.'}] },
+  { id:'sequencia', nome:'Sequência de Pontos', cat:'Disputa', jogs:'4', pts:21,
+    obj:'Premiação extra por sequências consecutivas de pontos.',
+    como:['Jogo normal até 21.','Sequência de 3 pts consecutivos = bônus de +2.','Sequência de 5 pts consecutivos = bônus de +5.','Adversário "zera" a sequência ao marcar.'],
+    regra:'Seq. de 3 = +2 pts · Seq. de 5 = +5 pts.',
+    vars:[{n:'Iniciante',d:'Sequência de 2 já gera +1.'},{n:'Intermediário',d:'Padrão acima.'},{n:'Avançado',d:'Bônus só vale se vier de ataque (não erro adversário).'}] },
+  { id:'tres-toques', nome:'Três Toques Obrigatórios', cat:'Jogo condicionado', jogs:'4', pts:15,
+    obj:'Consolidar o hábito dos três toques e a organização da dupla.',
+    como:['Jogo normal 2×2.','Ponto só vale se a dupla usou exatamente 3 toques.','2 ou 1 toque = ponto para o adversário.'],
+    regra:'3 toques exatos; violação = 1 ponto ao adversário.',
+    vars:[{n:'Iniciante',d:'Mínimo 2 toques.'},{n:'Intermediário',d:'Exatamente 3.'},{n:'Avançado',d:'3 toques E o terceiro deve ser ataque.'}] },
+  { id:'zona-proibida', nome:'Zona Proibida', cat:'Jogo condicionado', jogs:'4', pts:15,
+    obj:'Forçar os jogadores a explorar toda a quadra ao atacar.',
+    como:['Marque com cones uma zona de ~2×2 m no centro-fundo de cada meia-quadra.','Bola que cai na zona proibida = 1 pt ao adversário.'],
+    regra:'Bola na zona proibida = 1 ponto ao adversário.',
+    vars:[{n:'Iniciante',d:'Zona pequena (1×1 m).'},{n:'Intermediário',d:'Zona de 2×2 m no centro-fundo.'},{n:'Avançado',d:'Duas zonas: centro-fundo e lateral curta.'}] },
+  { id:'levantador-fixo', nome:'Levantador Fixo', cat:'Jogo condicionado', jogs:'4', pts:15,
+    obj:'Desenvolver a especialização na função de levantador.',
+    como:['Defina o levantador de cada dupla.','O segundo toque deve ser obrigatoriamente do levantador.','Toque de outro jogador = ponto para o adversário.'],
+    regra:'2.º toque de quem não é levantador = 1 ponto ao adversário.',
+    vars:[{n:'Iniciante',d:'Levantador pode levantar para qualquer zona.'},{n:'Intermediário',d:'Levantamento deve ir para o fundo.'},{n:'Avançado',d:'Levantador recebe e levanta; atacante finaliza no mesmo rally.'}] },
+  { id:'batalha-side-out', nome:'Batalha de Side-out', cat:'Side-out e transição', jogs:'4', pts:15,
+    obj:'Treinar o sistema de recepção-levantamento-ataque sob pressão.',
+    como:['Uma dupla SACA durante toda a partida; a outra RECEBE.','Receptora pontua só convertendo side-out no 1.º ataque.','Se a bola voltar à sacadora, ela pontua.','A cada 5 pts inverte-se quem saca.'],
+    regra:'Receptora: 1 pt por side-out no 1.º ataque · Sacadora: 1 pt por erro da receptora.',
+    vars:[{n:'Iniciante',d:'2 toques permitidos para converter.'},{n:'Intermediário',d:'Converter no 1.º ataque.'},{n:'Avançado',d:'Saque float; 1.º ataque na diagonal.'}] },
+  { id:'transicao-dupla', nome:'Transição Dupla', cat:'Side-out e transição', jogs:'4', pts:15,
+    obj:'Treinar a transição de defesa para ataque em sequência.',
+    como:['Para pontuar, a dupla deve ter feito ao menos 1 transição: defender e contra-atacar.','Vitória sem transição = 0 ponto.','Rallies com 4+ trocas valem 2 pontos.'],
+    regra:'Rally com transição = 1 pt · Rally longo (4+ trocas) = 2 pts · Sem transição = 0.',
+    vars:[{n:'Iniciante',d:'Qualquer toque defensivo conta.'},{n:'Intermediário',d:'Padrão.'},{n:'Avançado',d:'Transição válida só se a defesa for manchete.'}] },
+  { id:'desafio-saque', nome:'Desafio do Saque', cat:'Saque e recepção', jogs:'4-6', pts:15,
+    obj:'Aprimorar a precisão do saque competitivo.',
+    como:['Marque zonas com cones na quadra adversária.','Saque na zona = 1 pt.','Saque errado = 1 pt ao adversário.'],
+    regra:'Saque na zona = +1 pt · Fora da zona = 0 · Erro = +1 pt ao adversário.',
+    vars:[{n:'Iniciante',d:'Zona grande (metade da quadra).'},{n:'Intermediário',d:'Zonas específicas (fundo direito, fundo esquerdo).'},{n:'Avançado',d:'Zona de 2×2 m; tipo de saque anunciado antes.'}] },
+  { id:'saque-pressao', nome:'Saque Sob Pressão', cat:'Saque e recepção', jogs:'4', pts:21,
+    obj:'Simular a pressão do saque em momentos decisivos.',
+    como:['Jogo normal 2×2 até 21.','A partir de 18-18 (zona de pressão), o saque vale DOBRO.','Ace = 2 pts · Erro de saque = 2 pts ao adversário.'],
+    regra:'Zona de pressão (18+ pts): pontos de saque valem 2.',
+    vars:[{n:'Iniciante',d:'Zona de pressão a partir de 14-14.'},{n:'Intermediário',d:'A partir de 18-18.'},{n:'Avançado',d:'19-19 + saque com efeito obrigatório.'}] },
+  { id:'defesa-ou-nada', nome:'Defesa ou Nada', cat:'Defesa', jogs:'4', pts:15,
+    obj:'Estimular a defesa ativa e o não-abandono de bolas difíceis.',
+    como:['Ponto só vale se a dupla tocou ao menos 1 bola defensiva antes de pontuar.','Perder sem tocar nenhuma bola = replay (sem ponto).'],
+    regra:'Ponto somente se a dupla defendeu ao menos 1 bola no rally.',
+    vars:[{n:'Iniciante',d:'Qualquer toque conta como defesa.'},{n:'Intermediário',d:'Toque deve ser de manchete.'},{n:'Avançado',d:'2 toques defensivos obrigatórios.'}] },
+  { id:'bloqueio-defesa', nome:'Bloqueio + Defesa', cat:'Defesa', jogs:'4', pts:15,
+    obj:'Integrar o trabalho de bloqueio com a cobertura defensiva.',
+    como:['Jogo normal 2×2.','Ponto com bloqueio = 2 pts.','Bloqueio + transição + ponto = 3 pts.'],
+    regra:'Bloqueio direto = 2 pts · Bloqueio + transição + ponto = 3 pts.',
+    vars:[{n:'Iniciante',d:'Defesa de manchete ao lado da rede vale 2.'},{n:'Intermediário',d:'Padrão.'},{n:'Avançado',d:'Bloqueio deve cobrir a diagonal.'}] },
+  { id:'rodizio-classico', nome:'Rodízio Clássico', cat:'Rodízio de duplas', jogs:'6+', pts:11,
+    obj:'Fazer todos jogarem com todos e criar ranking individual.',
+    como:['Divida em duplas (A, B, C...).','Sets de 7 pts. Vencedora permanece; perdedora sai.','1 pt individual por set vencido.','Ranqueie os jogadores no fim.'],
+    regra:'1 pt individual por set vencido.',
+    vars:[{n:'Iniciante',d:'Sets de 5 pts.'},{n:'Intermediário',d:'Sets de 7 pts.'},{n:'Avançado',d:'Sets de 11 pts; vencedora se separa.'}] },
+];
+
+const COMP_CAT_COLORS = {
+  'Disputa':'#0284C7','Jogo condicionado':'#7C3AED','Side-out e transição':'#1E9E5A',
+  'Saque e recepção':'#E08A00','Defesa':'#E5352B','Rodízio de duplas':'#0E9AA7'
+};
+let _compFiltro = null;
+
+const ICON_USERS = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>';
+const ICON_TARGET = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>';
+const ICON_LAYERS = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>';
+const ICON_CHEV = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>';
+
+function jogoCard(jogo) {
+  const card = e('button', {cls:'jogo-card', style:'--cc:'+(COMP_CAT_COLORS[jogo.cat]||'#64748B'), onclick:()=>go('jogo-comp-'+jogo.id), 'aria-label':jogo.nome});
+  const body = e('div', {cls:'jogo-card-body'});
+  body.appendChild(e('div', {cls:'jogo-nome'}, jogo.nome));
+  body.appendChild(e('p', {cls:'jogo-obj'}, jogo.obj));
+  const meta = e('div', {cls:'jogo-meta'});
+  [[ICON_USERS, jogo.jogs+' jogadores'], [ICON_TARGET, jogo.pts+' pts'], [ICON_LAYERS, jogo.vars.length+' níveis']].forEach(([ic, txt]) => {
+    const p = e('span', {cls:'jogo-pill'});
+    p.innerHTML = ic + '<span>' + txt + '</span>';
+    meta.appendChild(p);
+  });
+  body.appendChild(meta);
+  card.appendChild(body);
+  const chev = e('span', {cls:'jogo-chev'}); chev.innerHTML = ICON_CHEV;
+  card.appendChild(chev);
+  return card;
+}
+
+function renderCompeticao() {
+  const frag = document.createDocumentFragment();
+  const page = e('div', {cls:'page', style:'padding-bottom:80px'});
+
+  const sub = e('div', {cls:'comp-subnav'});
+  sub.appendChild(e('button', {cls:'comp-subnav-btn active', onclick:()=>go('competicao')}, 'Jogos'));
+  sub.appendChild(e('button', {cls:'comp-subnav-btn', onclick:()=>go('placar')}, 'Placar'));
+  page.appendChild(sub);
+
+  const hero = e('div', {cls:'comp-hero'});
+  hero.appendChild(e('h1', {cls:'comp-hero-title'}, 'Jogos de Competição'));
+  hero.appendChild(e('p', {cls:'comp-hero-sub'}, JOGOS_COMP.length + ' jogos com pontuação especial para treinar sob pressão. Escolha um e toque em "Usar no Placar".'));
+  page.appendChild(hero);
+
+  const cats = [...new Set(JOGOS_COMP.map(j=>j.cat))];
+  const filters = e('div', {cls:'comp-filters', role:'tablist'});
+  const mkFilter = (label, value, count) => {
+    const b = e('button', {cls:'comp-filter'+(_compFiltro===value?' active':''), onclick:()=>{ _compFiltro = value; render(); }});
+    b.innerHTML = label + ' <small>' + count + '</small>';
+    return b;
+  };
+  filters.appendChild(mkFilter('Todos', null, JOGOS_COMP.length));
+  cats.forEach(c => filters.appendChild(mkFilter(c, c, JOGOS_COMP.filter(j=>j.cat===c).length)));
+  page.appendChild(filters);
+
+  cats.filter(c => !_compFiltro || c === _compFiltro).forEach(cat => {
+    const jogos = JOGOS_COMP.filter(j=>j.cat===cat);
+    const group = e('section', {cls:'comp-group', style:'--cc:'+(COMP_CAT_COLORS[cat]||'#64748B')});
+    const head = e('div', {cls:'comp-group-head'});
+    head.appendChild(e('span', {cls:'comp-group-dot'}));
+    head.appendChild(e('h2', {cls:'comp-group-name'}, cat));
+    head.appendChild(e('span', {cls:'comp-group-count'}, jogos.length + (jogos.length === 1 ? ' jogo' : ' jogos')));
+    group.appendChild(head);
+    const list = e('div', {cls:'comp-cards'});
+    jogos.forEach(j => list.appendChild(jogoCard(j)));
+    group.appendChild(list);
+    page.appendChild(group);
+  });
+
+  frag.appendChild(page);
+  return frag;
+}
+
+/* ---- Conteúdo extra dos jogos (revisar com professor de vôlei de praia antes de publicar) ---- */
+const JOGOS_EXTRA = {
+  'rei-da-quadra': {
+    tempo:'15 a 20 min', material:'Bola, quadra com rede, cronômetro',
+    montar:'Monte a quadra com a rede na altura oficial. Duas duplas começam em lados opostos e as demais formam fila atrás da linha de fundo. Combine o tempo total da rodada antes de começar.',
+    atencao:['A dupla que perde sai na hora e a próxima já entra no lado de quem saiu.','Anote os pontos de cada dupla no papel ou no Placar.','Troque o lado das duplas a cada rally para dividir sol e vento.'],
+    erro:'A dupla campeã ficar muito tempo na quadra e a fila esfriar. Combine um limite de vitórias seguidas (ex.: 3) antes de ela sair.',
+    turma:'Com 6 a 12 alunos, use duas quadras e some os pontos de cada dupla no final.',
+    extra:100, diag:[['p',200,110,'A1','a'],['p',200,346,'A2','a'],['p',656,110,'B1','b'],['p',656,346,'B2','b'],
+      ['p',130,510,'C1','g'],['p',215,510,'C2','g'],['a',172,474,172,426,'d'],
+      ['t',290,510,'FILA DE ESPERA',null,26,'start'],['t',590,510,'Perdeu: sai|Próxima entra',null,22,'start']]
+  },
+  'ponto-diagonal': {
+    tempo:'10 a 15 min', material:'Bola, quadra com rede',
+    montar:'Quadra normal 2x2. Se quiser ajudar a visualizar, marque a diagonal e a paralela com cones nas pontas de cada lado.',
+    atencao:['Cada ataque vale pelo lugar onde a bola cai, não pela direção da batida.','Combine antes quem vai ser o juiz da diagonal em caso de dúvida.','O ponto por erro do adversário continua valendo 1.'],
+    erro:'Atacar sempre na diagonal e ficar previsível. Alterne com a paralela para surpreender a defesa.',
+    turma:'Com 8 alunos, duas duplas jogam e as outras duas contam pontos e marcam as diagonais.',
+    diag:[['p',200,330,'A2','a'],['p',330,110,'A1','a'],['p',560,340,'B1','b'],['p',700,200,'B2','b'],
+      ['c',790,60],['c',790,396],
+      ['a',362,128,740,380,'r'],['n',590,281,1,'r'],['a',362,100,740,64,'d'],['n',560,81,2,'d'],
+      ['t',215,200,'1 DIAGONAL: 2 pts','#C0392B',27],['t',215,244,'2 PARALELA: 1 pt',null,27]]
+  },
+  'set-curto': {
+    tempo:'10 min por set', material:'Bola, quadra com rede, cartões de regra (opcional)',
+    montar:'Quadra normal 2x2. Escreva as regras especiais em pedaços de papel ou combine uma lista antes de começar.',
+    atencao:['A cada 4 pontos somados, quem está perdendo escolhe a regra do próximo bloco.','A regra vale só até o próximo bloco de 4 pontos.','Se estiver empatado, a dupla que sacou por último escolhe.'],
+    erro:'Regras complicadas demais que travam o jogo. Escolha regras simples, de uma frase.',
+    turma:'Faça um sorteio de regras em cartões para ninguém perder tempo decidindo.',
+    diag:[['p',200,110,'A1','a'],['p',200,346,'A2','a'],['p',656,110,'B1','b'],['p',656,346,'B2','b'],
+      ['b',245,228,290,'ATÉ 11|PONTOS'],['b',611,228,330,'A CADA 4 PTS:|REGRA ESPECIAL']]
+  },
+  'sequencia': {
+    tempo:'15 min', material:'Bola, quadra com rede',
+    montar:'Quadra normal 2x2. Alguém fora da quadra conta as sequências em voz alta (ou use o Placar).',
+    atencao:['A sequência zera quando o adversário marca qualquer ponto.','Bônus de 3 pontos seguidos: +2. Bônus de 5 seguidos: +5.','Quem conta as sequências precisa falar alto: "dois, três, bônus!".'],
+    erro:'Esquecer de contar a sequência. Nomeie um aluno só para isso.',
+    turma:'Com número ímpar, o aluno que sobra é o contador oficial e troca a cada set.',
+    diag:[['p',200,110,'A1','a'],['p',200,346,'A2','a'],['p',656,110,'B1','b'],['p',656,346,'B2','b'],
+      ['a',152,228,188,228,'r'],['a',236,228,272,228,'r'],['n',130,228,1,'r'],['n',215,228,2,'r'],['n',300,228,3,'r'],
+      ['t',215,180,'3 SEGUIDOS = +2',null,26],['t',611,228,'Ponto do|adversário zera|a sequência',null,26]]
+  },
+  'tres-toques': {
+    tempo:'10 a 15 min', material:'Bola, quadra com rede',
+    montar:'Quadra normal 2x2. Os dois jogadores de cada dupla precisam tocar na bola antes de ela passar a rede.',
+    atencao:['Contam como toque: manchete, toque por cima e ataque.','Um toque ou dois toques e a bola passa: ponto do adversário.','Combine se o bloqueio conta como toque antes de começar.'],
+    erro:'Mandar a bola de graça no segundo toque. Se faltar controle, é melhor tocar o terceiro para ajeitar.',
+    turma:'Faça mini torneio: cada dupla joga 2 sets e quem vencer mais sobe de quadra.',
+    diag:[['p',150,340,'A1','a'],['p',330,150,'A2','a'],['p',656,120,'B1','b'],['p',656,330,'B2','b'],
+      ['a',176,316,306,178,'r'],['n',110,300,1,'r'],['n',240,247,2,'r'],
+      ['a',366,150,610,215,'r'],['n',490,182,3,'r'],['t',611,396,'EXATAMENTE 3 TOQUES',null,24]]
+  },
+  'zona-proibida': {
+    tempo:'10 a 15 min', material:'Bola, quadra com rede, 8 cones',
+    montar:'Marque com cones uma zona de 2 x 2 metros no centro do fundo de cada lado da quadra. É a "zona proibida".',
+    atencao:['Bola dentro da zona dá ponto ao adversário, mesmo que a bola seja boa.','Bola na linha do cone conta como dentro.','Os atacantes precisam variar a direção para fugir da zona.'],
+    erro:'Ficar com medo da zona e errar pra fora. Treine o alvo primeiro, depois a velocidade.',
+    turma:'Cada aluno cuida de um cone e dá o aviso quando a bola cai dentro da zona.',
+    diag:[['p',260,110,'A1','a'],['p',260,346,'A2','a'],['p',596,110,'B1','b'],['p',596,346,'B2','b'],
+      ['z',70,182,92,92,'2x2 m','r'],['z',694,182,92,92,'2x2 m','r'],
+      ['c',70,182],['c',162,182],['c',70,274],['c',162,274],['c',694,182],['c',786,182],['c',694,274],['c',786,274],
+      ['t',125,318,'ZONA|PROIBIDA','#8E1B14',22],['t',738,318,'ZONA|PROIBIDA','#8E1B14',22]]
+  },
+  'levantador-fixo': {
+    tempo:'10 a 15 min', material:'Bola, quadra com rede',
+    montar:'Quadra normal 2x2. Cada dupla escolhe quem é o levantador antes do jogo e troca de função a cada set.',
+    atencao:['O segundo toque é sempre do levantador, mesmo se a bola vier longe.','Se o outro jogador fizer o segundo toque, o ponto é do adversário.','O levantador também pode atacar de segunda quando o adversário errar.'],
+    erro:'O levantador ficar parado na rede. Ele precisa buscar a bola e chegar embaixo dela.',
+    turma:'Com 8 alunos, troque o levantador a cada set e peça que todos passem pela função.',
+    diag:[['p',150,290,'A1','a'],['p',340,150,'LEV','l'],['p',656,110,'B1','b'],['p',656,346,'B2','b'],
+      ['a',176,270,316,176,'r'],['n',232,236,1,'r'],['a',340,184,300,286,'d'],['n',336,232,2,'d'],
+      ['a',322,300,610,340,'r'],['n',470,322,3,'r'],['t',245,372,'SEMPRE O LEVANTADOR|FAZ O 2.º TOQUE',null,24]]
+  },
+  'batalha-side-out': {
+    tempo:'15 min', material:'Bola, quadra com rede',
+    montar:'Quadra normal 2x2. Uma dupla saca durante a rodada; a outra recebe. Combine em que ponto inverte (a cada 5 pontos).',
+    atencao:['A dupla que recebe só pontua se converter o primeiro ataque.','Se a bola voltar para a sacadora, o ponto é dela.','Troque quem saca a cada 5 pontos somados.'],
+    erro:'Receber sem comunicação. A dupla receptora precisa combinar quem pega cada zona.',
+    turma:'Faça rodízio de quadras: a dupla que perder desce de quadra.',
+    diag:[['p',200,110,'A1','a'],['p',200,346,'A2','a'],['p',640,330,'B2','b'],['p',822,228,'S','b'],
+      ['a',790,228,238,150,'r'],['n',520,189,1,'r'],['a',200,146,200,310,'d'],['n',200,228,2,'d'],
+      ['a',236,336,610,240,'r'],['n',420,288,3,'r'],['t',330,392,'RECEBE',null,26],['t',700,392,'SACA',null,26]]
+  },
+  'transicao-dupla': {
+    tempo:'15 min', material:'Bola, quadra com rede',
+    montar:'Quadra normal 2x2. Um aluno fora da quadra observa se a dupla fez a transição antes do ponto (defesa e contra-ataque).',
+    atencao:['A transição é: defender o ataque do adversário e contra-atacar.','Vitória sem transição não vale ponto.','Rally de 4 ou mais trocas vale 2 pontos.'],
+    erro:'Defender sem organizar o contra-ataque. O segundo toque tem que ser planejado.',
+    turma:'O aluno observador marca no papel quantas transições cada dupla fez.',
+    diag:[['p',170,300,'A2','a'],['p',340,120,'A1','a'],['p',640,120,'B1','b'],['p',690,340,'B2','b'],
+      ['a',610,130,206,292,'d'],['n',540,158,1,'d'],['a',190,276,326,150,'r'],['n',256,212,2,'r'],
+      ['a',366,140,600,320,'r'],['n',560,289,3,'r'],['t',245,385,'DEFESA +|CONTRA-ATAQUE',null,24]]
+  },
+  'desafio-saque': {
+    tempo:'10 a 15 min', material:'Bolas, quadra com rede, 8 cones',
+    montar:'Marque duas zonas de 2 x 2 metros nos cantos do fundo da quadra adversária (fundo direito e fundo esquerdo) com cones. O receptor não joga.',
+    atencao:['Só o saque dentro da zona marcada vale ponto.','Saque na rede ou fora dá ponto ao adversário.','Anuncie a zona antes de sacar para dar mais desafio.'],
+    erro:'Sacar forte demais e errar a zona. Controle a direção antes de aumentar a força.',
+    turma:'Faça rodízio: cada aluno saca 5 bolas e a turma anota o total de acertos.',
+    diag:[['p',822,228,'S','b'],['z',70,52,110,90,'+1 PT','g'],['z',70,314,110,90,'+1 PT','g'],
+      ['c',70,52],['c',180,142],['c',70,404],['c',180,314],
+      ['a',790,228,192,106,'r'],['n',500,166,1,'r'],['a',790,228,192,350,'d'],['n',500,290,2,'d'],
+      ['t',290,228,'FORA DA ZONA = 0',null,24]]
+  },
+  'saque-pressao': {
+    tempo:'15 a 20 min', material:'Bola, quadra com rede',
+    montar:'Quadra normal 2x2 até 21 pontos. Combine a partir de que placar começa a zona de pressão (padrão: 18-18).',
+    atencao:['Na zona de pressão, todo ponto de saque vale 2.','Ace conta 2 pontos. Erro de saque dá 2 pontos ao adversário.','Respire e escolha a zona antes de sacar.'],
+    erro:'Sacar mais forte e perder o controle. Na pressão, a regularidade ganha o jogo.',
+    turma:'Treine a pressão de plateia: os alunos de fora torcem e gritam para atrapalhar.',
+    diag:[['p',200,110,'A1','a'],['p',200,346,'A2','a'],['p',656,110,'B2','b'],['p',822,228,'S','b'],
+      ['a',790,228,240,150,'r'],['n',520,189,1,'r'],['b',611,360,330,'A PARTIR DE 18–18|SAQUE VALE 2']]
+  },
+  'defesa-ou-nada': {
+    tempo:'15 min', material:'Bola, quadra com rede',
+    montar:'Quadra normal 2x2. Combine o que conta como toque de defesa (qualquer toque ou só manchete).',
+    atencao:['Ponto só vale se a dupla defendeu ao menos 1 bola no rally.','Se perder sem defender, a bola é repetida e ninguém perde ponto.','O ataque precisa ser feito para valer defesa.'],
+    erro:'Deixar a bola cair por receio de errar. Vale a pena tentar toda bola.',
+    turma:'Um aluno fora da quadra avisa em voz alta quando houve defesa válida.',
+    diag:[['p',170,300,'A2','a'],['p',340,110,'A1','a'],['p',600,200,'B1','b'],['p',700,110,'B2','b'],
+      ['a',570,206,206,292,'d'],['n',440,246,1,'d'],['a',190,276,322,136,'r'],['n',256,206,2,'r'],
+      ['b',611,356,330,'SÓ PONTUA QUEM|DEFENDEU ≥ 1 BOLA']]
+  },
+  'bloqueio-defesa': {
+    tempo:'15 a 20 min', material:'Bola, quadra com rede',
+    montar:'Quadra normal 2x2. Um jogador da dupla bloqueia na rede e o outro faz a cobertura atrás. Troquem os papéis a cada set.',
+    atencao:['O bloqueador fecha a diagonal e deixa a paralela para o parceiro cobrir.','Ponto de bloqueio direto vale 2.','Bloqueio + defesa + contra-ataque que vira ponto vale 3.'],
+    erro:'Bloquear tarde demais. Salte junto com o ataque e feche a mão por cima da rede.',
+    turma:'Faça rodízio: a cada 5 pontos, os bloqueadores viram defensores.',
+    diag:[['z',336,128,92,150,'BLOQ.','g'],['p',382,210,'BLQ','a'],['p',190,310,'DEF','l'],['p',560,200,'B1','b'],['p',700,110,'B2','b'],
+      ['a',528,206,440,206,'r'],['n',484,172,1,'r'],['a',352,242,222,290,'d'],['n',290,276,2,'d'],
+      ['b',611,360,340,'BLOQUEIO = 2|COM TRANSIÇÃO = 3']]
+  },
+  'rodizio-classico': {
+    tempo:'20 a 30 min', material:'Bola, quadra com rede, papel para anotar',
+    montar:'Divida os jogadores em duplas (A, B, C...). Duas duplas jogam; as demais esperam atrás da linha de fundo. Sets curtos de 7 pontos.',
+    atencao:['A dupla vencedora permanece e a perdedora vai para o fim da fila.','Cada jogador soma 1 ponto individual por set vencido.','No final, ranqueie os jogadores pelos pontos individuais.'],
+    erro:'Esquecer de anotar. Faça uma tabela com os nomes antes de começar.',
+    turma:'Com 12 ou mais alunos, use duas quadras e combine o rodízio entre elas.',
+    extra:100, diag:[['p',200,110,'A1','a'],['p',200,346,'A2','a'],['p',656,110,'B1','b'],['p',656,346,'B2','b'],
+      ['p',130,510,'C1','g'],['p',215,510,'C2','g'],['p',320,510,'D1','g'],['p',405,510,'D2','g'],
+      ['a',172,474,172,426,'d'],['t',470,478,'PRÓXIMAS DUPLAS',null,24,'start'],['t',470,518,'Vencedora fica|Perdedora vai ao fim',null,22,'start']]
+  }
+};
+
+/* ---- Gerador de diagrama SVG no mesmo estilo dos diagramas dos exercícios ---- */
+function diagSvg(items, extra) {
+  const H = 455 + (extra || 0);
+  const COR = { a:'#1E88C8', b:'#7A3FC0', g:'#6B7280', l:'#0F7B78' };
+  const SETA = { r:'#E5352B', d:'#1B2A3A' };
+  const txt = (x, y, str, size, anchor, fill) => String(str).split('|').map((ln, i, arr) =>
+    `<text x="${x}" y="${y + (i - (arr.length - 1) / 2) * (size + 4) + size * 0.35}" font-size="${size}" text-anchor="${anchor}" fill="${fill}">${escHtml(ln)}</text>`).join('');
+  let s = `<svg viewBox="0 0 860 ${H}" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Diagrama do jogo" font-family="Inter,Arial,sans-serif" font-weight="700">`;
+  s += `<defs><marker id="ahr" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="3.4" markerHeight="3.4" orient="auto"><path d="M0 0L10 5L0 10z" fill="${SETA.r}"/></marker>` +
+       `<marker id="ahd" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="3.4" markerHeight="3.4" orient="auto"><path d="M0 0L10 5L0 10z" fill="${SETA.d}"/></marker></defs>`;
+  s += `<rect x="0" y="0" width="860" height="${H}" rx="28" fill="#FFE08A"/>`;
+  s += `<rect x="62" y="44" width="734" height="368" fill="#F2CD62" stroke="#fff" stroke-width="5"/>`;
+  s += `<line x1="428" y1="30" x2="428" y2="426" stroke="#1B2A3A" stroke-width="9" stroke-dasharray="14 10"/>`;
+  s += `<rect x="418" y="24" width="20" height="16" rx="4" fill="#1B2A3A"/><rect x="418" y="418" width="20" height="16" rx="4" fill="#1B2A3A"/>`;
+  s += txt(62, 28, 'LINHA LATERAL (16 METROS)', 17, 'start', '#7A4A12') + txt(446, 28, 'REDE', 17, 'start', '#1B2A3A');
+  for (const it of items) {
+    const k = it[0];
+    if (k === 'z') {
+      const [, x, y, w, h, l, c] = it; const g = c === 'g';
+      s += `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="10" fill="${g ? 'rgba(76,175,80,.38)' : 'rgba(229,53,43,.30)'}" stroke="${g ? '#2E7D32' : '#C62828'}" stroke-width="4" stroke-dasharray="10 8"/>`;
+      s += txt(x + w / 2, y + h / 2, l, 24, 'middle', g ? '#1B5E20' : '#8E1B14');
+    } else if (k === 'c') {
+      const [, x, y] = it; s += `<polygon points="${x},${y - 17} ${x - 15},${y + 12} ${x + 15},${y + 12}" fill="#F57C00" stroke="#fff" stroke-width="3"/>`;
+    } else if (k === 'a') {
+      const [, x1, y1, x2, y2, c] = it;
+      s += `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${SETA[c]}" stroke-width="6" stroke-linecap="round"${c === 'd' ? ' stroke-dasharray="1 11"' : ''} marker-end="url(#ah${c})"/>`;
+    } else if (k === 'n') {
+      const [, x, y, n, c] = it; s += `<circle cx="${x}" cy="${y}" r="20" fill="${SETA[c]}" stroke="#fff" stroke-width="4"/>` + txt(x, y, n, 23, 'middle', '#fff');
+    } else if (k === 'p') {
+      const [, x, y, l, c] = it; s += `<circle cx="${x}" cy="${y}" r="32" fill="${COR[c]}" stroke="#fff" stroke-width="5"/>` + txt(x, y, l, l.length > 2 ? 19 : 25, 'middle', '#fff');
+    } else if (k === 't') {
+      const [, x, y, str, fill, size, anchor] = it; s += txt(x, y, str, size || 26, anchor || 'middle', fill || '#7A4A12');
+    } else if (k === 'b') {
+      const [, x, y, w, str] = it; const n = String(str).split('|').length, h = n * 36 + 24;
+      s += `<rect x="${x - w / 2}" y="${y - h / 2}" width="${w}" height="${h}" rx="14" fill="#13314A" opacity=".93"/>` + txt(x, y, str, 28, 'middle', '#fff');
+    }
+  }
+  return s + '</svg>';
+}
+
+function renderJogoComp(id) {
+  const idx = JOGOS_COMP.findIndex(j => j.id === id);
+  if (idx < 0) { go('competicao'); return document.createDocumentFragment(); }
+  const jogo = JOGOS_COMP[idx];
+  const X = JOGOS_EXTRA[id] || {};
+  const cor = COMP_CAT_COLORS[jogo.cat] || '#64748B';
+  const frag = document.createDocumentFragment();
+
+  const header = document.createElement('header');
+  header.className = 'top-bar top-bar-ex';
+  const back = document.createElement('button');
+  back.className = 'hdr-btn'; back.setAttribute('aria-label', 'Voltar'); back.title = 'Voltar';
+  back.innerHTML = ICON.chevL;
+  back.addEventListener('click', () => go('competicao'));
+  header.appendChild(back);
+  const ctx = document.createElement('div');
+  ctx.className = 'hdr-ctx-box';
+  ctx.innerHTML = '<span class="hdr-ctx-title">' + escHtml(jogo.nome) + '</span><span class="hdr-ctx-sub"><span class="hdr-pill-badge" style="background:' + cor + ';color:#fff;">JOGO ' + String(idx + 1).padStart(2, '0') + '</span><span>• ' + escHtml(jogo.cat) + '</span></span>';
+  header.appendChild(ctx);
+  frag.appendChild(header);
+
+  const doGrupo = JOGOS_COMP.filter(j => j.cat === jogo.cat);
+  const gi = doGrupo.findIndex(j => j.id === id);
+  const page = document.createElement('div');
+  page.className = 'page ex-page';
+  page.insertAdjacentHTML('beforeend', `
+    <div class="progresso">
+      <div class="progresso-txt"><span>Jogo ${gi + 1} de ${doGrupo.length} em ${escHtml(jogo.cat)}</span><span>${jogo.pts} pts</span></div>
+      <div class="progresso-barra"><i style="width:${(gi + 1) / doGrupo.length * 100}%;background:${cor}"></i></div>
+    </div>
+    <div class="ex-hero">
+      <figure class="diag-hero">${X.diag ? diagSvg(X.diag, X.extra) : ''}<figcaption>${ICON.map} Montagem na quadra</figcaption></figure>
+    </div>
+    <h2 class="ex-titulo">${escHtml(jogo.nome)}</h2>
+    <div class="ex-sub"><span class="pill" style="background:${cor}">${escHtml(jogo.cat)}</span></div>
+    <div class="info-grid">
+      ${X.tempo ? `<div class="info-tile">${ICON.clock}<div><small>Tempo</small><strong>${escHtml(X.tempo)}</strong></div></div>` : ''}
+      <div class="info-tile">${ICON.users}<div><small>Jogadores</small><strong>${escHtml(jogo.jogs)}</strong></div></div>
+      <div class="info-tile full">${ICON.target}<div><small>Pontuação</small><strong>${jogo.pts} pts por set</strong></div></div>
+      ${X.material ? `<div class="info-tile full">${ICON.box}<div><small>Material</small><strong>${escHtml(X.material)}</strong></div></div>` : ''}
+    </div>`);
+
+  let aba = 'jogar';
+  const seg = document.createElement('div');
+  seg.className = 'seg';
+  seg.setAttribute('role', 'tablist');
+  for (const [k, l] of [['jogar', 'Como jogar'], ['corrigir', 'Corrigir'], ['variar', 'Variações']]) {
+    const b = document.createElement('button');
+    b.textContent = l; b.dataset.k = k; b.setAttribute('role', 'tab');
+    b.addEventListener('click', () => { aba = k; pintar(); });
+    seg.appendChild(b);
+  }
+  page.appendChild(seg);
+  const conteudo = document.createElement('div');
+  page.appendChild(conteudo);
+
+  const bloco = (icone, titulo, inner) => inner ? `<section class="bloco"><h3>${icone}${titulo}</h3>${inner}</section>` : '';
+  const p = t => t ? `<p>${escHtml(t)}</p>` : '';
+  const caixa = (c, t, rotulo) => t ? `<div class="caixa ${c}">${rotulo ? `<strong>${rotulo}</strong>` : ''}${escHtml(t)}</div>` : '';
+  const passos = `<ul class="step-list">${jogo.como.map((s, i) => `<li class="step-item"><span class="step-num">${i + 1}</span><span class="step-text">${escHtml(s)}</span></li>`).join('')}</ul>`;
+  const bullets = (X.atencao || []).length ? `<ul class="bullet-list">${X.atencao.map(s => `<li class="bullet-item"><span class="bullet-dot"></span><span>${escHtml(s)}</span></li>`).join('')}</ul>` : '';
+  const NV = { 'Iniciante': 'caixa-facil', 'Intermediário': 'caixa-objetivo', 'Avançado': 'caixa-dificil' };
+
+  function pintar() {
+    seg.querySelectorAll('button').forEach(b => {
+      b.classList.toggle('active', b.dataset.k === aba);
+      b.setAttribute('aria-selected', b.dataset.k === aba);
+    });
+    let h = '';
+    if (aba === 'jogar') {
+      h += bloco(ICON.target, 'Objetivo', caixa('caixa-objetivo', jogo.obj));
+      h += bloco(ICON.tool, 'Como montar', p(X.montar));
+      h += bloco(ICON.list, 'Passo a passo', passos);
+      h += bloco(ICON.flag, 'Regra de pontuação', caixa('caixa-meta', jogo.regra));
+    } else if (aba === 'corrigir') {
+      h += bloco(ICON.alert, 'Pontos de atenção', bullets);
+      h += bloco(ICON.alert, 'Erro mais comum', caixa('caixa-erro', X.erro));
+      if (!h) h = '<div class="search-empty">Sem observações de correção para este jogo.</div>';
+    } else {
+      h += bloco(ICON.layers, 'Ajustar a dificuldade', jogo.vars.map(v => '<div style="margin-bottom:8px">' + caixa(NV[v.n] || 'caixa-objetivo', v.d, v.n) + '</div>').join(''));
+      h += bloco(ICON.users, 'Para turma', p(X.turma));
+    }
+    conteudo.innerHTML = h;
+  }
+  pintar();
+  frag.appendChild(page);
+
+  const prev = idx > 0 ? JOGOS_COMP[idx - 1] : null;
+  const next = idx < JOGOS_COMP.length - 1 ? JOGOS_COMP[idx + 1] : null;
+  const acao = document.createElement('div');
+  acao.className = 'acao-bar';
+  acao.innerHTML = `<div class="acao-bar-inner">
+      <button class="btn-sec" ${prev ? '' : 'disabled'} aria-label="Jogo anterior">${ICON.chevL}</button>
+      <button class="btn-pri">Usar no Placar</button>
+      <button class="btn-sec" ${next ? '' : 'disabled'} aria-label="Próximo jogo">${ICON.chevR}</button>
+    </div>`;
+  const [bPrev, bUsar, bNext] = acao.querySelectorAll('button');
+  if (prev) bPrev.addEventListener('click', () => go('jogo-comp-' + prev.id));
+  if (next) bNext.addEventListener('click', () => go('jogo-comp-' + next.id));
+  bUsar.addEventListener('click', () => { placarIniciarComJogo(jogo); go('placar'); });
+  frag.appendChild(acao);
+  return frag;
+}
+
+/* ===== PLACAR (SCOREBOARD) ===== */
+const LS_MC = 'mc_partida_atual';
+let _plState = null;
+let _plSnap = null;
+let _plPedeSide = false;
+let _placarPendingConfig = null;
+let _wakeLock = null;
+let _plWrap = null;
+
+/* Regras configuráveis: pts, formato (bo1/bo3/bo5), ptsDes (set decisivo), troca (undefined=auto, 0=sem, N), vantagem (padrão true) */
+function sideChangeThreshold(pts) { return Math.max(1, Math.round(pts/3)); }   // 21→7, 15→5, 11→4
+function plNumSets(cfg) { return parseInt(String(cfg.formato||'bo1').slice(2),10)||1; }
+function plDesempate(cfg) { return cfg.ptsDes>0 ? cfg.ptsDes : (cfg.pts>=15?15:cfg.pts); }
+function setAlvo(cfg,setAtual) { const n=plNumSets(cfg); return n>1&&setAtual===n ? plDesempate(cfg) : cfg.pts; }
+function plTroca(cfg,setAtual) {   // pontos entre trocas de lado (0 = sem troca)
+  if(cfg.troca===0) return 0;
+  if(cfg.troca>0) return cfg.troca;
+  return sideChangeThreshold(setAlvo(cfg,setAtual));
+}
+function shouldChangeSide(pA,pB,nA,nB,th) {
+  if(!(th>0)) return false;
+  return Math.floor((pA+pB)/th)<Math.floor((nA+nB)/th);
+}
+function isSetOver(a,b,alvo,vantagem) {
+  if(a<alvo&&b<alvo) return false;
+  return vantagem===false ? a!==b : Math.abs(a-b)>=2;
+}
+
+function plBuild(cfg) {
+  return { cfg, setAtual:1, pA:0, pB:0, setsA:0, setsB:0, sets:[], encerrada:false, vencedora:null, ladoInv:false, inicio:Date.now() };
+}
+function plSave(st) { try{ localStorage.setItem(LS_MC,JSON.stringify(st)); }catch(_){} }
+function plLoad() { try{ const r=localStorage.getItem(LS_MC); return r?JSON.parse(r):null; }catch(_){return null;} }
+
+function placarIniciarComJogo(jogo) {
+  _placarPendingConfig = { pts:jogo.pts, formato:'bo1', nomA:'Dupla A', nomB:'Dupla B', jogoNome:jogo.nome };
+}
+
+function placarAddPonto(dupla) {
+  if(!_plState||_plState.encerrada) return;
+  _plSnap = JSON.parse(JSON.stringify(_plState));
+  let pA=_plState.pA+(dupla==='A'?1:0), pB=_plState.pB+(dupla==='B'?1:0);
+  const alvo=setAlvo(_plState.cfg,_plState.setAtual);
+  const fim=isSetOver(pA,pB,alvo,_plState.cfg.vantagem);
+  const mudaLado=!fim&&shouldChangeSide(_plState.pA,_plState.pB,pA,pB,plTroca(_plState.cfg,_plState.setAtual));
+  if(!fim){
+    _plState={..._plState,pA,pB}; _plPedeSide=mudaLado; plSave(_plState); renderPlacarInline(); return;
+  }
+  const vSet=pA>pB?'A':'B';
+  const setsA=_plState.setsA+(vSet==='A'?1:0), setsB=_plState.setsB+(vSet==='B'?1:0);
+  const sets=[..._plState.sets,{a:pA,b:pB}];
+  const setsParaV=Math.ceil(plNumSets(_plState.cfg)/2);
+  const partidaFim=setsA>=setsParaV||setsB>=setsParaV;
+  _plState={..._plState,pA:partidaFim?pA:0,pB:partidaFim?pB:0,setsA,setsB,sets,setAtual:_plState.setAtual+(partidaFim?0:1),encerrada:partidaFim,vencedora:partidaFim?(setsA>=setsParaV?'A':'B'):null};
+  _plPedeSide=!partidaFim;
+  plSave(_plState);
+  if(partidaFim) salvarHistorico(_plState);
+  renderPlacarInline();
+}
+function placarDesfazer(){ if(!_plSnap) return; _plState=_plSnap; _plSnap=null; _plPedeSide=false; plSave(_plState); renderPlacarInline(); }
+function placarTrocarLado(){ _plState={..._plState,ladoInv:!_plState.ladoInv}; _plPedeSide=false; plSave(_plState); renderPlacarInline(); }
+function placarNova(cfg){ _plSnap=null; _plPedeSide=false; _plState=plBuild(cfg); plSave(_plState); renderPlacarInline(); }
+
+function salvarHistorico(st){
+  try{
+    const h=JSON.parse(localStorage.getItem('mc_historico')||'[]');
+    h.unshift({id:Date.now().toString(36),cfg:st.cfg,sets:st.sets,vencedora:st.vencedora,fim:Date.now()});
+    localStorage.setItem('mc_historico',JSON.stringify(h.slice(0,50)));
+  }catch(_){}
+}
+
+async function acquireWakeLock(){
+  try{ if(!_wakeLock && 'wakeLock' in navigator){ _wakeLock=await navigator.wakeLock.request('screen'); } }catch(_){}
+}
+function releaseWakeLock(){ try{ _wakeLock&&_wakeLock.release(); _wakeLock=null; }catch(_){} }
+
+function renderPlacarPage() {
+  // Init state
+  if(!_plState){
+    const saved=plLoad();
+    if(saved) _plState=saved;
+    else {
+      const cfg=_placarPendingConfig||{pts:21,formato:'bo1',nomA:'Dupla A',nomB:'Dupla B'};
+      _plState=plBuild(cfg);
+    }
+  }
+  if(_placarPendingConfig){ _plState=plBuild(_placarPendingConfig); _placarPendingConfig=null; plSave(_plState); _plPedeSide=false; _plSnap=null; }
+
+  const frag=document.createDocumentFragment();
+  _plWrap=e('div',{id:'placar-wrap'});
+  frag.appendChild(_plWrap);
+  renderPlacarInline();
+  return frag;
+}
+
+const PL_ICON = {
+  back:  '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>',
+  undo:  '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 14L4 9l5-5"/><path d="M4 9h10.5a5.5 5.5 0 010 11H11"/></svg>',
+  plus:  '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>',
+  minus: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round"><line x1="5" y1="12" x2="19" y2="12"/></svg>',
+  trophy:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9H4.5a2.5 2.5 0 010-5H6"/><path d="M18 9h1.5a2.5 2.5 0 000-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0012 0V2z"/></svg>',
+  swap:  '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3L4 7l4 4M4 7h16M16 21l4-4-4-4M20 17H4"/></svg>',
+  play:  '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 000 20M2 12h20"/></svg>',
+  reset: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 109-9 9.75 9.75 0 00-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>'
+};
+
+function plBtn(cls, label, iconSvg, onclick, aria) {
+  const b = e('button', { cls, onclick });
+  if (aria) b.setAttribute('aria-label', aria);
+  b.innerHTML = (iconSvg || '') + (label ? '<span>' + label + '</span>' : '');
+  return b;
+}
+
+function plModal(wrap, icon, titulo, texto, botoes) {
+  const m = e('div', { cls: 'pl-modal' });
+  const card = e('div', { cls: 'pl-modal-card' });
+  const ic = e('div', { cls: 'pl-modal-icon' }); ic.innerHTML = icon;
+  card.appendChild(ic);
+  card.appendChild(e('h3', { cls: 'pl-modal-title' }, titulo));
+  card.appendChild(e('p', { cls: 'pl-modal-text' }, texto));
+  botoes.forEach(b => card.appendChild(b));
+  m.appendChild(card);
+  wrap.appendChild(m);
+  return m;
+}
+
+function placarMenos(t) {
+  if (!_plState || _plState.encerrada) return;
+  const k = t === 'A' ? 'pA' : 'pB';
+  if (_plState[k] <= 0) return;
+  _plSnap = JSON.parse(JSON.stringify(_plState));
+  _plState = { ..._plState, [k]: _plState[k] - 1 };
+  _plPedeSide = false;
+  plSave(_plState); renderPlacarInline();
+}
+
+function placarZerar() { placarNova(_plState.cfg); }
+
+function renderPlacarInline() {
+  const wrap = _plWrap;
+  if (!wrap) return;
+  wrap.innerHTML = '';
+
+  if (!_plState || _plState.cfg === undefined) { renderConfigModal(wrap, null, cfg => placarNova(cfg)); return; }
+  if (_plState.encerrada) { renderResultado(wrap); releaseWakeLock(); return; }
+  acquireWakeLock();
+
+  const st = _plState, cfg = st.cfg;
+  const esq = st.ladoInv ? 'B' : 'A', dir = st.ladoInv ? 'A' : 'B';
+  const th = plTroca(cfg, st.setAtual);
+  const prox = th > 0 ? (th - ((st.pA + st.pB) % th) || th) : 0;
+  const alvo = setAlvo(cfg, st.setAtual);
+
+  // topo
+  const top = e('div', { cls: 'pl-top' });
+  top.appendChild(plBtn('pl-icon-btn', '', PL_ICON.back, () => go('competicao'), 'Voltar aos jogos'));
+  top.appendChild(e('span', { cls: 'pl-pill' }, cfg.jogoNome || 'Placar'));
+  const undo = plBtn('pl-icon-btn', '', PL_ICON.undo, placarDesfazer, 'Desfazer');
+  if (!_plSnap) undo.disabled = true;
+  top.appendChild(undo);
+  wrap.appendChild(top);
+
+  wrap.appendChild(e('div', { cls: 'pl-meta' }, 'Set ' + st.setAtual + (plNumSets(cfg) > 1 ? ' de ' + plNumSets(cfg) : '') + ' · até ' + alvo + ' pontos · ' +
+    (th > 0 ? 'troca de lado a cada ' + th : 'sem troca de lado') + (cfg.vantagem === false ? ' · sem vantagem' : '')));
+
+  // cartões das duplas
+  const teams = e('div', { cls: 'pl-teams' });
+  const card = t => {
+    const nome = t === 'A' ? cfg.nomA : cfg.nomB;
+    const pts = t === 'A' ? st.pA : st.pB;
+    const c = e('div', { cls: 'pl-team ' + t.toLowerCase() });
+    c.appendChild(e('div', { cls: 'pl-team-head' }, nome));
+    const sc = e('button', { cls: 'pl-score-btn', 'aria-label': 'Ponto para ' + nome, onclick: () => placarAddPonto(t) }, String(pts));
+    c.appendChild(sc);
+    const ac = e('div', { cls: 'pl-team-actions' });
+    ac.appendChild(plBtn('pl-btn-round', '', PL_ICON.minus, () => placarMenos(t), 'Tirar ponto de ' + nome));
+    ac.appendChild(plBtn('pl-btn-round plus', '', PL_ICON.plus, () => placarAddPonto(t), 'Ponto para ' + nome));
+    c.appendChild(ac);
+    return c;
+  };
+  teams.appendChild(card(esq));
+  teams.appendChild(e('div', { cls: 'pl-x' }, '×'));
+  teams.appendChild(card(dir));
+  wrap.appendChild(teams);
+
+  // sets vencidos
+  const sets = e('div', { cls: 'pl-sets' });
+  sets.appendChild(e('div', { cls: 'pl-sets-label' }, 'Sets vencidos'));
+  const row = e('div', { cls: 'pl-sets-row' });
+  row.appendChild(e('span', { cls: 'pl-sets-num ' + esq.toLowerCase() }, String(esq === 'A' ? st.setsA : st.setsB)));
+  const tr = e('span', { cls: 'pl-trophy' }); tr.innerHTML = PL_ICON.trophy; row.appendChild(tr);
+  row.appendChild(e('span', { cls: 'pl-sets-num ' + dir.toLowerCase() }, String(dir === 'A' ? st.setsA : st.setsB)));
+  sets.appendChild(row);
+  if (st.sets.length) sets.appendChild(e('div', { cls: 'pl-sets-hist' }, st.sets.map((s, i) => 'Set ' + (i + 1) + ': ' + s.a + '–' + s.b).join('  ·  ')));
+  wrap.appendChild(sets);
+
+  if (th > 0) wrap.appendChild(e('div', { cls: 'pl-note' }, 'Próxima troca de lado em ' + prox + (prox === 1 ? ' ponto' : ' pontos')));
+
+  // ações
+  const acoes = e('div', { cls: 'pl-actions' });
+  acoes.appendChild(plBtn('pl-btn pri', 'Nova partida', PL_ICON.play, () => renderConfigModal(wrap, cfg, c => placarNova(c))));
+  acoes.appendChild(plBtn('pl-btn sec', 'Zerar placar', PL_ICON.reset, () => {
+    const m = plModal(wrap, PL_ICON.reset, 'Zerar placar?', 'Pontos e sets desta partida voltam para zero.', [
+      plBtn('pl-btn pri', 'Zerar', '', placarZerar),
+      plBtn('pl-btn sec', 'Cancelar', '', () => m.remove())
+    ]);
+  }));
+  wrap.appendChild(acoes);
+
+  // troca de lado
+  if (_plPedeSide) {
+    plModal(wrap, PL_ICON.swap, 'Troca de lado', (st.pA + st.pB) + ' pontos disputados. As duplas trocam de meia-quadra.', [
+      plBtn('pl-btn pri', 'Trocar de lado', '', placarTrocarLado)
+    ]);
+  }
+}
+
+function renderResultado(wrap) {
+  const st = _plState, cfg = st.cfg, v = st.vencedora;
+  const res = e('div', { cls: 'pl-result' });
+  const ic = e('div', { cls: 'pl-result-icon' }); ic.innerHTML = PL_ICON.trophy; res.appendChild(ic);
+  res.appendChild(e('p', { cls: 'pl-result-kicker' }, 'Campeã'));
+  res.appendChild(e('h2', { cls: 'pl-result-name ' + v.toLowerCase() }, v === 'A' ? cfg.nomA : cfg.nomB));
+  res.appendChild(e('div', { cls: 'pl-result-score' }, st.setsA + ' × ' + st.setsB + ' em sets'));
+  const chips = e('div', { cls: 'pl-result-sets' });
+  st.sets.forEach((s, i) => chips.appendChild(e('span', { cls: 'pl-chip' }, 'Set ' + (i + 1) + ': ' + s.a + '–' + s.b)));
+  res.appendChild(chips);
+  const acoes = e('div', { cls: 'pl-actions', style: 'width:100%;margin-top:8px' });
+  acoes.appendChild(plBtn('pl-btn pri', 'Nova partida', PL_ICON.play, () => renderConfigModal(wrap, cfg, c => placarNova(c))));
+  acoes.appendChild(plBtn('pl-btn sec', 'Voltar aos jogos', '', () => go('competicao')));
+  res.appendChild(acoes);
+  wrap.appendChild(res);
+}
+
+/* Campo numérico com - / + e atalhos (valor livre entre min e max) */
+function plStepper(inicial, min, max, atalhos, onChange) {
+  let v = inicial;
+  const root = e('div', { cls: 'pl-stepper-wrap' });
+  const row = e('div', { cls: 'pl-stepper' });
+  const inp = e('input', { type: 'number', inputmode: 'numeric', min: String(min), max: String(max), cls: 'pl-stepper-input', 'aria-label': 'Valor' });
+  inp.value = v;
+  const chips = [];
+  const pintar = () => chips.forEach(c => c.classList.toggle('on', +c.dataset.v === v));
+  const set = (n, soTexto) => {
+    n = Math.round(+n);
+    if (isNaN(n)) n = v;
+    n = Math.min(max, Math.max(min, n));
+    v = n;
+    if (!soTexto) inp.value = n;
+    pintar();
+    if (onChange) onChange(n);
+  };
+  row.appendChild(plBtn('pl-step-btn', '', PL_ICON.minus, () => set(v - 1), 'Diminuir'));
+  row.appendChild(inp);
+  row.appendChild(plBtn('pl-step-btn', '', PL_ICON.plus, () => set(v + 1), 'Aumentar'));
+  root.appendChild(row);
+  inp.addEventListener('input', () => {
+    const n = Math.round(+inp.value);
+    if (inp.value !== '' && !isNaN(n) && n >= min && n <= max) set(n, true);
+  });
+  inp.addEventListener('blur', () => set(inp.value));
+  inp.addEventListener('focus', () => inp.select());
+  if (atalhos && atalhos.length) {
+    const cw = e('div', { cls: 'pl-chips' });
+    atalhos.forEach(a => {
+      const c = e('button', { cls: 'pl-chip-btn', onclick: () => set(a) }, String(a));
+      c.dataset.v = a; chips.push(c); cw.appendChild(c);
+    });
+    root.appendChild(cw);
+  }
+  pintar();
+  root.getValue = () => {
+    const n = Math.round(+inp.value);
+    if (inp.value !== '' && !isNaN(n)) { v = Math.min(max, Math.max(min, n)); }
+    inp.value = v; pintar();
+    return v;
+  };
+  root.setValue = n => set(n);
+  return root;
+}
+
+function plSwitch(ligado, titulo, descricao, onChange) {
+  const row = e('div', { cls: 'pl-switch-row' });
+  const txt = e('div', { cls: 'pl-switch-txt' });
+  txt.appendChild(e('strong', {}, titulo));
+  txt.appendChild(e('span', {}, descricao));
+  const sw = e('button', { cls: 'pl-switch' + (ligado ? ' on' : ''), role: 'switch', 'aria-checked': String(!!ligado), 'aria-label': titulo });
+  let on = !!ligado;
+  sw.addEventListener('click', () => { on = !on; sw.classList.toggle('on', on); sw.setAttribute('aria-checked', String(on)); onChange(on); });
+  row.appendChild(txt); row.appendChild(sw);
+  return row;
+}
+
+function renderConfigModal(wrap, cfgAtual, onConfirm) {
+  wrap.innerHTML = '';
+  const m = e('div', { cls: 'pl-config' });
+  m.appendChild(e('h2', { cls: 'pl-config-title' }, 'Nova partida'));
+
+  const grupo = (rotulo, ...filhos) => {
+    const g = e('div', { cls: 'pl-group' });
+    g.appendChild(e('p', { cls: 'pl-label' }, rotulo));
+    filhos.forEach(f => g.appendChild(f));
+    m.appendChild(g);
+    return g;
+  };
+  const seg = (valores, rotulos, atual, onSel) => {
+    const w = e('div', { cls: 'pl-seg' });
+    const bs = valores.map((val, i) => e('button', { cls: 'pl-seg-btn' + (val === atual ? ' on' : ''), onclick: () => {
+      onSel(val); bs.forEach((x, j) => x.classList.toggle('on', valores[j] === val)); } }, rotulos[i]));
+    bs.forEach(b => w.appendChild(b));
+    return w;
+  };
+
+  // estado inicial (cfgAtual pode ser de jogo, de partida anterior ou nulo)
+  const c0 = cfgAtual || {};
+  let nSets = c0.formato ? plNumSets(c0) : 1;
+  let modoTroca = c0.troca === 0 ? 'sem' : c0.troca > 0 ? 'custom' : 'auto';
+  let vantagem = c0.vantagem !== false;
+  const pts0 = c0.pts || 21;
+  let desTocado = !!c0.ptsDes;
+
+  // duplas
+  const nomA = e('input', { type: 'text', placeholder: 'Dupla A', maxlength: '20', cls: 'pl-input pl-input-a', value: c0.nomA || 'Dupla A' });
+  const nomB = e('input', { type: 'text', placeholder: 'Dupla B', maxlength: '20', cls: 'pl-input pl-input-b', value: c0.nomB || 'Dupla B' });
+  grupo('Duplas', nomA, nomB);
+
+  // pontos por set (livre)
+  let stepDes;
+  const stepPts = plStepper(pts0, 1, 99, [21, 15, 11, 7], n => {
+    if (stepDes && !desTocado) stepDes.setValue(n >= 15 ? 15 : n);
+    atualizaHintAuto();
+  });
+  const gPts = grupo('Pontos por set', stepPts, e('p', { cls: 'pl-hint' }, 'Digite qualquer valor ou use os atalhos.'));
+
+  // número de sets
+  const gDes = e('div', { cls: 'pl-sub' });
+  stepDes = plStepper(c0.ptsDes > 0 ? c0.ptsDes : (pts0 >= 15 ? 15 : pts0), 1, 99, [15, 11, 7], () => { desTocado = true; });
+  gDes.appendChild(e('p', { cls: 'pl-label' }, 'Pontos do set decisivo'));
+  gDes.appendChild(stepDes);
+  gDes.appendChild(e('p', { cls: 'pl-hint' }, 'O último set (desempate) pode ter outra pontuação.'));
+  const mostraDes = () => { gDes.style.display = nSets > 1 ? '' : 'none'; };
+  grupo('Número de sets', seg([1, 3, 5], ['Melhor de 1', 'Melhor de 3', 'Melhor de 5'], nSets, v => { nSets = v; mostraDes(); }), gDes);
+  mostraDes();
+
+  // troca de lado
+  const hintAuto = e('p', { cls: 'pl-hint' });
+  const atualizaHintAuto = () => { hintAuto.textContent = 'Automática: a cada ' + sideChangeThreshold(stepPts.getValue()) + ' pontos (1/3 do set).'; };
+  const gCustom = e('div', { cls: 'pl-sub' });
+  const stepTroca = plStepper(c0.troca > 0 ? c0.troca : 7, 1, 99, [5, 7], null);
+  gCustom.appendChild(e('p', { cls: 'pl-label' }, 'Trocar de lado a cada (pontos)'));
+  gCustom.appendChild(stepTroca);
+  const mostraTroca = () => {
+    gCustom.style.display = modoTroca === 'custom' ? '' : 'none';
+    hintAuto.style.display = modoTroca === 'auto' ? '' : 'none';
+    semHint.style.display = modoTroca === 'sem' ? '' : 'none';
+  };
+  const semHint = e('p', { cls: 'pl-hint' }, 'As duplas não trocam de meia-quadra durante o set.');
+  grupo('Troca de lado', seg(['auto', 'custom', 'sem'], ['Automática', 'Personalizada', 'Sem troca'], modoTroca, v => { modoTroca = v; mostraTroca(); }), hintAuto, gCustom, semHint);
+  atualizaHintAuto(); mostraTroca();
+
+  // vantagem
+  grupo('Regra do set', plSwitch(vantagem, 'Vantagem de 2 pontos', 'O set só termina com 2 pontos de diferença (deuce).', v => { vantagem = v; }));
+
+  const acoes = e('div', { cls: 'pl-actions' });
+  acoes.appendChild(plBtn('pl-btn pri', 'Iniciar partida', PL_ICON.play, () => {
+    const cfg = {
+      pts: stepPts.getValue(),
+      formato: 'bo' + nSets,
+      nomA: nomA.value.trim() || 'Dupla A',
+      nomB: nomB.value.trim() || 'Dupla B',
+      vantagem,
+      jogoNome: c0.jogoNome
+    };
+    if (nSets > 1) cfg.ptsDes = stepDes.getValue();
+    if (modoTroca === 'sem') cfg.troca = 0;
+    else if (modoTroca === 'custom') cfg.troca = stepTroca.getValue();
+    onConfirm(cfg);
+  }));
+  if (cfgAtual && _plState && !_plState.encerrada) acoes.appendChild(plBtn('pl-btn sec', 'Cancelar', '', () => renderPlacarInline()));
+  m.appendChild(acoes);
+  wrap.appendChild(m);
+}
 
 /* ===== INIT ===== */
-window.addEventListener('hashchange', render);
+// O src/main.ts (camada de acesso) carrega depois deste script e chama window.__cdaRender() quando
+// estiver pronto, para nenhuma tela de bônus aparecer antes da checagem de acesso.
+window.__cdaRender = render;
+window.addEventListener('hashchange', () => { if (window.CDA) render(); });
 document.querySelector('.bottom-nav').addEventListener('click', ev => {
   const btn = ev.target.closest('[data-route]');
   if (btn) go(btn.dataset.route);
 });
-render();
+if (window.CDA) render();
 
   
 
@@ -2604,8 +3588,8 @@ render();
 let deferredPwaPrompt = null;
 let isAppStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
 
-// Register Service Worker
-if ('serviceWorker' in navigator) {
+// Register Service Worker (fora de localhost: em desenvolvimento ele guardaria arquivos antigos no cache)
+if ('serviceWorker' in navigator && !/^(localhost|127\.0\.0\.1|\[::1\])$/.test(location.hostname) && !/^(10\.|192\.168\.|172\.(1[6-9]|2\d|3[01])\.)/.test(location.hostname)) {
   window.addEventListener('load', () => {
     navigator.serviceWorker.register('/sw.js')
       .then((reg) => console.log('PWA ServiceWorker ativo com escopo:', reg.scope))
@@ -2703,5 +3687,6 @@ function renderPwaBanner() {
 }
 
 </script>
+<script type="module" src="/src/main.ts"></script>
 </body>
 </html>

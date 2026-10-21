@@ -1,4 +1,4 @@
-const CACHE_NAME = 'codigo-areia-v1';
+const CACHE_NAME = 'codigo-areia-v2';
 const PRECACHE_ASSETS = [
   '/',
   '/index.html',

@@ -1,1 +1,15 @@
-﻿mc-src/node_modules
+node_modules
+dist
+.vercel
+.env
+.env.*
+!.env.example
+
+# dados de clientes: nunca versionar
+dados/
+docs/vendas-*
+*.csv
+*.xlsx
+*.xls
+
+mc-src/node_modules
