@@ -1,3 +1,4 @@
+import { SECAO_EXTRAS } from '../config/modulos'
 import type { Contexto } from './contexto'
 import { h, svg, ICONES } from './dom'
 
@@ -16,7 +17,7 @@ export function adicionarCartoesNaHome(ctx: Contexto, main: ParentNode): void {
     const liberado = ctx.desbloqueio.estaDesbloqueado(m.id)
     const topo = h('div', { cls: 'sec-tile-top' },
       h('span', { cls: 'sec-ico', html: svg(m.icone, 'sec-ico') }),
-      h('span', { cls: 'sec-abrev' }, 'BÔNUS'),
+      h('span', { cls: 'sec-abrev' }, SECAO_EXTRAS.etiqueta),
       liberado ? null : h('span', { cls: 'cda-lock-badge', html: svg(ICONES.cadeado), 'aria-hidden': 'true' }),
     )
     const estado = liberado
@@ -32,8 +33,8 @@ export function adicionarCartoesNaHome(ctx: Contexto, main: ParentNode): void {
 
   pagina.prepend(
     h('section', { cls: 'cda-bonus', 'data-cda': 'bonus' },
-      h('h2', { cls: 'bloco-titulo' }, 'Bônus'),
-      h('p', { cls: 'bloco-sub' }, 'Conteúdos extras. Desbloqueie com a senha que você recebe na compra.'),
+      h('h2', { cls: 'bloco-titulo' }, SECAO_EXTRAS.titulo),
+      h('p', { cls: 'bloco-sub' }, SECAO_EXTRAS.descricao),
       tiles,
     ),
   )

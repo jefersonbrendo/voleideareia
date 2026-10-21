@@ -77,6 +77,14 @@ export const MODULOS: readonly ModuloConfig[] = [
   },
 ]
 
+/** Textos da seção dos order bumps na tela inicial (valem para todos os módulos, atuais e futuros). */
+export const SECAO_EXTRAS = {
+  titulo: 'Turbine suas aulas',
+  descricao: 'Recursos extras para deixar suas aulas mais dinâmicas. Já comprou? Toque no card e digite a senha que você recebeu.',
+  /** Etiqueta no canto de cada card. */
+  etiqueta: 'EXTRA',
+} as const
+
 /** Parâmetro de URL que desbloqueia por link: /?desbloquear=SENHA */
 export const PARAMETRO_DESBLOQUEIO = 'desbloquear'
 

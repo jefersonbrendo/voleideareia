@@ -155,6 +155,18 @@ describe('cards de bônus na tela inicial', () => {
     expect(irPara).toHaveBeenCalledWith('casa')
   })
 
+  it('título, descrição e etiqueta da seção vêm da configuração', () => {
+    const { ctx } = criarContexto()
+    const main = montarHome(ctx)
+    expect(main.querySelector('.cda-bonus .bloco-titulo')?.textContent).toBe('Turbine suas aulas')
+    expect(main.querySelector('.cda-bonus .bloco-sub')?.textContent).toBe(
+      'Recursos extras para deixar suas aulas mais dinâmicas. Já comprou? Toque no card e digite a senha que você recebeu.',
+    )
+    const etiquetas = [...main.querySelectorAll('.sec-tile .sec-abrev')].map((e) => e.textContent)
+    expect(etiquetas).toEqual(['EXTRA', 'EXTRA'])
+    expect(main.textContent).not.toContain('BÔNUS')
+  })
+
   it('liberado: card normal, sem cadeado nem preço', () => {
     const { ctx } = criarContexto()
     ctx.desbloqueio.liberar('competicao')
