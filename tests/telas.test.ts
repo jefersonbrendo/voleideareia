@@ -132,7 +132,7 @@ describe('tela do módulo bloqueado', () => {
 describe('cards de bônus na tela inicial', () => {
   const montarHome = (ctx: Contexto) => {
     const main = document.createElement('div')
-    main.innerHTML = '<div class="page page-home"><div id="grupos"></div></div>'
+    main.innerHTML = '<div class="page page-home"><div class="hero"></div><div id="grupos"></div></div>'
     document.body.replaceChildren(main)
     adicionarCartoesNaHome(ctx, main)
     return main
@@ -143,7 +143,9 @@ describe('cards de bônus na tela inicial', () => {
     const main = montarHome(ctx)
     const tiles = main.querySelectorAll('.sec-tile')
     expect(tiles).toHaveLength(2)
-    expect(main.querySelector('#grupos + .cda-bonus .sec-tiles')).not.toBeNull()
+    // fica no topo da home, antes do banner
+    expect(main.querySelector('.page-home')?.firstElementChild?.getAttribute('data-cda')).toBe('bonus')
+    expect(main.querySelector('.cda-bonus + .hero')).not.toBeNull()
     for (const [i, m] of MODULOS_TESTE.entries()) {
       expect(tiles[i].querySelector('.cda-lock-badge')).not.toBeNull()
       expect(tiles[i].textContent).toContain(m.nomeCurto)

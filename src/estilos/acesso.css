@@ -13,6 +13,9 @@
 .nav-item.cda-destaque.active svg { transform: translateY(-2px); box-shadow: 0 0 0 3px rgba(255, 74, 63, 0.28), 0 8px 18px rgba(255, 74, 63, 0.45); }
 
 /* Cartões de bônus na tela inicial */
+.cda-bonus { margin-top: 16px; }
+.cda-bonus .bloco-titulo { margin-top: 0; }
+.cda-bonus + .hero { margin-top: 20px; }
 .cda-bonus .sec-tile { position: relative; }
 .cda-bonus .sec-tile-top { height: 88px; }
 .cda-lock-badge {

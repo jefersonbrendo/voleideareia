@@ -3,7 +3,8 @@ import { h, svg, ICONES } from './dom'
 
 /**
  * Cards dos order bumps na tela inicial, no mesmo estilo dos cards de seção (sec-tile).
- * Fica num bloco irmão dos grupos de seções, então sobrevive ao filtro por nível.
+ * Fica no topo da tela inicial (antes do banner) para a pessoa ver assim que entra, e num bloco
+ * irmão dos grupos de seções, então sobrevive ao filtro por nível.
  */
 export function adicionarCartoesNaHome(ctx: Contexto, main: ParentNode): void {
   const pagina = main.querySelector('.page-home')
@@ -29,7 +30,7 @@ export function adicionarCartoesNaHome(ctx: Contexto, main: ParentNode): void {
     tiles.append(tile)
   }
 
-  pagina.append(
+  pagina.prepend(
     h('section', { cls: 'cda-bonus', 'data-cda': 'bonus' },
       h('h2', { cls: 'bloco-titulo' }, 'Bônus'),
       h('p', { cls: 'bloco-sub' }, 'Conteúdos extras. Desbloqueie com a senha que você recebe na compra.'),
