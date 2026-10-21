@@ -1,5 +1,17 @@
 /* Telas novas do acesso por senha e do Treino em Casa. Usa só os tokens do app (--bg-card, --coral...). */
 
+/* Aba de bônus liberado na barra de baixo (ex.: Compet.), em destaque */
+.nav-item.cda-destaque { color: var(--coral); font-weight: 800; }
+.nav-item.cda-destaque svg {
+  width: 40px; height: 40px; padding: 9px; margin-top: -16px; border-radius: 14px; color: #fff;
+  background: linear-gradient(135deg, var(--coral), var(--laranja));
+  border: 3px solid var(--bg-nav);
+  box-shadow: 0 6px 14px rgba(255, 74, 63, 0.38);
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+.nav-item.cda-destaque:active svg { transform: scale(0.94); }
+.nav-item.cda-destaque.active svg { transform: translateY(-2px); box-shadow: 0 0 0 3px rgba(255, 74, 63, 0.28), 0 8px 18px rgba(255, 74, 63, 0.45); }
+
 /* Cartões de bônus na tela inicial */
 .cda-bonus .sec-tile { position: relative; }
 .cda-bonus .sec-tile-top { height: 88px; }

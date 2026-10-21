@@ -4,6 +4,7 @@ import { Desbloqueio, aplicarParametroDeUrl, aplicarRotaLegada, armazenamentoDoN
 import { mostrarAviso } from './ui/aviso'
 import { adicionarCartoesNaHome } from './ui/cartoes'
 import type { Contexto } from './ui/contexto'
+import { sincronizarNavegacao } from './ui/navegacao'
 import { renderRota } from './ui/rotas'
 
 const desbloqueio = new Desbloqueio(MODULOS, armazenamentoDoNavegador())
@@ -22,6 +23,7 @@ const ctx: Contexto = {
 window.CDA = {
   renderRota: (rota) => renderRota(ctx, rota),
   aposRender: (rota, main) => {
+    sincronizarNavegacao(ctx)
     if (rota.name === 'home') adicionarCartoesNaHome(ctx, main)
   },
 }

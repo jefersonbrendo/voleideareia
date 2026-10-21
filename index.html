@@ -2716,8 +2716,10 @@ function updateNavBadge() {
   b.textContent = favorites.size;
 }
 function updateNav(route) {
-  const map = { home: 'home', secao: 'home', ex: 'home', buscar: 'buscar', aulas: 'aulas', favoritos: 'favoritos', 'como-usar': 'como-usar', competicao: 'home', 'jogo-comp': 'home', placar: 'home', casa: 'home', 'casa-ex': 'home', configuracoes: 'home' };
-  const active = map[route.name] || route.name;
+  const map = { home: 'home', secao: 'home', ex: 'home', buscar: 'buscar', aulas: 'aulas', favoritos: 'favoritos', 'como-usar': 'como-usar', competicao: 'competicao', 'jogo-comp': 'competicao', placar: 'competicao', casa: 'home', 'casa-ex': 'home', configuracoes: 'home' };
+  let active = map[route.name] || route.name;
+  // Aba que não existe na barra (ex.: Compet. ainda bloqueada) -> destaca Início
+  if (!document.querySelector('.nav-item[data-route="' + active + '"]')) active = 'home';
   updateNavBadge();
   document.querySelectorAll('.nav-item').forEach(b => {
     b.classList.toggle('active', b.dataset.route === active);
@@ -2746,8 +2748,9 @@ function render() {
   else frag = renderHome();
 
   main.appendChild(frag);
-  updateNav(route);
+  // Antes do updateNav: a camada de acesso pode acrescentar abas na barra (bônus liberados)
   if (window.CDA) window.CDA.aposRender(route, main);
+  updateNav(route);
   window.scrollTo(0, 0);
 }
 
