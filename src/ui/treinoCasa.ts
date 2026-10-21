@@ -1,5 +1,9 @@
+import { ChipVolume } from '../components/treinoCasa/ChipVolume'
+import { ICONE_MATERIAL, IconesMaterial } from '../components/treinoCasa/IconesMaterial'
+import { SilhuetaRegioes } from '../components/treinoCasa/SilhuetaRegioes'
 import { CATEGORIAS_CASA, TREINO_CASA, type CategoriaCasa, type ExercicioCasa, type NivelCasa } from '../data/treinoCasa'
 import { compartilharExercicio } from '../lib/compartilhar'
+import { ROTULO_REGIAO, ehSoCorpo } from '../lib/treinoCasaTextos'
 import type { ModuloConfig } from '../config/modulos'
 import { mostrarAviso } from './aviso'
 import { cabecalho } from './cabecalho'
@@ -9,21 +13,35 @@ import { h, svg, ICONES, ICONES_CATEGORIA } from './dom'
 const CLASSE_NIVEL: Record<NivelCasa, string> = { 'Iniciante': 'ini', 'Intermediário': 'int', 'Avançado': 'ava' }
 const COR_NIVEL: Record<NivelCasa, string> = { 'Iniciante': '#1E9E5A', 'Intermediário': '#E08A00', 'Avançado': '#E5352B' }
 
-/** Filtro de categoria da lista (vale enquanto o app está aberto). */
+/** Filtros da lista (valem enquanto o app está aberto). Combinam entre si. */
 let filtroCategoria: CategoriaCasa | '' = ''
+let filtroSoCorpo = false
+
+/** Volta os filtros ao padrão (usado nos testes). */
+export function reiniciarFiltros(): void {
+  filtroCategoria = ''
+  filtroSoCorpo = false
+}
 
 export function rotaDoExercicio(numero: number): string {
   return `casa-${numero}`
 }
 
+/** Exercícios que passam pelo filtro "Só o corpo" (a categoria é aplicada por quem chama). */
+function passaNoSoCorpo(ex: ExercicioCasa): boolean {
+  return !filtroSoCorpo || ehSoCorpo(ex.material)
+}
+
 function cartaoDoExercicio(ex: ExercicioCasa, ordem: number): HTMLElement {
   const miniatura = h('figure', { cls: 'foto r-1x1 mini thumb-diag sem-img cda-thumb', html: svg(ICONES_CATEGORIA[ex.categoria] ?? '') })
-  const meta = h('div', { cls: 'ex-row-meta' },
-    h('span', { cls: `nivel-badge nivel-${ex.nivel}` }, ex.nivel),
-    h('span', { html: `${svg(ICONES.relogio)}` }, ex.tempo),
-    ex.exemplo ? h('span', { cls: 'cda-exemplo' }, 'Exemplo') : null,
+  const meta = h('div', { cls: 'ex-row-meta' }, h('span', { cls: `nivel-badge nivel-${ex.nivel}` }, ex.nivel))
+  // Linha compacta: ícones de material, volume e silhueta. Nunca quebra em duas linhas.
+  const visual = h('div', { cls: 'cda-card-visual' },
+    IconesMaterial(ex.material, { comNome: false }),
+    ChipVolume(ex.volume),
+    SilhuetaRegioes(ex.regioes, { altura: 32 }),
   )
-  const corpo = h('div', { cls: 'ex-row-body' }, h('div', { cls: 'ex-ordem' }, `${ordem}º exercício`), h('div', { cls: 'ex-row-nome' }, ex.nome), meta)
+  const corpo = h('div', { cls: 'ex-row-body' }, h('div', { cls: 'ex-ordem' }, `${ordem}º exercício`), h('div', { cls: 'ex-row-nome' }, ex.nome), meta, visual)
   const botao = h('button', { cls: 'ex-row', 'data-numero': ex.numero }, miniatura, corpo, h('span', { cls: 'chev', html: svg(ICONES.avancar) }))
   botao.addEventListener('click', () => { window.location.hash = `#${rotaDoExercicio(ex.numero)}` })
   return botao
@@ -34,7 +52,7 @@ function desenharLista(destino: HTMLElement): void {
   const categorias = CATEGORIAS_CASA.filter((c) => !filtroCategoria || c === filtroCategoria)
   let algum = false
   for (const categoria of categorias) {
-    const lista = TREINO_CASA.filter((e) => e.categoria === categoria)
+    const lista = TREINO_CASA.filter((e) => e.categoria === categoria && passaNoSoCorpo(e))
     if (lista.length === 0) continue
     algum = true
     destino.append(
@@ -42,7 +60,7 @@ function desenharLista(destino: HTMLElement): void {
       h('div', { cls: 'ex-list' }, ...lista.map((e, i) => cartaoDoExercicio(e, i + 1))),
     )
   }
-  if (!algum) destino.append(h('div', { cls: 'search-empty' }, 'Nenhum exercício nesta categoria ainda.'))
+  if (!algum) destino.append(h('div', { cls: 'search-empty' }, 'Nenhum exercício com esses filtros ainda.'))
 }
 
 export function renderListaTreinoCasa(modulo: ModuloConfig): DocumentFragment {
@@ -62,13 +80,12 @@ export function renderListaTreinoCasa(modulo: ModuloConfig): DocumentFragment {
 
   const lista = h('div', null)
   const chips = h('div', { cls: 'level-chips' })
-  const opcoes: Array<[CategoriaCasa | '', string, number]> = [
-    ['', 'Todos', TREINO_CASA.length],
-    ...CATEGORIAS_CASA.map((c): [CategoriaCasa, string, number] => [c, c, TREINO_CASA.filter((e) => e.categoria === c).length]),
-  ]
-  for (const [valor, rotulo, qtd] of opcoes) {
-    const chip = h('button', { cls: `chip chip-all${filtroCategoria === valor ? ' active' : ''}`, 'data-val': valor, html: `${rotulo}<span class="chip-count">${qtd}</span>` })
-    if (valor && qtd === 0) chip.setAttribute('disabled', '')
+  const contar = (categoria: CategoriaCasa | ''): number =>
+    TREINO_CASA.filter((e) => (!categoria || e.categoria === categoria) && passaNoSoCorpo(e)).length
+
+  const opcoes: Array<[CategoriaCasa | '', string]> = [['', 'Todos'], ...CATEGORIAS_CASA.map((c): [CategoriaCasa, string] => [c, c])]
+  for (const [valor, rotulo] of opcoes) {
+    const chip = h('button', { cls: `chip chip-all${filtroCategoria === valor ? ' active' : ''}`, 'data-val': valor, html: `${rotulo}<span class="chip-count"></span>` })
     chip.addEventListener('click', () => {
       filtroCategoria = valor
       chips.querySelectorAll('.chip').forEach((b) => b.classList.toggle('active', (b as HTMLElement).dataset.val === valor))
@@ -76,13 +93,50 @@ export function renderListaTreinoCasa(modulo: ModuloConfig): DocumentFragment {
     })
     chips.append(chip)
   }
+  /** Os números dos chips acompanham o filtro "Só o corpo". */
+  const atualizarContagens = (): void => {
+    chips.querySelectorAll<HTMLElement>('.chip').forEach((chip) => {
+      const valor = (chip.dataset.val ?? '') as CategoriaCasa | ''
+      const qtd = contar(valor)
+      chip.querySelector('.chip-count')!.textContent = String(qtd)
+      if (valor && qtd === 0) chip.setAttribute('disabled', '')
+      else chip.removeAttribute('disabled')
+    })
+  }
+
+  const totalSoCorpo = TREINO_CASA.filter((e) => ehSoCorpo(e.material)).length
+  const botaoSoCorpo = h('button', { cls: `chip cda-filtro-corpo${filtroSoCorpo ? ' active' : ''}`, 'data-filtro': 'so-corpo', 'aria-pressed': String(filtroSoCorpo), type: 'button' })
+  botaoSoCorpo.innerHTML = `${svg(ICONE_MATERIAL.corpo)}Só o corpo<span class="chip-count">${totalSoCorpo}</span>`
+  botaoSoCorpo.addEventListener('click', () => {
+    filtroSoCorpo = !filtroSoCorpo
+    botaoSoCorpo.classList.toggle('active', filtroSoCorpo)
+    botaoSoCorpo.setAttribute('aria-pressed', String(filtroSoCorpo))
+    atualizarContagens()
+    desenharLista(lista)
+  })
+
+  atualizarContagens()
   desenharLista(lista)
 
   frag.append(h('div', { cls: 'page' },
     h('div', { cls: 'secao-intro' }, faixa, h('p', { cls: 'secao-desc' }, modulo.descricao)),
+    h('div', { cls: 'cda-linha-filtro-corpo' }, botaoSoCorpo, h('span', { cls: 'cda-dica-filtro' }, 'Para quem não tem nada em casa')),
     chips, lista,
   ))
   return frag
+}
+
+/** Bloco logo abaixo do título: Material, Volume e Trabalha (silhueta + nomes das regiões). */
+function blocoVisual(ex: ExercicioCasa): HTMLElement {
+  const parte = (rotulo: string, ...filhos: Array<HTMLElement | null>) =>
+    h('div', { cls: 'cda-visual-parte' }, h('p', { cls: 'cda-visual-rotulo' }, rotulo), ...filhos)
+
+  const regioes = ex.regioes.map((r) => h('li', { 'data-regiao': r }, ROTULO_REGIAO[r]))
+  return h('div', { cls: 'cda-visual' },
+    parte('Material', IconesMaterial(ex.material, { comNome: true }), ex.materialNota ? h('p', { cls: 'cda-visual-nota' }, ex.materialNota) : null),
+    parte('Volume', ChipVolume(ex.volume), ex.volumeNota ? h('p', { cls: 'cda-visual-nota' }, ex.volumeNota) : null),
+    parte('Trabalha', h('div', { cls: 'cda-trabalha' }, SilhuetaRegioes(ex.regioes, { altura: 120 }), h('ul', { cls: 'cda-regioes-lista' }, ...regioes))),
+  )
 }
 
 export function renderExercicioCasa(ctx: Contexto, modulo: ModuloConfig, id: string): DocumentFragment {
@@ -105,12 +159,8 @@ export function renderExercicioCasa(ctx: Contexto, modulo: ModuloConfig, id: str
 
   page.append(
     h('h2', { cls: 'ex-titulo' }, ex.nome),
-    h('div', { cls: 'ex-sub' }, h('span', { cls: `pill pill-${CLASSE_NIVEL[ex.nivel]}` }, ex.nivel), ex.exemplo ? h('span', { cls: 'cda-exemplo' }, 'Exemplo') : null),
-    h('div', { cls: 'info-grid' },
-      h('div', { cls: 'info-tile', html: `${svg(ICONES.relogio)}` }, h('div', null, h('small', null, 'Séries/tempo'), h('strong', null, ex.tempo))),
-      h('div', { cls: 'info-tile', html: `${svg(ICONES_CATEGORIA[ex.categoria] ?? '')}` }, h('div', null, h('small', null, 'Categoria'), h('strong', null, ex.categoria))),
-      h('div', { cls: 'info-tile full', html: `${svg(ICONES.caixa)}` }, h('div', null, h('small', null, 'Material'), h('strong', null, ex.material))),
-    ),
+    h('div', { cls: 'ex-sub' }, h('span', { cls: `pill pill-${CLASSE_NIVEL[ex.nivel]}` }, ex.nivel)),
+    blocoVisual(ex),
   )
 
   type Aba = 'fazer' | 'corrigir' | 'variar'

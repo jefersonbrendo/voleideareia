@@ -1,4 +1,5 @@
 import type { ExercicioCasa } from '../data/treinoCasa'
+import { formatarVolume, materialEmTexto } from './treinoCasaTextos'
 
 /** Texto simples para mandar pelo WhatsApp (*negrito* é a marcação do próprio WhatsApp). */
 export function textoParaCompartilhar(ex: ExercicioCasa): string {
@@ -7,8 +8,7 @@ export function textoParaCompartilhar(ex: ExercicioCasa): string {
     `${ex.categoria} · ${ex.nivel}`,
     '',
     `Objetivo: ${ex.objetivo}`,
-    `Material: ${ex.material}`,
-    `Séries/tempo: ${ex.tempo}`,
+    `Material: ${materialEmTexto(ex.material)} | ${formatarVolume(ex.volume)}${ex.volumeNota ? ` (${ex.volumeNota.toLowerCase()})` : ''}`,
     '',
     'Como fazer:',
     ...ex.passoAPasso.map((p, i) => `${i + 1}. ${p}`),

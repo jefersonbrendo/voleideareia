@@ -1,4 +1,5 @@
 import './estilos/acesso.css'
+import './estilos/treino-casa.css'
 import { MODULOS } from './config/modulos'
 import { Desbloqueio, aplicarParametroDeUrl, aplicarRotaLegada, armazenamentoDoNavegador } from './lib/desbloqueio'
 import { mostrarAviso } from './ui/aviso'

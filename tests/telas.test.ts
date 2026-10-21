@@ -4,10 +4,12 @@ import { MODULOS, type ModuloConfig } from '../src/config/modulos'
 import { TREINO_CASA } from '../src/data/treinoCasa'
 import { Desbloqueio, type Armazenamento } from '../src/lib/desbloqueio'
 import { hashDaSenha } from '../src/lib/senha'
+import { ehSoCorpo, formatarVolume, ROTULO_REGIAO } from '../src/lib/treinoCasaTextos'
 import { MSG_SENHA_INCORRETA } from '../src/ui/bloqueado'
 import { adicionarCartoesNaHome } from '../src/ui/cartoes'
 import type { Contexto } from '../src/ui/contexto'
 import { renderRota } from '../src/ui/rotas'
+import { reiniciarFiltros } from '../src/ui/treinoCasa'
 
 const MODULOS_TESTE: readonly ModuloConfig[] = [
   { ...MODULOS[0], id: 'competicao', hashes: [hashDaSenha('Alfa12')] },
@@ -35,7 +37,7 @@ const digitarEEnviar = (form: HTMLFormElement, senha: string) => {
   form.dispatchEvent(new Event('submit', { cancelable: true, bubbles: true }))
 }
 
-beforeEach(() => { document.body.replaceChildren() })
+beforeEach(() => { document.body.replaceChildren(); reiniciarFiltros() })
 
 describe('decisão de acesso por rota', () => {
   it('rotas dos exercícios atuais são livres (o app desenha como sempre)', () => {
@@ -241,8 +243,8 @@ describe('seção Treino em Casa', () => {
     const ex = TREINO_CASA[1]
     const tela = montar(renderRota(ctx, { name: 'casa-ex', id: String(ex.numero) }))
     expect(tela.querySelector('.ex-titulo')?.textContent).toBe(ex.nome)
-    expect(tela.textContent).toContain(ex.tempo)
-    expect(tela.textContent).toContain(ex.material)
+    expect(tela.textContent).toContain(formatarVolume(ex.volume))
+    expect(tela.querySelectorAll('.cda-visual .cda-mat')).toHaveLength(ex.material.length)
     expect(tela.textContent).toContain(ex.objetivo)
     expect(tela.querySelectorAll('.step-item')).toHaveLength(ex.passoAPasso.length)
     const aba = (k: string) => (tela.querySelector(`.seg button[data-k="${k}"]`) as HTMLElement).click()
@@ -272,6 +274,66 @@ describe('seção Treino em Casa', () => {
     ;(tela.querySelector('[data-acao="compartilhar"]') as HTMLElement).click()
     await vi.waitFor(() => expect(writeText).toHaveBeenCalled())
     await vi.waitFor(() => expect(document.querySelector('.cda-aviso')?.textContent).toContain('copiado'))
+  })
+
+  it('card da lista: ícones de material (sem texto), chip de volume e silhueta pequena', () => {
+    const { ctx } = liberada()
+    const tela = montar(renderRota(ctx, { name: 'casa' }))
+    const cards = [...tela.querySelectorAll('.ex-row')]
+    expect(cards).toHaveLength(TREINO_CASA.length)
+    for (const [i, card] of cards.entries()) {
+      const ex = TREINO_CASA.find((e) => String(e.numero) === card.getAttribute('data-numero'))!
+      const linha = card.querySelector('.cda-card-visual') as HTMLElement
+      expect(linha, `${ex.nome} (${i})`).not.toBeNull()
+      expect(linha.querySelectorAll('.cda-mat-ico')).toHaveLength(ex.material.length)
+      expect(linha.querySelector('.cda-mat-nome')).toBeNull()
+      expect(linha.querySelector('.cda-chip-volume')?.textContent).toBe(formatarVolume(ex.volume))
+      expect(linha.querySelector('.cda-silhueta svg')?.getAttribute('height')).toBe('32')
+    }
+  })
+
+  it('detalhe: bloco Material / Volume / Trabalha logo abaixo do título', () => {
+    const { ctx } = liberada()
+    const ex = TREINO_CASA.find((e) => e.regioes.includes('gluteos') && e.material.length === 1 && e.material[0] === 'corpo')!
+    const tela = montar(renderRota(ctx, { name: 'casa-ex', id: String(ex.numero) }))
+    const filhos = [...(tela.querySelector('.ex-page')?.children ?? [])].map((c) => c.className.split(' ')[0])
+    expect(filhos.indexOf('cda-visual')).toBe(filhos.indexOf('ex-titulo') + 2)
+    const rotulos = [...tela.querySelectorAll('.cda-visual-rotulo')].map((r) => r.textContent)
+    expect(rotulos).toEqual(['Material', 'Volume', 'Trabalha'])
+    expect(tela.querySelector('.cda-visual .cda-mat-nome')?.textContent).toBe('Só o corpo')
+    expect(tela.querySelector('.cda-visual .cda-chip-volume')?.textContent).toBe(formatarVolume(ex.volume))
+    expect(tela.querySelector('.cda-trabalha .cda-silhueta svg')?.getAttribute('height')).toBe('120')
+    expect(tela.querySelector('.cda-trabalha .cda-silhueta')?.getAttribute('data-vistas')).toBe('2')
+    expect([...tela.querySelectorAll('.cda-regioes-lista li')].map((l) => l.textContent)).toEqual(ex.regioes.map((r) => ROTULO_REGIAO[r]))
+  })
+
+  it('filtro "Só o corpo" mostra só exercícios cujo único material é o corpo', () => {
+    const { ctx } = liberada()
+    const tela = montar(renderRota(ctx, { name: 'casa' }))
+    const botao = tela.querySelector('[data-filtro="so-corpo"]') as HTMLElement
+    const esperados = TREINO_CASA.filter((e) => ehSoCorpo(e.material))
+    expect(botao.textContent).toContain(String(esperados.length))
+    botao.click()
+    expect(botao.getAttribute('aria-pressed')).toBe('true')
+    const nomes = [...tela.querySelectorAll('.ex-row-nome')].map((n) => n.textContent)
+    expect(nomes.sort()).toEqual(esperados.map((e) => e.nome).sort())
+    for (const card of tela.querySelectorAll('.ex-row')) {
+      expect(card.querySelectorAll('.cda-mat')).toHaveLength(1)
+      expect(card.querySelector('.cda-mat')?.getAttribute('data-material')).toBe('corpo')
+    }
+    // os números dos chips acompanham o filtro
+    expect(tela.querySelector('.chip[data-val=""] .chip-count')?.textContent).toBe(String(esperados.length))
+  })
+
+  it('"Só o corpo" combina com a categoria e pode ser desligado', () => {
+    const { ctx } = liberada()
+    const tela = montar(renderRota(ctx, { name: 'casa' }))
+    ;(tela.querySelector('[data-filtro="so-corpo"]') as HTMLElement).click()
+    ;(tela.querySelector('.chip[data-val="Com bola"]') as HTMLElement).click()
+    const comBolaSoCorpo = TREINO_CASA.filter((e) => e.categoria === 'Com bola' && ehSoCorpo(e.material))
+    expect(tela.querySelectorAll('.ex-row')).toHaveLength(comBolaSoCorpo.length)
+    ;(tela.querySelector('[data-filtro="so-corpo"]') as HTMLElement).click()
+    expect(tela.querySelectorAll('.ex-row')).toHaveLength(TREINO_CASA.filter((e) => e.categoria === 'Com bola').length)
   })
 
   it('exercício inexistente volta para a lista', () => {

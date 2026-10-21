@@ -79,7 +79,7 @@ describe('dados do Treino em Casa', () => {
 
   it('campos obrigatórios preenchidos', () => {
     for (const e of TREINO_CASA) {
-      for (const campo of ['nome', 'tempo', 'material', 'objetivo', 'variacaoFacil', 'variacaoDificil'] as const) {
+      for (const campo of ['nome', 'objetivo', 'variacaoFacil', 'variacaoDificil'] as const) {
         expect(e[campo].trim(), `${e.nome}: ${campo}`).not.toBe('')
       }
       expect(e.passoAPasso.length).toBeGreaterThan(0)
@@ -100,21 +100,17 @@ describe('dados do Treino em Casa', () => {
     for (const e of TREINO_CASA) expect(e.passoAPasso.length, e.nome).toBeGreaterThanOrEqual(3)
   })
 
-  it('nenhum exercício está marcado como rascunho/exemplo', () => {
-    expect(TREINO_CASA.filter((e) => e.exemplo)).toEqual([])
-  })
-
   it('sem promessa de saúde ou de resultado garantido', () => {
     const proibidas = /garantid|milagr|cura\b|curar|emagrec|perder peso|queima de gordura|resultado certo|sem esforço/i
     for (const e of TREINO_CASA) {
-      const texto = [e.nome, e.objetivo, e.tempo, e.material, ...e.passoAPasso, e.variacaoFacil, e.variacaoDificil, e.erroComum ?? '', ...(e.pontosAtencao ?? [])].join(' ')
+      const texto = [e.nome, e.objetivo, e.materialNota ?? '', e.volumeNota ?? '', ...e.passoAPasso, e.variacaoFacil, e.variacaoDificil, e.erroComum ?? '', ...(e.pontosAtencao ?? [])].join(' ')
       expect(texto, e.nome).not.toMatch(proibidas)
     }
   })
 
-  it('material pede o mínimo: nada de equipamento de academia', () => {
-    const academia = /halter|barra |anilha|esteira|bicicleta ergom|kettlebell|máquina|aparelho/i
-    for (const e of TREINO_CASA) expect(e.material, e.nome).not.toMatch(academia)
+  it('material pede o mínimo: nada de equipamento de academia nas notas nem nos passos', () => {
+    const academia = /halter|\bbarra\b|anilha|esteira|bicicleta ergom|kettlebell|máquina|aparelho|degrau|mochila/i
+    for (const e of TREINO_CASA) expect([e.materialNota ?? '', ...e.passoAPasso].join(' '), e.nome).not.toMatch(academia)
   })
 
   it('o arquivo explica como adicionar exercícios e pede revisão profissional', () => {

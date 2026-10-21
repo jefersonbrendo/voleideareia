@@ -7,11 +7,12 @@ const ex = TREINO_CASA[0]
 describe('texto para compartilhar com o aluno', () => {
   const texto = textoParaCompartilhar(ex)
 
-  it('traz nome, objetivo, material, séries/tempo e variações', () => {
+  it('traz nome, objetivo, material com volume e variações', () => {
     expect(texto).toContain(`*${ex.nome}*`)
     expect(texto).toContain(ex.objetivo)
-    expect(texto).toContain(ex.material)
-    expect(texto).toContain(ex.tempo)
+    // formato pedido: "Material: bola e parede | 3 × 12"
+    expect(texto).toContain('Material: bola e parede | 3 × 20')
+    expect(texto).not.toMatch(/Séries\/tempo/)
     expect(texto).toContain(ex.variacaoFacil)
     expect(texto).toContain(ex.variacaoDificil)
   })
