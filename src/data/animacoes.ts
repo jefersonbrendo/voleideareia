@@ -20,9 +20,6 @@
  * - Sem linha do tempo, ou com "reduzir movimento" ativado, o app mostra o diagrama estático.
  */
 import type { Animacao } from '../lib/animacao/tipos'
-import { LOTE_1A } from './animacoesLotes/lote1a'
-import { LOTE_1B } from './animacoesLotes/lote1b'
-import { LOTE_1C } from './animacoesLotes/lote1c'
 
 /** Os 5 primeiros exercícios, aprovados na etapa 1 (não mexer). */
 const PRIMEIROS_CINCO: Record<number, Animacao> = {
@@ -250,13 +247,11 @@ const PRIMEIROS_CINCO: Record<number, Animacao> = {
   },
 }
 
+/** Os lotes (src/data/animacoesLotes/lote*.ts) entram sozinhos: cada arquivo exporta um Record<número, Animacao>. */
+const LOTES = import.meta.glob<Record<string, Record<number, Animacao>>>('./animacoesLotes/lote*.ts', { eager: true })
+
 /** Todas as linhas do tempo, por número do exercício. */
-export const ANIMACOES: Record<number, Animacao> = {
-  ...PRIMEIROS_CINCO,
-  ...LOTE_1A,
-  ...LOTE_1B,
-  ...LOTE_1C,
-}
+export const ANIMACOES: Record<number, Animacao> = Object.assign({}, PRIMEIROS_CINCO, ...Object.values(LOTES).flatMap((m) => Object.values(m)))
 
 /** Exercícios que ficam só com o diagrama estático, e o motivo. */
 export const SEM_ANIMACAO: Record<number, string> = {}

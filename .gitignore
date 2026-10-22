@@ -13,3 +13,4 @@ docs/vendas-*
 *.xls
 
 mc-src/node_modules
+_f.html

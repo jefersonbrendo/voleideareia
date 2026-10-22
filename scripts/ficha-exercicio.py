@@ -53,6 +53,7 @@ def ficha(ex, cena):
 
 
 def main():
+    sys.stdout.reconfigure(encoding='utf-8')
     EX = exercicios()
     alvo = []
     for a in sys.argv[1:]:
