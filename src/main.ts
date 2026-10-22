@@ -1,5 +1,7 @@
 import './estilos/acesso.css'
 import './estilos/treino-casa.css'
+import './estilos/animacao.css'
+import { animarDiagramaDoExercicio, pararAnimacao } from './ui/animacaoNaTela'
 import { MODULOS } from './config/modulos'
 import { Desbloqueio, aplicarParametroDeUrl, aplicarRotaLegada, armazenamentoDoNavegador } from './lib/desbloqueio'
 import { mostrarAviso } from './ui/aviso'
@@ -26,6 +28,8 @@ window.CDA = {
   aposRender: (rota, main) => {
     sincronizarNavegacao(ctx)
     if (rota.name === 'home') adicionarCartoesNaHome(ctx, main)
+    if (rota.name === 'ex') void animarDiagramaDoExercicio(main, Number(rota.num))
+    else pararAnimacao()
   },
 }
 
