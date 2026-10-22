@@ -247,11 +247,17 @@ const PRIMEIROS_CINCO: Record<number, Animacao> = {
   },
 }
 
-/** Os lotes (src/data/animacoesLotes/lote*.ts) entram sozinhos: cada arquivo exporta um Record<número, Animacao>. */
-const LOTES = import.meta.glob<Record<string, Record<number, Animacao>>>('./animacoesLotes/lote*.ts', { eager: true })
+/**
+ * Os lotes (src/data/animacoesLotes/lote*.ts) entram sozinhos. Cada arquivo exporta `LOTE_*` (linhas do tempo por
+ * número do exercício) e, se for o caso, `SEM_ANIMACAO_*` (exercícios que ficam estáticos, com o motivo).
+ */
+const LOTES = import.meta.glob<Record<string, Record<number, unknown>>>('./animacoesLotes/lote*.ts', { eager: true })
+
+const exportados = (prefixo: string): Record<number, unknown>[] =>
+  Object.values(LOTES).flatMap((m) => Object.entries(m).filter(([nome]) => nome.startsWith(prefixo)).map(([, v]) => v))
 
 /** Todas as linhas do tempo, por número do exercício. */
-export const ANIMACOES: Record<number, Animacao> = Object.assign({}, PRIMEIROS_CINCO, ...Object.values(LOTES).flatMap((m) => Object.values(m)))
+export const ANIMACOES: Record<number, Animacao> = Object.assign({}, PRIMEIROS_CINCO, ...(exportados('LOTE_') as Record<number, Animacao>[]))
 
 /** Exercícios que ficam só com o diagrama estático, e o motivo. */
-export const SEM_ANIMACAO: Record<number, string> = {}
+export const SEM_ANIMACAO: Record<number, string> = Object.assign({}, ...(exportados('SEM_ANIMACAO_') as Record<number, string>[]))

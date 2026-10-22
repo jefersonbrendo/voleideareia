@@ -1,7 +1,7 @@
 import { readFileSync } from 'node:fs'
 import { join } from 'node:path'
 import { describe, expect, it } from 'vitest'
-import { ANIMACOES } from '../src/data/animacoes'
+import { ANIMACOES, SEM_ANIMACAO } from '../src/data/animacoes'
 import { compilar, estadoEm, resolverRef } from '../src/lib/animacao/linhaDoTempo'
 import type { Animacao, Cena } from '../src/lib/animacao/tipos'
 
@@ -188,4 +188,30 @@ describe('linhas do tempo cadastradas (src/data/animacoes.ts)', () => {
       })
     })
   }
+})
+
+describe('cobertura das 240 linhas do tempo', () => {
+  const exercicios = exerciciosDoApp()
+
+  it('todo exercício tem linha do tempo ou um motivo para ficar estático — nunca os dois', () => {
+    for (let n = 1; n <= 240; n++) {
+      const tem = !!ANIMACOES[n]
+      const sem = !!SEM_ANIMACAO[n]
+      expect(tem || sem, `exercício ${n} sem linha do tempo e sem motivo`).toBe(true)
+      expect(tem && sem, `exercício ${n} está nas duas listas`).toBe(false)
+    }
+    expect(exercicios).toHaveLength(240)
+  })
+
+  it('motivos de "revisar" e de "sem animação" cabem em uma linha', () => {
+    for (const [n, a] of Object.entries(ANIMACOES)) if (a.revisar) expect(a.revisar, `exercício ${n}`).toMatch(/^[^\n]{10,300}$/)
+    for (const [n, m] of Object.entries(SEM_ANIMACAO)) expect(m, `exercício ${n}`).toMatch(/^[^\n]{10,300}$/)
+  })
+
+  it('nenhum lote sobrescreve o outro', () => {
+    const arquivos = import.meta.glob<Record<string, Record<number, unknown>>>('../src/data/animacoesLotes/lote*.ts', { eager: true })
+    let total = 0
+    for (const m of Object.values(arquivos)) for (const [nome, v] of Object.entries(m)) if (nome.startsWith('LOTE_')) total += Object.keys(v).length
+    expect(total + 5).toBe(Object.keys(ANIMACOES).length)
+  })
 })

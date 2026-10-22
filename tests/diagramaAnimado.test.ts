@@ -189,3 +189,27 @@ describe('animarDiagramaDoExercicio: quando anima e quando fica estático', () =
     expect(main.querySelector('.cda-anim')).toBeNull()
   })
 })
+
+describe('bolinhas do desenho', () => {
+  const montar = (n: number) => {
+    const r = relogioFalso()
+    const d = criarDiagramaAnimado({ numero: n, cena: cena(n), animacao: ANIMACOES[n], totalPassos: 4, observarVisibilidade: false, fabricaRelogio: r.fabrica })
+    return { d, tick: r.tick }
+  }
+
+  it('sem bola na linha do tempo, a bolinha que o jogador segura fica no desenho e acompanha o jogador', () => {
+    const { d, tick } = montar(2)
+    const bolas = [...d.el.querySelectorAll('.cda-bola-estatica')]
+    expect(bolas.length).toBeGreaterThan(0)
+    expect(bolas.every((b) => b.getAttribute('display') !== 'none')).toBe(true)
+    tick(6)
+    expect(bolas.some((b) => (b.getAttribute('transform') ?? '').includes('translate'))).toBe(true)
+  })
+
+  it('com uma bola na linha do tempo, a bolinha estática dá lugar à bola animada (exercícios aprovados)', () => {
+    for (const n of [35, 56, 108]) {
+      const { d } = montar(n)
+      for (const b of d.el.querySelectorAll('.cda-bola-estatica')) expect(b.getAttribute('display')).toBe('none')
+    }
+  })
+})
