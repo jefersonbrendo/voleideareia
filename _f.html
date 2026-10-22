@@ -1,0 +1,27 @@
+<body style="margin:0;background:#fff;font:12px Inter,Arial,sans-serif">
+<div id="t" style="padding:6px 10px;font-weight:700"></div><div id="g" style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px;padding:6px"></div>
+<script type="module">
+const q = new URLSearchParams(location.search);
+const n = +q.get('n');
+const quadros = +(q.get('q') || 12);
+const { ANIMACOES } = await import('/src/data/animacoes.ts');
+const { compilar, estadoEm } = await import('/src/lib/animacao/linhaDoTempo.ts');
+const { montarCena } = await import('/src/lib/animacao/cena.ts');
+const cena = await (await fetch('/gem/diagramas/' + String(n).padStart(3, '0') + '.json')).json();
+const c = compilar(ANIMACOES[n], cena);
+document.getElementById('t').textContent = 'Exercício ' + n + ' · duração ' + c.duracao.toFixed(1) + ' s · passos: ' + c.passos.map(p => p.texto + '@' + p.inicio.toFixed(1)).join(' ');
+const g = document.getElementById('g');
+for (let i = 0; i < quadros; i++) {
+  const t = (c.duracao - 0.05) * i / (quadros - 1);
+  const m = montarCena(cena, new Set(c.desenhos.keys()), 'f' + i);
+  const est = estadoEm(c, t); m.aplicar(est);
+  const box = document.createElement('div');
+  box.style.cssText = 'background:#F6DB8A;border-radius:8px;overflow:hidden';
+  const leg = document.createElement('div');
+  leg.style.cssText = 'padding:3px 8px;background:#13314A;color:#fff;font-weight:700';
+  leg.textContent = 't=' + t.toFixed(1) + 's · passo ' + (est.passo ?? '-');
+  m.svg.style.cssText = 'display:block;width:100%;height:auto';
+  box.append(leg, m.svg); g.append(box);
+}
+document.title = 'pronto';
+</script></body>

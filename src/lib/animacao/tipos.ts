@@ -53,8 +53,8 @@ export type Acao =
   | { tipo: 'jogador'; id: string; para: Ref; dur?: number; atraso?: number }
   /** A bola vai de `de` (ou de onde estava) até `para`. `alta`: trajetória em arco. */
   | { tipo: 'bola'; de?: Ref; para: Ref; alta?: boolean; dur?: number; atraso?: number }
-  /** A seta se desenha. */
-  | { tipo: 'seta'; id: string; dur?: number; atraso?: number }
+  /** A seta se desenha. `de`/`ate` (0..1) desenham só um trecho dela, para setas em zigue-zague seguidas pela bola. */
+  | { tipo: 'seta'; id: string; dur?: number; atraso?: number; de?: number; ate?: number }
   /** Espera, para dar tempo de entender. */
   | { tipo: 'pausa'; dur: number }
 

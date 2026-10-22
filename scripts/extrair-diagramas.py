@@ -369,6 +369,14 @@ def extrair(page):
                     melhor, nota = (s, lado), n
         if melhor:
             e['de'] = melhor[0]['id']; e['lado'] = melhor[1]
+    # seta cuja cabeça está no começo desenhado: estava ao contrário, troca as pontas
+    for sa in setas:
+        cabs = [e for e in els if e['k'] == 'ponta' and e.get('de') == sa['id']]
+        if cabs and all(c.get('lado') == 'a' for c in cabs):
+            for peca in [sa] + [o for o in els if o['k'] == 'seta' and o.get('junto') == sa['id']]:
+                peca['a'], peca['b'] = peca['b'], peca['a']
+            for c in cabs:
+                c['lado'] = 'b'
     ligar_numeros_as_setas(els)
     for t in textos:
         if not t['usado']:

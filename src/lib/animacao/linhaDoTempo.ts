@@ -36,7 +36,8 @@ export const distancia = (a: Ponto, b: Ponto): number => Math.hypot(b[0] - a[0],
 
 interface Mover { inicio: number; fim: number; de: Ponto; para: Ponto }
 interface Voo { inicio: number; fim: number; de: Ponto; para: Ponto; alta: boolean }
-interface Desenho { inicio: number; fim: number }
+/** Um trecho do desenho de uma seta: vai de `de` a `ate` (0..1 do comprimento) entre `inicio` e `fim`. */
+interface Desenho { inicio: number; fim: number; de: number; ate: number }
 export interface PassoCompilado { texto: number; inicio: number; fim: number }
 
 export interface Compilada {
@@ -45,7 +46,7 @@ export interface Compilada {
   movimentos: Map<string, Mover[]>
   voos: Voo[]
   bolaInicial: Ponto | null
-  desenhos: Map<string, Desenho>
+  desenhos: Map<string, Desenho[]>
   inicioDosJogadores: Map<string, Ponto>
 }
 
@@ -54,7 +55,7 @@ export function compilar(animacao: Animacao, cena: Cena): Compilada {
   const final = animacao.pausaFinal ?? PAUSA_FINAL
   const movimentos = new Map<string, Mover[]>()
   const voos: Voo[] = []
-  const desenhos = new Map<string, Desenho>()
+  const desenhos = new Map<string, Desenho[]>()
   const passos: PassoCompilado[] = []
 
   const inicioDosJogadores = new Map<string, Ponto>()
@@ -92,7 +93,9 @@ export function compilar(animacao: Animacao, cena: Cena): Compilada {
         const seta = achar(cena, acao.id)
         if (!seta || seta.k !== 'seta') throw new Error(`seta "${acao.id}" não existe na cena`)
         fim = inicio + (acao.dur ?? DUR_SETA)
-        desenhos.set(acao.id, { inicio, fim })
+        const anteriores = desenhos.get(acao.id) ?? []
+        const de = acao.de ?? (anteriores.length ? anteriores[anteriores.length - 1].ate : 0)
+        desenhos.set(acao.id, [...anteriores, { inicio, fim, de, ate: acao.ate ?? 1 }])
       } else {
         fim = inicio + acao.dur
       }
@@ -165,7 +168,14 @@ export function estadoEm(c: Compilada, tempo: number): Estado {
   }
 
   const setas = new Map<string, number>()
-  for (const [id, d] of c.desenhos) setas.set(id, limitar((t - d.inicio) / (d.fim - d.inicio)))
+  for (const [id, trechos] of c.desenhos) {
+    let p = 0
+    for (const d of trechos) {
+      if (t >= d.fim) p = d.ate
+      else if (t > d.inicio) { p = d.de + (d.ate - d.de) * limitar((t - d.inicio) / (d.fim - d.inicio)); break } else break
+    }
+    setas.set(id, p)
+  }
 
   let passo: number | null = null
   for (const p of c.passos) if (t >= p.inicio) passo = p.texto

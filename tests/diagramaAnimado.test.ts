@@ -154,7 +154,7 @@ describe('animarDiagramaDoExercicio: quando anima e quando fica estático', () =
     semMovimentoReduzido()
     const main = paginaDeExercicio(5)
     const buscar = cenaResposta(146)
-    await animarDiagramaDoExercicio(main, 7, buscar as unknown as typeof fetch)
+    await animarDiagramaDoExercicio(main, 999, buscar as unknown as typeof fetch)
     expect(main.querySelector('.diag-hero img')).not.toBeNull()
     expect(buscar).not.toHaveBeenCalled()
   })

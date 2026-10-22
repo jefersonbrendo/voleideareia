@@ -128,7 +128,20 @@ describe('linha do tempo', () => {
     }, cenaDeTeste)
     expect(c4.movimentos.get('A1')!.map((m) => [m.inicio, m.fim])).toEqual([[0, 1], [1, 2]])
     const c5 = compilar({ passos: [{ texto: 1, acoes: [{ tipo: 'seta', id: 'seta1', dur: 1, atraso: 2 }] }] }, cenaDeTeste)
-    expect(c5.desenhos.get('seta1')).toEqual({ inicio: 2, fim: 3 })
+    expect(c5.desenhos.get('seta1')).toEqual([{ inicio: 2, fim: 3, de: 0, ate: 1 }])
+  })
+
+  it('seta desenhada em trechos (zigue-zague da bola): cada trecho continua de onde o anterior parou', () => {
+    const c6 = compilar({
+      passos: [
+        { texto: 1, acoes: [{ tipo: 'seta', id: 'seta1', dur: 1, ate: 0.4 }] },
+        { texto: 2, acoes: [{ tipo: 'seta', id: 'seta1', dur: 1, ate: 1 }] },
+      ],
+    }, cenaDeTeste)
+    expect(estadoEm(c6, 0.5).setas.get('seta1')).toBeCloseTo(0.2, 5)
+    expect(estadoEm(c6, 1).setas.get('seta1')).toBeCloseTo(0.4, 5)
+    expect(estadoEm(c6, 2.1).setas.get('seta1')).toBeCloseTo(0.7, 5)
+    expect(estadoEm(c6, 10).setas.get('seta1')).toBe(1)
   })
 
   it('erros claros para dados errados', () => {

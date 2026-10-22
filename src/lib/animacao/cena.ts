@@ -4,6 +4,10 @@ import type { Estado } from './linhaDoTempo'
 const SVG = 'http://www.w3.org/2000/svg'
 /** Quanto a bola "sobe" na tela no ponto mais alto de um arco (unidades da cena). */
 const ALTURA_DO_ARCO = 16
+/** Com várias bolinhas no desenho, só some a que estiver a menos disso (unidades da cena) de um ponto do caminho da bola animada. */
+const RAIO_DE_SUBSTITUICAO = 14
+/** Bolinha do desenho a menos disso de um jogador é a que ele segura. */
+const RAIO_DA_MAO = 12
 
 function no<K extends keyof SVGElementTagNameMap>(tag: K, attrs: Record<string, string | number | undefined> = {}): SVGElementTagNameMap[K] {
   const el = document.createElementNS(SVG, tag)
@@ -37,7 +41,7 @@ export interface CenaMontada {
  * Monta o SVG de uma cena. `setasAnimadas` são as setas que a linha do tempo desenha: elas (e seus
  * números e cabeças) começam escondidas. As demais ficam sempre visíveis, como no diagrama estático.
  */
-export function montarCena(cena: Cena, setasAnimadas: ReadonlySet<string>, prefixo: string): CenaMontada {
+export function montarCena(cena: Cena, setasAnimadas: ReadonlySet<string>, prefixo: string, pontosDaBola?: readonly Ponto[]): CenaMontada {
   const svg = no('svg', { viewBox: `0 0 ${cena.w} ${cena.h}`, role: 'img', 'aria-label': 'Diagrama animado da quadra', preserveAspectRatio: 'xMidYMid meet' })
   svg.setAttribute('class', 'cda-anim-svg')
   const defs = no('defs')
@@ -87,7 +91,7 @@ export function montarCena(cena: Cena, setasAnimadas: ReadonlySet<string>, prefi
       }
       n = g
     } else if (e.k === 'bola') {
-      n = no('circle', { cx: e.x, cy: e.y, r: e.r, fill: e.f, stroke: e.s, 'stroke-width': e.w, class: 'cda-bola-estatica' })
+      n = no('circle', { cx: e.x, cy: e.y, r: e.r, fill: e.f, stroke: e.s, 'stroke-width': e.w, class: 'cda-bola-estatica', 'data-x': e.x, 'data-y': e.y })
     } else if (e.k === 'texto') {
       const t = rotulo(e.t ?? '', e.x ?? 0, e.y ?? 0, e.fs ?? 5, e.c ?? '#0f172a')
       t.setAttribute('font-weight', e.b ? '700' : '600')
@@ -119,13 +123,34 @@ export function montarCena(cena: Cena, setasAnimadas: ReadonlySet<string>, prefi
   bola.append(sombra, corpoDaBola, costura)
   svg.append(bola)
 
-  // a bolinha amarela do desenho (e o arquinho que a acompanha) dão lugar à bola animada
-  const estaticas = cena.el.filter((e) => e.k === 'bola')
-  svg.querySelectorAll('.cda-bola-estatica').forEach((el) => el.setAttribute('display', 'none'))
+  // a bolinha amarela do desenho (e o arquinho que a acompanha) dão lugar à bola animada. Sem bola na
+  // linha do tempo, ou longe do caminho dela (ex.: cada jogador segurando a sua), continuam no desenho.
+  const umaSoBola = cena.el.filter((e) => e.k === 'bola').length <= 1
+  const substituida = (x: number, y: number): boolean =>
+    pontosDaBola === undefined || (pontosDaBola.length > 0 && umaSoBola) || pontosDaBola.some((p) => Math.hypot(p[0] - x, p[1] - y) < RAIO_DE_SUBSTITUICAO)
+  const escondidas = cena.el.filter((e) => e.k === 'bola' && substituida(e.x ?? 0, e.y ?? 0))
+  svg.querySelectorAll('.cda-bola-estatica').forEach((el) => {
+    if (substituida(Number(el.getAttribute('data-x')), Number(el.getAttribute('data-y')))) el.setAttribute('display', 'none')
+  })
   svg.querySelectorAll<SVGElement>('[data-k="fundo"]').forEach((el) => {
     const cx = Number(el.getAttribute('data-x'))
     const cy = Number(el.getAttribute('data-y'))
-    if (estaticas.some((b) => Math.hypot((b.x ?? 0) - cx, (b.y ?? 0) - cy) < 5)) el.setAttribute('display', 'none')
+    if (escondidas.some((b) => Math.hypot((b.x ?? 0) - cx, (b.y ?? 0) - cy) < 5)) el.setAttribute('display', 'none')
+  })
+
+  // bolinha que o jogador segura (ex.: "cada jogador com uma bola") acompanha o jogador
+  const acompanhantes = new Map<string, SVGElement[]>()
+  svg.querySelectorAll<SVGElement>('.cda-bola-estatica').forEach((el) => {
+    if (el.getAttribute('display') === 'none') return
+    const x = Number(el.getAttribute('data-x'))
+    const y = Number(el.getAttribute('data-y'))
+    let dono: string | null = null
+    let menor = RAIO_DA_MAO
+    for (const [id, j] of jogadores) {
+      const d = Math.hypot(j.x0 - x, j.y0 - y)
+      if (d < menor) { menor = d; dono = id }
+    }
+    if (dono) acompanhantes.set(dono, [...(acompanhantes.get(dono) ?? []), el])
   })
 
   // cache para só escrever no DOM o que mudou
@@ -140,7 +165,10 @@ export function montarCena(cena: Cena, setasAnimadas: ReadonlySet<string>, prefi
   const aplicar = (estado: Estado): void => {
     for (const [id, pos] of estado.jogadores) {
       const j = jogadores.get(id)
-      if (j) escrever(j.g, `j${id}`, 'transform', `translate(${(pos[0] - j.x0).toFixed(2)} ${(pos[1] - j.y0).toFixed(2)})`)
+      if (!j) continue
+      const mover = `translate(${(pos[0] - j.x0).toFixed(2)} ${(pos[1] - j.y0).toFixed(2)})`
+      escrever(j.g, `j${id}`, 'transform', mover)
+      acompanhantes.get(id)?.forEach((el, i) => escrever(el, `a${id}${i}`, 'transform', mover))
     }
     const b = estado.bola
     escrever(bola, 'bola', 'visibility', b.visivel ? 'visible' : 'hidden')

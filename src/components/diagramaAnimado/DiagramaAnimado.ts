@@ -1,7 +1,7 @@
 import { animate } from 'motion'
 import { montarCena } from '../../lib/animacao/cena'
 import { compilar, estadoEm } from '../../lib/animacao/linhaDoTempo'
-import type { Animacao, Cena } from '../../lib/animacao/tipos'
+import type { Animacao, Cena, Ponto } from '../../lib/animacao/tipos'
 import { h, svg as icone } from '../../ui/dom'
 
 /** Relógio mestre da animação (por trás usa a biblioteca motion). Separado para poder testar. */
@@ -60,7 +60,8 @@ export interface DiagramaAnimado {
 
 export function criarDiagramaAnimado(op: OpcoesDiagrama): DiagramaAnimado {
   const compilada = compilar(op.animacao, op.cena)
-  const montada = montarCena(op.cena, new Set(compilada.desenhos.keys()), `d${op.numero}`)
+  const caminhoDaBola = [compilada.bolaInicial, ...compilada.voos.flatMap((v) => [v.de, v.para])].filter((p): p is Ponto => p !== null)
+  const montada = montarCena(op.cena, new Set(compilada.desenhos.keys()), `d${op.numero}`, caminhoDaBola)
 
   const botao = (acao: string, rotulo: string, html: string, texto?: string): HTMLButtonElement => {
     const b = h('button', { cls: 'cda-anim-btn', type: 'button', 'data-acao': acao, 'aria-label': rotulo, title: rotulo })
