@@ -294,13 +294,18 @@ def extrair(page):
             e['a'], e['b'] = pontas_do_caminho(p, ox, oy); e['cor'] = cor
             els.append(e); continue
         # seta pontilhada: desenhada como forma preenchida (pontos + cabeça no mesmo desenho)
-        pontilhada_escura = fill == '#0f172a' and cor is None and all(i[0] == 'l' for i in its) and len(its) >= 8 and tam >= 6 and not (r.height > 60 and r.width < 5)
+        pontilhada_escura = fill in ('#0f172a', '#1e293b', '#475569') and cor is None and all(i[0] in ('l', 'c', 're', 'qu') for i in its) and len(its) >= 8 and tam >= 6 and not (r.height > 60 and r.width < 5)
         if (fill == '#000000' and all(i[0] == 'l' for i in its) and tam >= 3) or pontilhada_escura:
             e = base_do_desenho(p, ox, oy); e['k'] = 'seta'; e['pre'] = 1; e['id'] = novo_id('seta')
             e['cor'] = cor or '#000000'
             pts = []
             for i in its:
-                pts += [(q.x - ox, q.y - oy) for q in i[1:] if hasattr(q, 'x')]
+                if i[0] == 're':
+                    pts += [(x - ox, y - oy) for x, y in ((i[1].x0, i[1].y0), (i[1].x1, i[1].y1))]
+                elif i[0] == 'qu':
+                    pts += [(q.x - ox, q.y - oy) for q in (i[1].ul, i[1].lr)]
+                else:
+                    pts += [(q.x - ox, q.y - oy) for q in i[1:] if hasattr(q, 'x')]
             e['a'], e['b'] = extremos(pts)
             e['_pts'] = True
             els.append(e); continue
@@ -315,25 +320,54 @@ def extrair(page):
     orientar_setas_preenchidas(els)
     agrupar_pecas_da_mesma_seta(els)
     ligar_ids_de_zonas(els)
-    # liga cada cabeça à seta cujo fim/começo está mais perto
+    # liga cada cabeça à seta cujo fim/começo está mais perto E que aponta para o mesmo lado
     setas = [e for e in els if e['k'] == 'seta' and not e.get('junto')]
 
     def familia_cor(cor):
         return 'v' if cor in ('#dc2626', '#ea580c') else 'e'
 
+    def direcao_da_cabeca(e):
+        """Vetor base -> ponta do triângulo (a ponta é o vértice mais afastado do meio dos outros dois)."""
+        v = [(float(x), float(y)) for x, y in re.findall(r'(-?\d+\.?\d*) (-?\d+\.?\d*)', e.get('d', ''))]
+        v = v[:3]
+        if len(v) < 3:
+            return None
+        melhor = None
+        for i in range(3):
+            o = [v[j] for j in range(3) if j != i]
+            m = ((o[0][0] + o[1][0]) / 2, (o[0][1] + o[1][1]) / 2)
+            d = math.dist(v[i], m)
+            if melhor is None or d > melhor[0]:
+                melhor = (d, (v[i][0] - m[0], v[i][1] - m[1]))
+        return melhor[1]
+
+    def alinhamento(s, lado, dirc):
+        """cos entre a direção da cabeça e a direção da seta naquele extremo (1 = apontam igual)."""
+        if dirc is None:
+            return 1.0
+        a, b = s['a'], s['b']
+        vet = (b[0] - a[0], b[1] - a[1]) if lado == 'b' else (a[0] - b[0], a[1] - b[1])
+        n1, n2 = math.hypot(*vet), math.hypot(*dirc)
+        if n1 < 1e-6 or n2 < 1e-6:
+            return 1.0
+        return (vet[0] * dirc[0] + vet[1] * dirc[1]) / (n1 * n2)
+
     for e in els:
         if e['k'] != 'ponta':
             continue
-        melhor, dist = None, 1e9
+        dirc = direcao_da_cabeca(e)
+        melhor, nota = None, 1e9
         for s in setas:
-            # a cabeça é da seta da mesma cor (vermelha = bola, escura = deslocamento)
-            if familia_cor(s.get('s') or s.get('cor') or '') != familia_cor(e.get('f')):
-                continue
+            mesma = familia_cor(s.get('s') or s.get('cor') or '') == familia_cor(e.get('f'))
             for ponto, lado in ((s['b'], 'b'), (s['a'], 'a')):
                 dd = math.dist(ponto, (e['x'], e['y']))
-                if dd < dist:
-                    melhor, dist = (s, lado), dd
-        if melhor and dist < 9:
+                cos = alinhamento(s, lado, dirc)
+                if dd > 14 or (cos < 0.3 and dd > 6):
+                    continue
+                n = dd + (0 if mesma else 5) + (1 - cos) * 6
+                if n < nota:
+                    melhor, nota = (s, lado), n
+        if melhor:
             e['de'] = melhor[0]['id']; e['lado'] = melhor[1]
     ligar_numeros_as_setas(els)
     for t in textos:
