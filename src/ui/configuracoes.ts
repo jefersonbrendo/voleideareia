@@ -1,4 +1,4 @@
-import { linkSuporte } from '../config/suporte'
+import { MENSAGEM_SUPORTE_GERAL, NUMERO_SUPORTE_EXIBIDO, linkSuporte } from '../config/suporte'
 import { mostrarAviso } from './aviso'
 import { cabecalho } from './cabecalho'
 import type { Contexto } from './contexto'
@@ -46,6 +46,9 @@ export function renderConfiguracoes(ctx: Contexto): DocumentFragment {
     suporte.classList.remove('cda-oculto')
   })
 
+  const contato = h('a', { cls: 'cda-btn zap', 'data-suporte': 'whatsapp', href: linkSuporte(MENSAGEM_SUPORTE_GERAL), target: '_blank', rel: 'noopener noreferrer' })
+  contato.innerHTML = `${svg(ICONES.chat)}Falar com o suporte no WhatsApp`
+
   frag.append(
     h('div', { cls: 'page' },
       h('h2', { cls: 'bloco-titulo' }, 'Módulos desbloqueados'),
@@ -53,6 +56,9 @@ export function renderConfiguracoes(ctx: Contexto): DocumentFragment {
       h('div', { cls: 'cda-lista' }, ...linhas),
       h('h2', { cls: 'bloco-titulo' }, 'Desbloquear com senha'),
       formulario,
+      h('h2', { cls: 'bloco-titulo' }, 'Suporte'),
+      h('p', { cls: 'bloco-sub' }, `Dúvida ou problema com o app? Chame no WhatsApp ${NUMERO_SUPORTE_EXIBIDO}.`),
+      contato,
     ),
   )
   return frag

@@ -208,6 +208,15 @@ describe('configurações', () => {
     expect(tela.querySelector('.cda-msg.erro')?.textContent).toBe(MSG_SENHA_INCORRETA)
     expect(tela.querySelector('a.zap')?.classList.contains('cda-oculto')).toBe(false)
   })
+
+  it('mostra sempre o suporte no WhatsApp, com o número do suporte', () => {
+    const { ctx } = criarContexto()
+    const tela = montar(renderRota(ctx, { name: 'configuracoes' }))
+    const contato = tela.querySelector('[data-suporte="whatsapp"]') as HTMLAnchorElement
+    expect(contato.classList.contains('cda-oculto')).toBe(false)
+    expect(contato.href).toMatch(/^https:\/\/wa\.me\/558587200301\?text=/)
+    expect(tela.textContent).toContain('(85) 8720-0301')
+  })
 })
 
 describe('seção Treino em Casa', () => {
